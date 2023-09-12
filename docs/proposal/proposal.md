@@ -1,34 +1,19 @@
 # School of Computing &mdash; Year 4 Project Proposal Form
 
-> Edit (then commit and push) this document to complete your proposal form.
-> Make use of figures / diagrams where appropriate.
->
-> Do not rename this file.
 
 ## SECTION A
 
 |                     |                   |
 |---------------------|-------------------|
-|Project Title:       | xxxxxx            |
-|Student 1 Name:      | xxxxxx            |
-|Student 1 ID:        | xxxxxx            |
-|Student 2 Name:      | xxxxxx            |
-|Student 2 ID:        | xxxxxx            |
-|Project Supervisor:  | xxxxxx            |
+|Project Title:       | START Web Application           |
+|Student 1 Name:      | Niall Kelly            |
+|Student 1 ID:        | 20461772            |
+|Student 2 Name:      | Adam Gray           |
+|Student 2 ID:        | 20364103           |
+|Project Supervisor:  | David Sinclair            |
 
-> Ensure that the Supervisor formally agrees to supervise your project; this is only recognised once the
-> Supervisor assigns herself/himself via the project Dashboard.
->
-> Project proposals without an assigned
-> Supervisor will not be accepted for presentation to the Approval Panel.
 
 ## SECTION B
-
-> Guidance: This document is expected to be approximately 3 pages in length, but it can exceed this page limit.
-> It is also permissible to carry forward content from this proposal to your later documents (e.g. functional
-> specification) as appropriate.
->
-> Your proposal must include *at least* the following sections.
 
 
 ### Introduction
@@ -37,11 +22,23 @@
 
 ### Outline
 
-> Outline the proposed project.
+> For this project we plan to create a Web Application using (). This would consist of the following key features:
+
+* Language-Sensitive Editor: Our web application features a language-sensitive code editor that understands the unique syntax of START. This editor provides real-time feedback, highlighting code errors and suggesting improvements, helping you grasp the language's intricacies effortlessly.
+
+* Interactive Learning: Whether you're a complete beginner or have some coding experience, the START Web Application offers a range of learning resources and tutorials tailored to your level. Step-by-step lessons and exercises ensure a smooth learning curve.
+
+* Debugger: Debugging your code is a breeze with our built-in debugger. Identify and resolve issues in your programs using breakpoints, variable inspection, and error messages that guide you towards efficient problem-solving.
+
+* Execution Environment: Execute your START code right in the web application. Witness the results of your code as you experiment and practice, gaining confidence and skills in real-time.
+
+By implementing these core features it will allow for the best user experience.
 
 ### Background
 
-> Where did the ideas come from?
+> This project idea spawned from our 3rd year project idea to create our own programming language, and given our language is currently only available on GitHub, we wanted to make a more accessible to the average beginner programmer, who may have no previous experience with GitHub. Given this, we wanted to make one place where to user can go to learn and execute their code while using START.
+
+As well as this, we wanted to create a project that would allow us to put our learned experience from INTRA into practice given we both had experience working with small sections of web development. We now want to create our own full web application.
 
 ### Achievements
 

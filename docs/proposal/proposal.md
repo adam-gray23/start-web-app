@@ -3,14 +3,14 @@
 
 ## SECTION A
 
-|                     |                   |
-|---------------------|-------------------|
-|Project Title:       | START Web Application           |
-|Student 1 Name:      | Niall Kelly            |
-|Student 1 ID:        | 20461772            |
-|Student 2 Name:      | Adam Gray           |
-|Student 2 ID:        | 20364103           |
-|Project Supervisor:  | David Sinclair            |
+|                     |                       |
+|---------------------|-----------------------|
+|Project Title:       | START Web Application |
+|Student 1 Name:      | Niall Kelly           |
+|Student 1 ID:        | 20461772              |
+|Student 2 Name:      | Adam Gray             |
+|Student 2 ID:        | 20364103              |
+|Project Supervisor:  | David Sinclair        |
 
 
 ## SECTION B
@@ -18,7 +18,7 @@
 
 ### Introduction
 
-> Describe the general area covered by the project.
+> Our project idea is to create a web application which will act as a learning experience for those new to computer programming. The site will utilise our programming language designed specifically for beginner programmers: START. It will provide coding tutorials as well as a built-in IDE (integrated development environment) with debugger which will allow users to learn about coding more effectively.
 
 ### Outline
 
@@ -42,31 +42,31 @@ As well as this, we wanted to create a project that would allow us to put our le
 
 ### Achievements
 
-> What functions will the project provide? Who will the users be?
+> The web app will provide the user with a comprehensive computer programming learning experience for people who are new to computer programming or have little experience in the subject, utilising our programming language designed specifically for beginner programmers: START. The website will include pages that include guides on how to use the language as well as other programming fundamentals. The site will also include a built-in IDE, which the user will be able to use to complete coding tasks. The IDE will include a debugger as well, as visual guides while debugging which will allow the user to visualise what is happening while their program is running.
 
 ### Justification
 
-> Why/when/where/how will it be useful?
+> The goal behind this web app project is to provide users, who are new to computer programming, a space in which they can get to know the basics of writing and running their own code. Based on our experience from 1st year computer programming, we feel that learning programming languages can be daunting for those with no prior experience. Our web app aims to fill in what we believe to be a large gap in the computer programming learning curve, between over-simplified "building block" style programming such as Scratch and actual programming languages such as Python. With the functionality discussed above, we feel this web app should provide a comprehensive introduction to computer programming for beginners. 
 
 ### Programming language(s)
 
-> List the proposed language(s) to be used.
+> List the proposed language(s) to be used. [TBD]
 
 ### Programming tools / Tech stack
 
-> Describe the compiler, database, web server, etc., and any other software tools you plan to use.
+> Describe the compiler, database, web server, etc., and any other software tools you plan to use. [TBD]
 
 ### Hardware
 
-> Describe any non-standard hardware components which will be required.
+> Describe any non-standard hardware components which will be required. [TBD (Hosting server?)]
 
 ### Learning Challenges
 
-> List the main new things (technologies, languages, tools, etc) that you will have to learn.
+> List the main new things (technologies, languages, tools, etc) that you will have to learn. [TBD (based on new programming tools)]
 
 ### Breakdown of work
 
-> Clearly identify who will undertake which parts of the project.
+> Clearly identify who will undertake which parts of the project. 
 >
 > It must be clear from the explanation of this breakdown of work both that each student is responsible for
 > separate, clearly-defined tasks, and that those responsibilities substantially cover all of the work required
@@ -74,11 +74,18 @@ As well as this, we wanted to create a project that would allow us to put our le
 
 #### Student 1
 
-> *Student 1 should complete this section.*
+* Integration of START programming language into system
+* Design language-sensitive IDE which can support the START langauge
+* Design debugger for IDE 
+* Implement backend using [???]
 
 #### Student 2
 
-> *Student 2 should complete this section.*
+* Designing the Figma mock-ups of the site
+* Implementing the Figma designs using CSS
+* Design programming tutorials
+* Implement frontend using [React?]
+
 
 ## Example
 

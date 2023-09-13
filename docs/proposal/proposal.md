@@ -32,7 +32,7 @@
 
 * Execution Environment: Executing START code right in the web application will be available to users, they will be able to witness the results of their code as they experiment and practice, gaining confidence and skills in real-time.
 
-By implementing these core features it will allow for the best user experience as well as creating an interactive environment to help beginner programmers to learn programming fundamentals.
+> By implementing these core features it will allow for the best user experience as well as creating an interactive environment to help beginner programmers to learn programming fundamentals.
 
 ### Background
 

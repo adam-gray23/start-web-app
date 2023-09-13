@@ -58,7 +58,9 @@ By implementing these core features it will allow for the best user experience a
 
 ### Programming tools / Tech stack
 
-> Describe the compiler, database, web server, etc., and any other software tools you plan to use. [TBD]
+* Tech Stack: Python (Django), NodeJS, JavaScript, HTML, CSS
+* Programming Tools: Visual Studio Code, GitLab, GitHub
+* Other Tools: Figma, Notion, Google Drive
 
 ### Hardware
 
@@ -77,11 +79,16 @@ By implementing these core features it will allow for the best user experience a
 * Design debugger for IDE 
 * Primary implementer of backend using Python (Django), with some support work on frontend also
 * Work on the core code behind the IDE and Debugger
+* Work on the core code behind the learning resources
+* Documentation of the project in all aspects
 
 #### Student 2
 
-* Designing the Figma mock-ups of the site
+* Designing the Figma mock-ups of the site, and the overall design of the site
 * Implementing the Figma designs using CSS, HTML and JavaScript
-* Design programming tutorials
 * Primary implementer of frontend using JavaScript, with some support work on backend also
 * Work on the core code behind the IDE and Debugger
+* Work on the core code behind the learning resources
+* Create user test cases to evaluate the sites usability
+* Carry out user testing and feedback
+* Documentation of the project in all aspects

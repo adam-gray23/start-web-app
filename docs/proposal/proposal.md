@@ -22,7 +22,7 @@
 
 ### Outline
 
-> For this project we plan to create a Web Application using (). This would consist of the following key features:
+> For this project we plan to create a Web Application using Python with Django and NodeJS, as well as CSS, HTML and some other JavaScript to help develop the front end of the application. This would consist of the following key features:
 
 * Language-Sensitive Editor: Our web application features a language-sensitive code editor that understands the unique syntax of START. This editor provides real-time feedback, highlighting code errors and suggesting improvements, helping users grasp the language's intricacies effortlessly.
 
@@ -50,7 +50,11 @@ By implementing these core features it will allow for the best user experience a
 
 ### Programming language(s)
 
-> List the proposed language(s) to be used. [TBD]
+* Python (DJango)
+* JavaScript
+* HTML
+* CSS
+* Some START elements may be used to simply design simple test questions and solutions for the application
 
 ### Programming tools / Tech stack
 
@@ -58,7 +62,7 @@ By implementing these core features it will allow for the best user experience a
 
 ### Hardware
 
-> Describe any non-standard hardware components which will be required. [TBD (Hosting server?)]
+> N/A
 
 ### Learning Challenges
 
@@ -66,23 +70,18 @@ By implementing these core features it will allow for the best user experience a
 
 ### Breakdown of work
 
-> Clearly identify who will undertake which parts of the project. 
->
-> It must be clear from the explanation of this breakdown of work both that each student is responsible for
-> separate, clearly-defined tasks, and that those responsibilities substantially cover all of the work required
-> for the project.
-
 #### Student 1
 
 * Integration of START programming language into system
 * Design language-sensitive IDE which can support the START langauge
 * Design debugger for IDE 
-* Implement backend using [???]
+* Primary implementer of backend using Python (Django), with some support work on frontend also
+* Work on the core code behind the IDE and Debugger
 
 #### Student 2
 
 * Designing the Figma mock-ups of the site
-* Implementing the Figma designs using CSS
+* Implementing the Figma designs using CSS, HTML and JavaScript
 * Design programming tutorials
-* Implement frontend using [React?]
-
+* Primary implementer of frontend using JavaScript, with some support work on backend also
+* Work on the core code behind the IDE and Debugger

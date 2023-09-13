@@ -38,7 +38,7 @@ By implementing these core features it will allow for the best user experience.
 
 > This project idea spawned from our 3rd year project idea to create our own programming language, and given our language is currently only available on GitHub, we wanted to make a more accessible to the average beginner programmer, who may have no previous experience with GitHub. Given this, we wanted to make one place where to user can go to learn and execute their code while using START.
 
-As well as this, we wanted to create a project that would allow us to put our learned experience from INTRA into practice given we both had experience working with small sections of web development. We now want to create our own full web application.
+> As well as this, we wanted to create a project that would allow us to put our learned experience from INTRA into practice given we both had experience working with small sections of web development. We now want to create our own full web application.
 
 ### Achievements
 

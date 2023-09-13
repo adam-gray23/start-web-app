@@ -24,21 +24,21 @@
 
 > For this project we plan to create a Web Application using (). This would consist of the following key features:
 
-* Language-Sensitive Editor: Our web application features a language-sensitive code editor that understands the unique syntax of START. This editor provides real-time feedback, highlighting code errors and suggesting improvements, helping you grasp the language's intricacies effortlessly.
+* Language-Sensitive Editor: Our web application features a language-sensitive code editor that understands the unique syntax of START. This editor provides real-time feedback, highlighting code errors and suggesting improvements, helping users grasp the language's intricacies effortlessly.
 
-* Interactive Learning: Whether you're a complete beginner or have some coding experience, the START Web Application offers a range of learning resources and tutorials tailored to your level. Step-by-step lessons and exercises ensure a smooth learning curve.
+* Interactive Learning: Whether the user is a complete beginner or they have some coding experience, the START Web Application will offer a range of learning resources and tutorials tailored to their level. Step-by-step lessons and exercises ensure a smooth learning curve.
 
-* Debugger: Debugging your code is a breeze with our built-in debugger. Identify and resolve issues in your programs using breakpoints, variable inspection, and error messages that guide you towards efficient problem-solving.
+* Debugger: Debugging user code will be a breeze with a built-in debugger. Identifying and resolving issues in programs using breakpoints, variable inspection, and error messages will guide users towards efficient problem-solving.
 
-* Execution Environment: Execute your START code right in the web application. Witness the results of your code as you experiment and practice, gaining confidence and skills in real-time.
+* Execution Environment: Executing START code right in the web application will be available to users, they will be able to witness the results of their code as they experiment and practice, gaining confidence and skills in real-time.
 
-By implementing these core features it will allow for the best user experience.
+By implementing these core features it will allow for the best user experience as well as creating an interactive environment to help beginner programmers to learn programming fundamentals.
 
 ### Background
 
 > This project idea spawned from our 3rd year project idea to create our own programming language, and given our language is currently only available on GitHub, we wanted to make a more accessible to the average beginner programmer, who may have no previous experience with GitHub. Given this, we wanted to make one place where to user can go to learn and execute their code while using START.
 
-> As well as this, we wanted to create a project that would allow us to put our learned experience from INTRA into practice given we both had experience working with small sections of web development. We now want to create our own full web application.
+> As well as this, we wanted to create a project that would allow us to put our learned experience from INTRA into practice given we both had experience working with small sections of web development. We now want to create our own full web application, creating our own front and back end, to give us the freedom to develop the final product as we disire, and not taylored to any customer/user specifications.
 
 ### Achievements
 
@@ -85,15 +85,4 @@ By implementing these core features it will allow for the best user experience.
 * Implementing the Figma designs using CSS
 * Design programming tutorials
 * Implement frontend using [React?]
-
-
-## Example
-
-> Example: Here's how you can include images in markdown documents...
-
-<!-- Basically, just use HTML! -->
-
-<p align="center">
-  <img src="./res/cat.png" width="300px">
-</p>
 

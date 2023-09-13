@@ -59,7 +59,7 @@ By implementing these core features it will allow for the best user experience a
 ### Programming tools / Tech stack
 
 * Tech Stack: Python (Django), NodeJS, JavaScript, HTML, CSS
-* Programming Tools: Visual Studio Code, GitLab, GitHub
+* Programming Tools: Visual Studio Code, GitLab, GitHub, Docker
 * Other Tools: Figma, Notion, Google Drive
 
 ### Hardware
@@ -68,7 +68,16 @@ By implementing these core features it will allow for the best user experience a
 
 ### Learning Challenges
 
-> List the main new things (technologies, languages, tools, etc) that you will have to learn. [TBD (based on new programming tools)]
+* Given our limited experience with Django web development from second year, and the small taste for web development we gained during our time in INTRA, we believe our biggest challenge now to be creating a fully functional web application with no guidence from either a lecturer or team lead, as well as the project not being driven by user or stakeholder requirements, but rather the requirements we feel the users will need to be able to learn programming fundamentals.
+
+* Another challenge we will face, is the implementation of not just a language-sensitive IDE, but also a debugger, which will be a new challenge for us both, given we have no experience working with either in the past. It will be key that before we even write a single line of code, we do adequate research into how we can implement these features into our web application, looking at all possible options and choosing the best one for our project. 
+
+* Once we have an IDE, we would need to implement a way for the user to execute their code, which will be another challenge for us, given we have no experience with this. We will need to research how we can implement this feature, possibly some form of contained environment, which will allow the user to execute their code, and see the results of their code in real time. If this is indeed the case Docker may be a good option for us to use, but given we have extremely limited experience with Docker, this will be another challenge for us to overcome, but will be key to the success of our project.
+
+* The learning environment, while not being as inherently challenging as other features, will bring its own challenges, as we will need to balance how **we** as developers want the application to look, versus what the **user will want**. With enough time we would like to get user feedback and be able to make the necessary changes to the learning environment to make it as user friendly as possible, but given the time constraints of the project, this may not be possible, but will be something we will strive to achieve, again putting our time management skills to the test, in the most challenging way possible, and this could ultimately be the deciding factor in the success of our project.
+
+* Finally this project will allow both of us to combine our love of low level programming from last years project, and bring it to the web, which will be a challenge in itself, given we have limited web development experience, but will be a challenge we are both looking forward to, and will be a great learning experience for us both for the future.
+
 
 ### Breakdown of work
 

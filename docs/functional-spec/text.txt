@@ -103,6 +103,17 @@ This will be implemented using primarily JavaScript, to allow us to quickly and 
 
 Lists general constraints placed upon the design team, including speed requirements, industry protocols, hardware platforms, and so forth.
 
+**Time Constraints**
+Given the size and scope of the project it will be extremely important to keep track of our time at all stages of development to prevent us running
+out of time towards the end of the project. We have decided to use the agile methodology to develop our project. This will allow us to develop the project
+in a set of sprints, and will allow us to develop the project in a more efficient way. This will also allow us to develop the project in a more flexible way,
+making us less limited to a set of requirements, and will allow us to change the project as we go along, to make it more user oriented.
+
+**Platform Constraints**
+Much like our third year project, this project will be developed soley on the Windows operating system. This is due to the fact that we would prefare to develop on the same operating system as the majority of our user's will be using when they use our web application. This will allow us to test the application on the same operating system as the majority of our user's, and will allow us to fix any issues that may arise on this operating system. However, this means we will have limited testing on UNIX based operating system's such as Linux distributions and MacOS. This may cause some issues with the application on these operating systems, but we will try to fix any issues that may arise on these operating systems.
+
+[OTHER CONSTRAINTS]
+
 ## **3. Functional Requirements**
 
 This section lists the functional requirements in ranked order. Functional requirements describes the possible effects of a software system, in other words, *what* the system must accomplish. Other kinds of requirements (such as interface requirements, performance requirements, or reliability requirements) describe *how* the system accomplishes its functional requirements.

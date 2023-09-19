@@ -34,6 +34,26 @@ Define and technical terms used in this document. *Only include those with which
 
 Describes the general functionality of the system / product.
 
+Our web application will be a web based version of our programming language START, which is a novice friendly programming language. It will still
+be targetted to novice programmers, and will be a way for them to learn the language, and programming in general, in a more accessible way, as many
+people do not know about GitHub, where our language is currently available.
+
+- Our app will be seen on the web, and will be styled using HTML, CSS and JavaScript.
+
+- The user's of the site will be able to read about the languages features, using the documentation we have already written, and will be able to watch
+informative videos about the language, and programming concepts. This will be a good way to "dip their toes" into programming, and see if it is something
+that takes their interest before writing more complex code. We will implement these pages using HTML, CSS and JavaScript, while storing the files and videos
+needed in the back end database.
+
+- The user will then be able to go the the IDE, and write their own code, and run it to see the output. This will be a good way for them to test the concepts
+learned previously from the videos and documentation. This IDE will be a mostly JavaScript based IDE, with the code being run in a contained environment using
+Docker. We will take th user's code and pass it to the container where it will be run, the output will be collected, and then sent back to the user for them
+to see.
+
+- The user will also have access to a debugger that they can use to find errors in their code. This simple debugger will be animated to show the user where
+they have made an error. This will be a good way for the user to learn how to debug their code, and will be a good way for them to learn how to find errors
+themselves in the future. [HOW TO DO DEBUGGER???]
+
 **2.2 User Characteristics and Objectives**
 
 Describes the features of the user community, including their expected expertise with software systems and the application domain. Explain the objectives and requirements for the system from the user's perspective. It may include a "wish list" of desirable characteristics, along with more feasible solutions that are in line with the business objectives.

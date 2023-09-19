@@ -86,15 +86,17 @@ contains the videos, and from there they selected a video to watch, from here th
 The user has entered the site and has decided they want to learn about a certain feature of the language, so they naviagte to the page that has the language
 documents on it. From here they can select the feature they want to learn about, from here the document will open for the user to read.
 
-**Scenario 4: User runs their code**
+**Scenario 3: User runs their code**
 Once the user has watched some videos and read some documentation, they decide they want to try writing some code themselves. They navigate to the IDE page
 and select a problem they want to try to solve, or even just open the IDE to write some of their own code with no specified problem. From here they will then
 see the IDE and will be able to write their code seamlessly to solve the problem they have selected. Once the code is written they will be able to run the code
 directly from the web application, this will then pack up the user code and send it to a docker container to be executed, and the output will then also be packed
 and returned to the web application for the user to see.
 
-**Scenario 5: User debugs their code**
-
+**Scenario 4: User debugs their code**
+If the user has written some code that has some errors in it, they will realise that their code is not working as expected. They will then be able to use the
+built in START debugger to find the errors. This will be a simple debugger that will be animated to show the user where they have made an error in their code.
+This will be implemented using primarily JavaScript, to allow us to quickly and easily animate the debugger.
 
 
 **2.4 Constraints**

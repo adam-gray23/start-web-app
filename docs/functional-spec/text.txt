@@ -47,7 +47,7 @@ needed in the back end database.
 
 - The user will then be able to go the the IDE, and write their own code, and run it to see the output. This will be a good way for them to test the concepts
 learned previously from the videos and documentation. This IDE will be a mostly JavaScript based IDE, with the code being run in a contained environment using
-Docker. We will take th user's code and pass it to the container where it will be run, the output will be collected, and then sent back to the user for them
+Docker. We will take the user's code and pass it to the container where it will be run, the output will be collected, and then sent back to the user for them
 to see.
 
 - The user will also have access to a debugger that they can use to find errors in their code. This simple debugger will be animated to show the user where

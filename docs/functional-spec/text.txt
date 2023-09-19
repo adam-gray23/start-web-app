@@ -58,6 +58,18 @@ themselves in the future. [HOW TO DO DEBUGGER???]
 
 Describes the features of the user community, including their expected expertise with software systems and the application domain. Explain the objectives and requirements for the system from the user's perspective. It may include a "wish list" of desirable characteristics, along with more feasible solutions that are in line with the business objectives.
 
+Our project is still targetted at beginner programmers, and as such will be designed to be as accessible as possible. We will be using a simple design for all elements of
+the site to make programming "less intimidating" for new programmers. After our research into beginner programmers and programming languages earlier this year, as well as
+the data we collected from testing our language with new programmers, we have came up with a key list of characteristics that our project must follow, these are:
+
+- To make an environment that is not only easy to navigate but easy to use, to make the user feel more comfortable with programming. This will be done to allow
+for the assumption that some users may have very little experience with computers, and as such, may not be able to navigate a more complex environment.
+- To give the user one space to learn about, write and run their code, to cut down any frustration that may come from learning programming on their own.
+- To create an easy to use debugger to help the user understand how to look for errors in their code, and to help them learn how to debug their code themselves.
+- To provide useful resources for the user to learn about programming concepts in START, and programming in general, to help them learn how to program, as well
+as cutting down time spent needing to do outside reasearch about topics.
+
+
 **2.3 Operational Scenarios**
 
 This section should describe a set of scenarios that illustrate, from the user's perspective, what will be experienced when utilizing the system under various situations.

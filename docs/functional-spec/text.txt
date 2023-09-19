@@ -78,6 +78,25 @@ In the article Inquiry-Based Requirements Analysis (IEEE Software, March 1994), 
 
 In the broad sense, a scenario is simply a proposed specific use of the system. More specifically, a scenario is a description of one or more end-to-end transactions involving the required system and its environment. Scenarios can be documented in different ways, depending up on the level of detail needed. The simplest form is a use case, which consists merely of a short description with a number attached. More detailed forms are called scripts.
 
+**Scenario 1: User watches some videos**
+The user has just entered the site and has decided to watch some videos to introduce themselves to the world of programming. They naviagte to the page that
+contains the videos, and from there they selected a video to watch, from here the video opens and the video is played for the user.
+
+**Scenario 2: User reads some documentation**
+The user has entered the site and has decided they want to learn about a certain feature of the language, so they naviagte to the page that has the language
+documents on it. From here they can select the feature they want to learn about, from here the document will open for the user to read.
+
+**Scenario 4: User runs their code**
+Once the user has watched some videos and read some documentation, they decide they want to try writing some code themselves. They navigate to the IDE page
+and select a problem they want to try to solve, or even just open the IDE to write some of their own code with no specified problem. From here they will then
+see the IDE and will be able to write their code seamlessly to solve the problem they have selected. Once the code is written they will be able to run the code
+directly from the web application, this will then pack up the user code and send it to a docker container to be executed, and the output will then also be packed
+and returned to the web application for the user to see.
+
+**Scenario 5: User debugs their code**
+
+
+
 **2.4 Constraints**
 
 Lists general constraints placed upon the design team, including speed requirements, industry protocols, hardware platforms, and so forth.

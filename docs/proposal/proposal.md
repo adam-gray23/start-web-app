@@ -30,12 +30,14 @@
 
 > By implementing these core features it will allow for the best user experience as well as creating an interactive environment to help beginner programmers to learn programming fundamentals.
 
-##### Integrated Development Environment
+#### Integrated Development Environment
 
-<p align="center">
-  <img src="./res/ide_mockup_v1.png" width="300px">
-  Initial mockup of IDE design
-</p>
+<div style="text-align:center">
+  <img src="./res/ide_mockup_v1.png" width="500px" height="300px">
+  <br><br>
+  Image: Initial mockup of IDE design
+  <br><br>
+</div>
 
 > One of the core elements of our web app will be the IDE which will be able to execute our START language. The main focus with the IDE is to make coding as straight-forward, and clear as possible. The IDE will be language-sensitive; this means the code within the IDE will be highlighted in differing colours depending on the token's value. This should allow users to clearly identify differing words based on their roles. The IDE will also be able to highlight errors in real-time and suggest improvements. This should help the users grasp the language's intricacies effortlessly.
 

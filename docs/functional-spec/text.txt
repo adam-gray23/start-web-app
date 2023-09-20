@@ -58,6 +58,18 @@ themselves in the future. [HOW TO DO DEBUGGER???]
 
 Describes the features of the user community, including their expected expertise with software systems and the application domain. Explain the objectives and requirements for the system from the user's perspective. It may include a "wish list" of desirable characteristics, along with more feasible solutions that are in line with the business objectives.
 
+Our project is still targetted at beginner programmers, and as such will be designed to be as accessible as possible. We will be using a simple design for all elements of
+the site to make programming "less intimidating" for new programmers. After our research into beginner programmers and programming languages earlier this year, as well as
+the data we collected from testing our language with new programmers, we have came up with a key list of characteristics that our project must follow, these are:
+
+- To make an environment that is not only easy to navigate but easy to use, to make the user feel more comfortable with programming. This will be done to allow
+for the assumption that some users may have very little experience with computers, and as such, may not be able to navigate a more complex environment.
+- To give the user one space to learn about, write and run their code, to cut down any frustration that may come from learning programming on their own.
+- To create an easy to use debugger to help the user understand how to look for errors in their code, and to help them learn how to debug their code themselves.
+- To provide useful resources for the user to learn about programming concepts in START, and programming in general, to help them learn how to program, as well
+as cutting down time spent needing to do outside reasearch about topics.
+
+
 **2.3 Operational Scenarios**
 
 This section should describe a set of scenarios that illustrate, from the user's perspective, what will be experienced when utilizing the system under various situations.
@@ -66,9 +78,41 @@ In the article Inquiry-Based Requirements Analysis (IEEE Software, March 1994), 
 
 In the broad sense, a scenario is simply a proposed specific use of the system. More specifically, a scenario is a description of one or more end-to-end transactions involving the required system and its environment. Scenarios can be documented in different ways, depending up on the level of detail needed. The simplest form is a use case, which consists merely of a short description with a number attached. More detailed forms are called scripts.
 
+**Scenario 1: User watches some videos**
+The user has just entered the site and has decided to watch some videos to introduce themselves to the world of programming. They naviagte to the page that
+contains the videos, and from there they selected a video to watch, from here the video opens and the video is played for the user.
+
+**Scenario 2: User reads some documentation**
+The user has entered the site and has decided they want to learn about a certain feature of the language, so they naviagte to the page that has the language
+documents on it. From here they can select the feature they want to learn about, from here the document will open for the user to read.
+
+**Scenario 3: User runs their code**
+Once the user has watched some videos and read some documentation, they decide they want to try writing some code themselves. They navigate to the IDE page
+and select a problem they want to try to solve, or even just open the IDE to write some of their own code with no specified problem. From here they will then
+see the IDE and will be able to write their code seamlessly to solve the problem they have selected. Once the code is written they will be able to run the code
+directly from the web application, this will then pack up the user code and send it to a docker container to be executed, and the output will then also be packed
+and returned to the web application for the user to see.
+
+**Scenario 4: User debugs their code**
+If the user has written some code that has some errors in it, they will realise that their code is not working as expected. They will then be able to use the
+built in START debugger to find the errors. This will be a simple debugger that will be animated to show the user where they have made an error in their code.
+This will be implemented using primarily JavaScript, to allow us to quickly and easily animate the debugger.
+
+
 **2.4 Constraints**
 
 Lists general constraints placed upon the design team, including speed requirements, industry protocols, hardware platforms, and so forth.
+
+**Time Constraints**
+Given the size and scope of the project it will be extremely important to keep track of our time at all stages of development to prevent us running
+out of time towards the end of the project. We have decided to use the agile methodology to develop our project. This will allow us to develop the project
+in a set of sprints, and will allow us to develop the project in a more efficient way. This will also allow us to develop the project in a more flexible way,
+making us less limited to a set of requirements, and will allow us to change the project as we go along, to make it more user oriented.
+
+**Platform Constraints**
+Much like our third year project, this project will be developed soley on the Windows operating system. This is due to the fact that we would prefare to develop on the same operating system as the majority of our user's will be using when they use our web application. This will allow us to test the application on the same operating system as the majority of our user's, and will allow us to fix any issues that may arise on this operating system. However, this means we will have limited testing on UNIX based operating system's such as Linux distributions and MacOS. This may cause some issues with the application on these operating systems, but we will try to fix any issues that may arise on these operating systems.
+
+[OTHER CONSTRAINTS]
 
 ## **3. Functional Requirements**
 

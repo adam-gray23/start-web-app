@@ -24,15 +24,25 @@
 
 > For this project we plan to create a Web Application using Python with Django and NodeJS, as well as CSS, HTML and some other JavaScript to help develop the front end of the application. This would consist of the following key features:
 
-* Language-Sensitive Editor: Our web application features a language-sensitive code editor that understands the unique syntax of START. This editor provides real-time feedback, highlighting code errors and suggesting improvements, helping users grasp the language's intricacies effortlessly.
-
 * Interactive Learning: Whether the user is a complete beginner or they have some coding experience, the START Web Application will offer a range of learning resources and tutorials tailored to their level. Step-by-step lessons and exercises ensure a smooth learning curve.
 
-* Debugger: Debugging user code will be a breeze with a built-in debugger. Identifying and resolving issues in programs using breakpoints, variable inspection, and error messages will guide users towards efficient problem-solving.
-
-* Execution Environment: Executing START code right in the web application will be available to users, they will be able to witness the results of their code as they experiment and practice, gaining confidence and skills in real-time.
+* Execution Environment: Executing START code right in the web application will be available to users, they will be able to witness the results of their code as they experiment and practice, gaining confidence and skills in real-time. More details on the integrated development environment can be found below.
 
 > By implementing these core features it will allow for the best user experience as well as creating an interactive environment to help beginner programmers to learn programming fundamentals.
+
+##### Integrated Development Environment
+
+<p align="center">
+  <img src="./res/ide_mockup_v1.png" width="300px">
+  Initial mockup of IDE design
+</p>
+
+> One of the core elements of our web app will be the IDE which will be able to execute our START language. The main focus with the IDE is to make coding as straight-forward, and clear as possible. The IDE will be language-sensitive; this means the code within the IDE will be highlighted in differing colours depending on the token's value. This should allow users to clearly identify differing words based on their roles. The IDE will also be able to highlight errors in real-time and suggest improvements. This should help the users grasp the language's intricacies effortlessly.
+
+> The IDE will have a debugging option, which will allow code to execute slowly line by line. To ensure our debugger is friendly toward new users, the interface for debugging will be as limited and labelled as possible. Generally, keeping the interface of the IDE as bare bones as possible will ensure that new users are not overwhelmed by a clustered UI. The options for debugging will be kept to minimum. As seen above, ideally there will be two options; one to activate debugging mode and another to step through debugging to the next line. This will allow the user to see how the code is executed.
+
+> Another feature included in the debugging option will be real-time variable inspection. This will be a window seperate to the IDE which will display information about the code being executed at its current stage of debugging. The information available will be current variable values, (recursion depth???), etc. This featured, paired with debugging mode, should allow the user to clearly see what is happening in the program while the code is executing.
+
 
 ### Background
 

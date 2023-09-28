@@ -43,7 +43,7 @@
 
 > The IDE will have a debugging option, which will allow code to execute slowly line by line. To ensure our debugger is friendly toward new users, the interface for debugging will be as limited and labelled as possible. Generally, keeping the interface of the IDE as bare bones as possible will ensure that new users are not overwhelmed by a clustered UI. The options for debugging will be kept to minimum. As seen above, ideally there will be two options; one to activate debugging mode and another to step through debugging to the next line. This will allow the user to see how the code is executed.
 
-> Another feature included in the debugging option will be real-time variable inspection. This will be a window seperate to the IDE which will display information about the code being executed at its current stage of debugging. The information available will be current variable values, (recursion depth???), etc. This featured, paired with debugging mode, should allow the user to clearly see what is happening in the program while the code is executing.
+> Another feature included in the debugging option will be real-time variable inspection. This will be a window seperate to the IDE which will display information about the code being executed at its current stage of debugging. The information available will be current variable values, line number, etc. This featured, paired with debugging mode, should allow the user to clearly see what is happening in the program while the code is executing.
 
 
 ### Background

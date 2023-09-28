@@ -24,6 +24,10 @@ as a potential seller to institutions and schools, but no such plan is in place 
 
 - **Glossary**
 
+Django - A Python based web framework - https://www.djangoproject.com/
+Docker - A container based virtualization platform - https://www.docker.com/
+
+
 Define and technical terms used in this document. *Only include those with which the reader may not be familiar.*
 
 [UPDATE AT THE END]

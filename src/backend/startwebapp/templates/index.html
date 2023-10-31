@@ -3,15 +3,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>ACE in Action</title>
+<title>Home Page</title>
 <style type="text/css" media="screen">
+    body {
+        background-color: grey;
+    }
     #editor { 
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
+        width: 50%;
     }
+    #getCode{
+        position: absolute;
+        top: 450px;
+    }
+
+    /* Todo: Move this out of this file */
+
 </style>
 </head>
 <body>
@@ -20,12 +31,60 @@
     var x = "All this is syntax highlighted";
     return x;
 }</div>
+
+<div>
+    <button id="getCode">Run Code</button>
+</div>
     
 <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/javascript");
+    var editor = ace.edit("editor", {
+        theme: "ace/theme/tomorrow_night_eighties",
+        mode: "ace/mode/javascript",
+        minLines: 30,
+        maxLines: 30,
+        wrap: true,
+        autoScrollEditorIntoView: true
+    });
+
+    (function () {
+        var textFile = null,
+            makeTextFile = function (text) {
+                var data = new Blob([text], {
+                    type: 'text/plain'
+                });
+
+                // If we are replacing a previously generated file we need to
+                // manually revoke the object URL to avoid memory leaks.
+                if (textFile !== null) {
+                    window.URL.revokeObjectURL(textFile);
+                }
+
+                textFile = window.URL.createObjectURL(data);
+
+                return textFile;
+            };
+
+        var commFunc = function () {         
+                var dummy = document.getElementsByClassName("ace_content")[0].innerText;
+                var link = document.createElement("a");
+                link.href = makeTextFile(dummy);
+                link.download = "sample.txt"
+                link.click();
+                console.log("Downloaded the sample.txt file");
+            };
+
+        editor.onload = function () {
+            setTimeout(commFunc, 1000); //Adjust the time required to load
+            //setInterval(commFunc, 1000);
+        };  
+
+        //Click the button when the page inside the iframe is loaded
+        getCode.addEventListener('click', commFunc); 
+    })();
+
+    /* Todo: Move this out of this file */
+
 </script>
 </body>
 </html>

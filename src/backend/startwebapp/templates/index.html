@@ -16,9 +16,17 @@
         left: 0;
         width: 50%;
     }
-    #getCode{
+    #result {
         position: absolute;
-        top: 450px;
+        top: 60%;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 50%;
+    }
+    #getCode {
+        position: absolute;
+        top: 90%;
     }
 
     /* Todo: Move this out of this file */
@@ -32,6 +40,8 @@
     return x;
 }</div>
 
+<div id="result"></div>
+
 <div>
     <button id="getCode">Run Code</button>
 </div>
@@ -43,6 +53,15 @@
         mode: "ace/mode/javascript",
         minLines: 30,
         maxLines: 30,
+        wrap: true,
+        autoScrollEditorIntoView: true
+    });
+
+    var result = ace.edit("result", {
+        theme: "ace/theme/tomorrow_night_eighties",
+        mode: "ace/mode/javascript",
+        minLines: 5,
+        maxLines: 15,
         wrap: true,
         autoScrollEditorIntoView: true
     });

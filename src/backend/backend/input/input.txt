@@ -1,1 +1,1 @@
-write ("hello world") nl
+write ("hello world blah blah") nl

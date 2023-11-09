@@ -10,7 +10,7 @@ docker build -t start-docker-image . > nul
 @REM run docker image and wait for it to finish
 docker run --name start start-docker-image
 @REM copy docker log to output.txt
-docker logs start > output.txt
+docker logs start > C:\\Users\\02nke\\dcu\\yr4\\4yp\\2024-ca400-kellyn88-graya27\\src\\backend\\backend\\input\\output.txt
 @REM remove docker container silently
 docker rm start > nul
 

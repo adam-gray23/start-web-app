@@ -1,1 +1,2 @@
-write (blah) nl
+write ("hello world") nl
+write ("how are you?") nl

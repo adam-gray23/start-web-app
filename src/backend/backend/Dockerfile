@@ -5,7 +5,7 @@ FROM openjdk:19-jdk-alpine
 WORKDIR /app
 
 # Copy only necessary files
-COPY start-files/start-complete.jar input/input.txt /app/
+COPY start-files/start-complete.jar /app/
 
 # Specify the entry point
-ENTRYPOINT ["java", "-jar", "start-complete.jar", "input.txt"]
+ENTRYPOINT ["java", "-jar", "start-complete.jar"]

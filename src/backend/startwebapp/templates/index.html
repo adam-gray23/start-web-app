@@ -42,11 +42,9 @@
 
 {% comment %} <div id="result"></div>
 
-<div> {% endcomment %}
-    <form method="post" action="{% url 'run-shell-script' %}">
-        {% csrf_token %}
-        <button id="getCode">Run Code</button>
-    </form>
+<div>
+    {% csrf_token %}
+    <button id="getCode">Run Code</button>
 </div>
     
 <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
@@ -70,31 +68,48 @@
     });
 
     (function () {
-        var textFile = null,
-            makeTextFile = function (text) {
-                var data = new Blob([text], {
-                    type: 'text/plain'
-                });
 
-                // If we are replacing a previously generated file we need to
-                // manually revoke the object URL to avoid memory leaks.
-                if (textFile !== null) {
-                    window.URL.revokeObjectURL(textFile);
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
                 }
+            }
+            return cookieValue;
+        }
 
-                textFile = window.URL.createObjectURL(data);
+        var commFunc = function () {         
+            var dummy = document.getElementsByClassName("ace_content")[0].innerText;
+            var formData = new FormData();
+            formData.append("text_content", dummy);
 
-                return textFile;
+            var xhr = new XMLHttpRequest();
+
+            var url = "/upload-code/";
+
+            xhr.open("POST", url, true);
+
+            // Set the appropriate headers if needed
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+
+            // Define a callback function to handle the response from the server
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log("Text content sent to the server successfully");
+                } else {
+                    console.error("Error sending text content to the server");
+                }
             };
 
-        // var commFunc = function () {         
-        //         var dummy = document.getElementsByClassName("ace_content")[0].innerText;
-        //         var link = document.createElement("a");
-        //         link.href = makeTextFile(dummy);
-        //         link.download = "sample.txt"
-        //         link.click();
-        //         console.log("Downloaded the sample.txt file");
-        //     };
+            // Send the FormData with the text content to the server
+            xhr.send(formData);
+        };
 
         editor.onload = function () {
             setTimeout(commFunc, 1000); //Adjust the time required to load
@@ -102,7 +117,7 @@
         };  
 
         //Click the button when the page inside the iframe is loaded
-        //getCode.addEventListener('click', commFunc); 
+        getCode.addEventListener('click', commFunc); 
     })();
 
     /* Todo: Move this out of this file */

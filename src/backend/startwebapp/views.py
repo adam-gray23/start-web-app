@@ -9,7 +9,7 @@ def home_view(request):
 def run_shell_script(request):
     if request.method == 'POST':
         # Replace 'path_to_script' with the actual path to your shell script
-        script_path = "C:/Users/02nke/dcu/yr4/4yp/2024-ca400-kellyn88-graya27/src/backend/backend/run-docker.bat"
+        script_path = "C:\\Users\\peter\\Documents\\Work\\DCU\\case4\\project\\2024-ca400-kellyn88-graya27\\src\\backend\\backend\\run-docker.bat"
 
         # Run the shell script using subprocess
         subprocess.call([script_path])

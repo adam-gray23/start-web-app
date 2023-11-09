@@ -3,14 +3,14 @@
 Days              : 0
 Hours             : 0
 Minutes           : 0
-Seconds           : 5
-Milliseconds      : 850
-Ticks             : 58500000
-TotalDays         : 6.77083333333333E-05
-TotalHours        : 0.001625
-TotalMinutes      : 0.0975
-TotalSeconds      : 5.85
-TotalMilliseconds : 5850
+Seconds           : 2
+Milliseconds      : 170
+Ticks             : 21700000
+TotalDays         : 2.51157407407407E-05
+TotalHours        : 0.000602777777777778
+TotalMinutes      : 0.0361666666666667
+TotalSeconds      : 2.17
+TotalMilliseconds : 2170
 
 
 

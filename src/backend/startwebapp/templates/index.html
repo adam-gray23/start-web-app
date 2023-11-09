@@ -40,9 +40,9 @@
     return x;
 }</div>
 
-<div id="result"></div>
+{% comment %} <div id="result"></div>
 
-<div>
+<div> {% endcomment %}
     <form method="post" action="{% url 'run-shell-script' %}">
         {% csrf_token %}
         <button id="getCode">Run Code</button>

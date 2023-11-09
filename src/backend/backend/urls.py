@@ -21,4 +21,5 @@ from startwebapp import views
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('admin/', admin.site.urls),
+    path('run-script/', views.run_shell_script, name='run-shell-script'),
 ]

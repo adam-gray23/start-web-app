@@ -33,7 +33,10 @@
 }</div>
 
 <div>
-    <button id="getCode">Run Code</button>
+    <form method="post" action="{% url 'run-shell-script' %}">
+        {% csrf_token %}
+        <button id="getCode">Run Code</button>
+    </form>
 </div>
     
 <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
@@ -65,14 +68,14 @@
                 return textFile;
             };
 
-        var commFunc = function () {         
-                var dummy = document.getElementsByClassName("ace_content")[0].innerText;
-                var link = document.createElement("a");
-                link.href = makeTextFile(dummy);
-                link.download = "sample.txt"
-                link.click();
-                console.log("Downloaded the sample.txt file");
-            };
+        // var commFunc = function () {         
+        //         var dummy = document.getElementsByClassName("ace_content")[0].innerText;
+        //         var link = document.createElement("a");
+        //         link.href = makeTextFile(dummy);
+        //         link.download = "sample.txt"
+        //         link.click();
+        //         console.log("Downloaded the sample.txt file");
+        //     };
 
         editor.onload = function () {
             setTimeout(commFunc, 1000); //Adjust the time required to load
@@ -80,7 +83,7 @@
         };  
 
         //Click the button when the page inside the iframe is loaded
-        getCode.addEventListener('click', commFunc); 
+        //getCode.addEventListener('click', commFunc); 
     })();
 
     /* Todo: Move this out of this file */

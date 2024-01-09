@@ -16,7 +16,8 @@ docker-build:       # This job runs in the build stage, which runs first.
     DOCKER_TLS_CERTDIR: ""
   script:
     - cd src/backend/backend
-    - export DOCKER_HOST=tcp://localhost:2375
+    - export DOCKER_HOST=$DOCKER_HOST
+    - service docker start
     - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .
     
 

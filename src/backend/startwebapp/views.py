@@ -56,12 +56,11 @@ def communicate_with_docker(request):
 
     # Make a request to the Docker container
     try:
-        with open('C:/Users/02nke/dcu/yr4/4yp/2024-ca400-kellyn88-graya27/src/backend/backend/input/input.txt', 'rb') as file:
-            files = {'file': file}
+        files = {'file': 'hello'}
         response = requests.post(docker_url, files=files)
         response_data = response.json()  # Assuming the response is in JSON format
         # Process the data from the Docker container
-        print( JsonResponse({'result': response_data}))
+        return JsonResponse({'result': response_data})
     except requests.RequestException as e:
         # Handle request error
-        print( JsonResponse({'error': str(e)}, status=500))
+        return JsonResponse({'error': str(e)}, status=500)

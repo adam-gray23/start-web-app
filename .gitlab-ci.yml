@@ -6,7 +6,10 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Creating docker image..."
-    - sh "docker build --no-cache -t start-docker-image ."
+    # cd into the directory where the Dockerfile is.
+    - cd src/backend/backend
+    # Build the Docker image.
+    - docker build -t test .
     - echo "Docker image created."
 
 unit-test-job:   # This job runs in the test stage.

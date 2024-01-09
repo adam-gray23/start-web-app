@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'test'
+    return 'flask server running...'
 
 @app.route('/upload', methods=['POST'])
 def upload_file():

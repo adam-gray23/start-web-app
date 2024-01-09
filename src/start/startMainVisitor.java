@@ -15,8 +15,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         // Iterate through each line
         for (int i = 0; ctx.line(i) != null; i++) {
             String lineText = ctx.line(i).getText();
-            if (!lineText.equals("nl")) {
-                System.out.println(lineText);
+            if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
+                System.out.println(lineText); //REMOVE LATER
                 // Visit the line
                 visit(ctx.line(i));
                 // Wait for user input before executing the next line

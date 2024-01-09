@@ -1020,6 +1020,29 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 return null;
 
+            case "If_statementContext":
+                for (int i = 0; i < ctx.line().size(); i++) {
+                    //visit the line
+                    Object val = visit(ctx.line(i));
+                    //if the current line equals nl, continue, else wait for input
+                    if (ctx.line(i).getText().equals("nl")){
+                        continue;
+                    }
+                    else {
+                        //check if we are at the last line, if so no wait, else wait for user input
+                        if (i == ctx.line().size() - 1){
+                            if (val != null){
+                                return val;
+                            }
+                        }
+                        else {
+                            System.out.println("BLOCK: Press Enter to continue...");
+                            scanner.nextLine();
+                        }
+                    }
+                }
+                return null;
+
             default:
                 break;
         }

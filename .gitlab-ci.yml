@@ -27,6 +27,7 @@ django-build:
   image: python:3.11.5
   before_script:
     - python -m pip install Django
+    - pip install requests
   script:
     - cd src/backend
     - echo "Starting server..."

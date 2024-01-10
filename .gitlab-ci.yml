@@ -4,6 +4,9 @@ stages:
 
 docker-build:
   stage: build
+  only:
+  - master
+  - dev
   image: docker
   services:
     - docker:dind
@@ -27,6 +30,9 @@ docker-build:
     
 django-build:
   stage: test
+  only:
+  - master
+  - dev
   image: python:3.11
   before_script:
     - python -m pip install Django
@@ -42,4 +48,3 @@ django-build:
     - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess
     - Stop-Process -ID $process.Id -Force
     - echo "Server stopped."
-  

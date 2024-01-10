@@ -1,0 +1,15 @@
+*.txt !backend/backend/input/input.txt !backend/backend/input/output.txt
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+*.gitkeep
+*.log
+*.class
+*.interp
+*.tokens
+src/start/.antlr/
+
+# IDE - VSCode
+.vscode

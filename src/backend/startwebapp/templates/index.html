@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Home Page</title>
+<style type="text/css" media="screen">
+    body {
+        background-color: grey;
+    }
+    #editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 50%;
+    }
+    #result {
+        position: absolute;
+        top: 60%;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 50%;
+    }
+    #getCode {
+        position: absolute;
+        top: 90%;
+    }
+
+    /* Todo: Move this out of this file */
+
+</style>
+</head>
+<body>
+
+<div id="editor">function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}</div>
+
+<div id="result"></div>
+
+<div>
+    {% csrf_token %}
+    <button id="getCode">Run Code</button>
+</div>
+    
+<script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor", {
+        theme: "ace/theme/tomorrow_night_eighties",
+        mode: "ace/mode/javascript",
+        minLines: 30,
+        maxLines: 30,
+        wrap: true,
+        autoScrollEditorIntoView: true
+    });
+
+    var result = ace.edit("result", {
+        theme: "ace/theme/tomorrow_night_eighties",
+        mode: "ace/mode/javascript",
+        minLines: 5,
+        maxLines: 15,
+        wrap: true,
+        autoScrollEditorIntoView: true
+    });
+
+    (function () {
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var commFunc = function () {         
+            var dummy = document.getElementsByClassName("ace_content")[0].innerText;
+            var formData = new FormData();
+            formData.append("text_content", dummy);
+
+            var xhr = new XMLHttpRequest();
+
+            var url = "/upload-code/";
+
+            xhr.open("POST", url, true);
+
+            // Set the appropriate headers if needed
+            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+
+            // Define a callback function to handle the response from the server
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log("Text content sent to the server successfully");
+                } else {
+                    console.error("Error sending text content to the server");
+                }
+            };
+
+            // Send the FormData with the text content to the server
+            xhr.send(formData);
+        };
+
+        editor.onload = function () {
+            setTimeout(commFunc, 1000); //Adjust the time required to load
+            //setInterval(commFunc, 1000);
+        };  
+
+        //Click the button when the page inside the iframe is loaded
+        getCode.addEventListener('click', commFunc); 
+    })();
+
+    /* Todo: Move this out of this file */
+
+</script>
+</body>
+</html>

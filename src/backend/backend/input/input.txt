@@ -1,0 +1,2 @@
+write ("hello world") nl
+write ("how are you?") nl

@@ -20,6 +20,10 @@ docker-build:
     - echo "Attempting to run docker image..."
     - docker run -d -p 80:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
     - echo "Docker image running."
+    # for testing purposes
+    - sleep 5
+    - docker stop $(docker ps -q)
+    # ####################
     
 django-build:
   stage: test

@@ -30,8 +30,12 @@ django-build:
     - cd src/backend
     - echo "Starting server..."
     - Start-Process python -ArgumentList "manage.py runserver 8000" -NoNewWindow
+    - sleep 20
   script:
     - echo "Server started. Init test..."
     - python manage.py test
     - echo "Test finished."
+    - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess
+    - Stop-Process -ID $process.Id -Force
+    - echo "Server stopped."
   

@@ -20,13 +20,11 @@ docker-build:       # This job runs in the build stage, which runs first.
     - echo "Attempting to run docker image..."
     - docker run -d -p 80:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
     - echo "Docker image running."
-    - docker rm -f ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+    - docker system prune
     
-    #- docker stop ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}        # For debugging purpose
-
 django-build:
   stage: test
-  image: python:3.11.5
+  image: python:3.6
   before_script:
     - python -m pip install Django
     - pip install requests

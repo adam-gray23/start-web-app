@@ -12,11 +12,11 @@ docker-build:       # This job runs in the build stage, which runs first.
     DOCKER_IMAGE_TAG: "latest"
     DOCKER_TLS_CERTDIR: "/certs"
   before_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
   script:
     - cd src/backend/backend
     - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
-    - docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+    - docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.

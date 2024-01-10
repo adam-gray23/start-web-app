@@ -25,7 +25,7 @@ docker-build:       # This job runs in the build stage, which runs first.
 django-build:
   stage: build
   image: python:3.11.5
-  before-script:
+  before_script:
     - python -m pip install Django
   script:
     - cd src/backend

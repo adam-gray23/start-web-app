@@ -5,6 +5,11 @@
 __pycache__/
 *.sqlite3
 *.gitkeep
+*.log
+*.class
+*.interp
+*.tokens
+src/start/.antlr/
 
 # IDE - VSCode
 .vscode

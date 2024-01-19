@@ -9,16 +9,19 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         mappy.push(map);
     }
 
-    //show the tree
     @Override
     public Object visitProgram(startParser.ProgramContext ctx) {
         // Iterate through each line
         for (int i = 0; ctx.line(i) != null; i++) {
             String lineText = ctx.line(i).getText();
+            //check if the line is a function
             if (ctx.line(i).getText().contains("function")){
                 visit(ctx.line(i));
             }
-            else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
+            else if(ctx.line(i).if_statement() != null || ctx.line(i).while_statement() != null || ctx.line(i).for_statement() != null){
+                visit(ctx.line(i));
+            }
+            else if (!lineText.equals("nl") && ctx.line(i).comment() == null && !ctx.line(i).getText().contains("function")) {
                 System.out.println(lineText); //REMOVE LATER
                 // Visit the line
                 visit(ctx.line(i));
@@ -865,9 +868,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             ArrayList<Object> arr = (ArrayList<Object>) val;
             //visit the block for each element in the arraylist
             for(int i = 0; i < arr.size(); i++){
-                //wait for user input
-                System.out.println("FOR LOOP: Press Enter to continue...");
-                scanner.nextLine();
                 //create a new variable for the element in the arraylist
                 String var = ctx.NAME().getText();
                 //put the element in the arraylist into the variable
@@ -1001,100 +1001,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     //visit the override function for block
     @Override
     public Object visitBlock(startParser.BlockContext ctx) {
-        //get the parent node
-        var parent = ctx.getParent().getClass().getSimpleName();
-        switch (parent) {
-            case "While_statementContext": //look back at this, use if for reference and test
-                for (int i = 0; i < ctx.line().size(); i++) {
-                    //visit the line
-                    Object val = visit(ctx.line(i));
-                    //if the current line equals nl, continue, else wait for input
-                    if (ctx.line(i).getText().equals("nl")){
-                        continue;
-                    }
-                    else {
-                        //check if we are at the last line, if so no wait, else wait for user input
-                        if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
-                            }
-                        }
-                        else {
-                            System.out.println("BLOCK: Press Enter to continue...");
-                            scanner.nextLine();
-                        }
-                    }
-                }
-                return null;
-
-            case "For_statementContext":
-                for (int i = 0; i < ctx.line().size(); i++) {
-                    //visit the line
-                    Object val = visit(ctx.line(i));
-                    if (val != null){
-                        return val;
-                    }
-                }
-                return null;
-
-            case "FunctionContext":
-                for (int i = 0; i < ctx.line().size(); i++) {
-                    //visit the line
-                    Object val = visit(ctx.line(i));
-                    if (val != null){
-                        return val;
-                    }
-                }
-                return null;
-
-            case "If_statementContext":
-                for (int i = 0; i < ctx.line().size(); i++) {
-                    //visit the line
-                    Object val = visit(ctx.line(i));
-                    //if the current line equals nl, continue, else wait for input
-                    if (ctx.line(i).getText().equals("nl")){
-                        continue;
-                    }
-                    else {
-                        //check if we are at the last line, if so no wait, else wait for user input
-                        if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
-                            }
-                        }
-                        else {
-                            System.out.println("BLOCK: Press Enter to continue...");
-                            scanner.nextLine();
-                        }
-                    }
-                }
-                return null;
-
-            case "Elif_blockContext":
-                for (int i = 0; i < ctx.line().size(); i++) {
-                    //visit the line
-                    Object val = visit(ctx.line(i));
-                    //if the current line equals nl, continue, else wait for input
-                    if (ctx.line(i).getText().equals("nl")){
-                        continue;
-                    }
-                    else {
-                        //check if we are at the last line, if so no wait, else wait for user input
-                        if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
-                            }
-                        }
-                        else {
-                            System.out.println("BLOCK: Press Enter to continue...");
-                            scanner.nextLine();
-                        }
-                    }
-                }
-                return null;
-
-            default:
-                break;
+        //visit the lines in the block
+        for (int i = 0; i < ctx.line().size(); i++) {
+            //visit the line
+            Object val = visit(ctx.line(i));
+            //if the line is a return statement, return the value
+            if (val != null){
+                return val;
+            }
         }
         return null;
     }

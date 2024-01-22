@@ -1,35 +1,8 @@
 stages:
   - build
-  - test
-
-docker-build:
-  stage: build
-  only:
-  - master
-  - dev
-  image: docker
-  services:
-    - docker:dind
-  variables:
-    DOCKER_IMAGE_NAME: "start-docker-image"
-    DOCKER_IMAGE_TAG: "latest"
-  before_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
-  script:
-    - cd src/backend/backend
-    - echo "Building docker image..."
-    - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
-    - echo "Docker image built."
-    - echo "Attempting to run docker image..."
-    - docker run -d -p 80:80 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
-    - echo "Docker image running."
-    # for testing purposes
-    - sleep 5
-    - docker stop $(docker ps -q)
-    # ####################
     
 django-build:
-  stage: test
+  stage: build
   only:
   - master
   - dev
@@ -38,13 +11,34 @@ django-build:
     - python -m pip install Django
     - pip install requests
     - cd src/backend
-    - echo "Starting server..."
+    - echo "Starting Django server..."
     - Start-Process python -ArgumentList "manage.py runserver 8000" -NoNewWindow
     - sleep 20
   script:
-    - echo "Server started. Init test..."
+    - echo "Django server started. Init test..."
     - python manage.py test
     - echo "Test finished."
     - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess
     - Stop-Process -ID $process.Id -Force
-    - echo "Server stopped."
+    - echo "Django server tests successful."
+
+flask-build:
+  stage: build
+  only:
+  - master
+  - dev
+  image: python:3.11
+  dependencies:
+    - django-build
+  before_script:
+    - python -m pip install Flask
+    - cd src/backend/backend/app
+    - echo "Starting Flask server..."
+    - Start-Process python -ArgumentList "-m flask run --host 0.0.0.0 --port 80" -NoNewWindow
+    - sleep 20
+  script:
+    - echo "Flask server started. Init test..."
+    - echo "Test finished."
+    - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 80).OwningProcess
+    - Stop-Process -ID $process.Id -Force
+    - echo "Django server tests successful."

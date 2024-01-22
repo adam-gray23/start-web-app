@@ -29,7 +29,7 @@ flask-build:
   - dev
   image: python:3.11
   before_script:
-    - pip install Flask
+    - python -m pip install Flask
     - cd src/backend/backend/app
     - echo "Starting Flask server..."
     - Start-Process python -ArgumentList "-m flask run --host 0.0.0.0 --port 80" -NoNewWindow

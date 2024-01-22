@@ -27,6 +27,6 @@ otherwise{
 }
 
 a is 2
-if a greater than 1{
+if a greater than 1 or a equals 0{
     write("a is greater than 1") nl
 }

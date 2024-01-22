@@ -28,6 +28,8 @@ flask-build:
   - master
   - dev
   image: python:3.11
+  dependencies:
+    - django-build
   before_script:
     - python -m pip install Flask
     - cd src/backend/backend/app

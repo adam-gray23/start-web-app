@@ -27,6 +27,9 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     System.out.print("LINE: Press Enter to continue...");
                     scanner.nextLine();
                 }
+                // the issue is when new line is next
+                // when newline found instead just run it and dont skip
+                //will prevent the issue
             }
         }
         scanner.close();

@@ -18,18 +18,25 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             if (ctx.line(i).getText().contains("function")){
                 visit(ctx.line(i));
             }
+            else if (ctx.line(i).getText().equals("nl")){
+                continue;
+            }
             else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
                 System.out.println(lineText); //REMOVE LATER
                 // Visit the line
                 visit(ctx.line(i));
+                //check if we are on the last line
+                if (ctx.line(i + 2) == null){
+                    //check if the last line is a function
+                    if (ctx.line(i + 1).getText().equals("nl")){
+                        break;
+                    }
+                }
                 // Wait for user input before executing the next line
-                if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("nl")&& !ctx.line(i + 1).getText().equals("function"))) {
+                else if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
                     System.out.print("LINE: Press Enter to continue...");
                     scanner.nextLine();
                 }
-                // the issue is when new line is next
-                // when newline found instead just run it and dont skip
-                //will prevent the issue
             }
         }
         scanner.close();

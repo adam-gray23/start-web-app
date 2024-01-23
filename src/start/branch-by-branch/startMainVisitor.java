@@ -18,6 +18,9 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             if (ctx.line(i).getText().contains("function")){
                 visit(ctx.line(i));
             }
+            else if (ctx.line(i).getText().equals("nl")){
+                continue;
+            }
             else if(ctx.line(i).if_statement() != null || ctx.line(i).while_statement() != null || ctx.line(i).for_statement() != null){
                 visit(ctx.line(i));
             }
@@ -25,10 +28,18 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 System.out.println(lineText); //REMOVE LATER
                 // Visit the line
                 visit(ctx.line(i));
+                //check if we are on the last line
+                if (ctx.line(i + 2) == null){
+                    //check if the last line is a function
+                    if (ctx.line(i + 1).getText().equals("nl")){
+                        break;
+                    }
+                }
                 // Wait for user input before executing the next line
-                if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("nl")&& !ctx.line(i + 1).getText().equals("function"))) {
+                if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
                     System.out.print("LINE: Press Enter to continue...");
                     scanner.nextLine();
+                    
                 }
             }
         }

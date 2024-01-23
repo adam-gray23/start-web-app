@@ -19,18 +19,29 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 visit(ctx.line(i));
             }
             else if (ctx.line(i).getText().equals("nl")){
-                continue;
+                //if last line is nl, break
+                if (ctx.line(i + 1) == null){
+                    break;
+                }
+                else{
+                    continue;
+                }
             }
             else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
                 System.out.println(lineText); //REMOVE LATER
                 // Visit the line
                 visit(ctx.line(i));
+
                 //check if we are on the last line
                 if (ctx.line(i + 2) == null){
                     //check if the last line is a function
-                    if (ctx.line(i + 1).getText().equals("nl")){
+                    if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl")){
                         break;
                     }
+                }
+                //else if next line an nl, and two down is a comment dont wait
+                else if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl") && ctx.line(i + 2).comment() != null){
+                    continue;
                 }
                 // Wait for user input before executing the next line
                 else if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {

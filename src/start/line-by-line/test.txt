@@ -1,4 +1,0 @@
-write("hi") nl
-write("hi")
-write("hi") nl
-// comment //

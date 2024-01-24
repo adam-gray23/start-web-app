@@ -30,13 +30,23 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
                 System.out.println(lineText); //REMOVE LATER
                 // Visit the line
+                System.out.println("current line: " + ctx.line(i).getText());
                 visit(ctx.line(i));
 
+                //if we have just visited an if statement, continue to the next line
+                if (ctx.line(i).if_statement() != null){
+                    continue;
+                }
+
                 //check if we are on the last line
-                if (ctx.line(i + 2) == null){
+                if (ctx.line(i + 1) == null){
                     //check if the last line is a function
                     if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl")){
                         break;
+                    }
+                    else{
+                        //print the current line content
+                        continue;
                     }
                 }
                 //else if next line an nl, and two down is a comment dont wait
@@ -45,6 +55,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 // Wait for user input before executing the next line
                 else if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
+                    //print the current line content
                     System.out.print("LINE: Press Enter to continue...");
                     scanner.nextLine();
                 }
@@ -886,9 +897,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             ArrayList<Object> arr = (ArrayList<Object>) val;
             //visit the block for each element in the arraylist
             for(int i = 0; i < arr.size(); i++){
-                //wait for user input
-                System.out.println("FOR LOOP: Press Enter to continue...");
-                scanner.nextLine();
+
                 //create a new variable for the element in the arraylist
                 String var = ctx.NAME().getText();
                 //put the element in the arraylist into the variable
@@ -896,6 +905,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //visit the block
                 //check if theres a return statement
                 Object obj = visit(ctx.block());
+
                 if (obj != null){
                     mappy.pop();
                     mappy.push(map2);
@@ -1050,10 +1060,24 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
 
             case "For_statementContext":
                 for (int i = 0; i < ctx.line().size(); i++) {
+                    System.out.println("ctx.line(i): " + ctx.line(i).getText());
                     //visit the line
                     Object val = visit(ctx.line(i));
-                    if (val != null){
-                        return val;
+                    //if next line is not null, wait
+                    if (ctx.line(i).getText().equals("nl")){
+                        continue;
+                    }
+                    else {
+                        //check if we are at the last line, if so no wait, else wait for user input
+                        if (i == ctx.line().size() - 1){
+                            if (val != null){
+                                return val;
+                            }
+                        }
+                        else {
+                            System.out.println("BLOCK: Press Enter to continue...");
+                            scanner.nextLine();
+                        }
                     }
                 }
                 return null;

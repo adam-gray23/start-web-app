@@ -17,7 +17,7 @@ otherwise{
 
 m is 11
 if (n equals 15) and (m equals 20) {
-    write("n is 15 and m is 11") nl
+    write("n is 15 and m is 20") nl
 }
 otherwise if (n equals 15) and (m equals 11) {
     write("n is 15 and m is 11") nl

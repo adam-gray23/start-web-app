@@ -883,6 +883,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         return null;
     }
 
+    public String loopedOver;
+    public Object currentCharInArray;
+    public String lastNonSpecialChar;
+
     //override the visit function for for loops
     @Override
     @SuppressWarnings("unchecked")
@@ -891,13 +895,30 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         HashMap<String, Object> map2 = new HashMap<String, Object>(mappy.peek());
         //visit the expression within the for loop and assign it to a variable
         Object val = visit(ctx.expression());
+        if (loopedOver == null){
+            loopedOver = val.toString();
+        }
+        System.out.println(loopedOver);
+        //find lastNonSpecialChar, cant be either bracket or quote
+        //start from back
+        if (lastNonSpecialChar == null){
+            for (int i = loopedOver.length() - 1; i >= 0; i--){
+                if (loopedOver.charAt(i) != ']' && loopedOver.charAt(i) != '[' && loopedOver.charAt(i) != '"' && loopedOver.charAt(i) != '\''){
+                    lastNonSpecialChar = Character.toString(loopedOver.charAt(i));
+                    break;
+                }
+            }
+        }
+        System.out.println("last non special char is " + lastNonSpecialChar);
         //if the value is an arraylist, visit the block
         if(val instanceof ArrayList){
             //change val to be an ArrayList
             ArrayList<Object> arr = (ArrayList<Object>) val;
             //visit the block for each element in the arraylist
             for(int i = 0; i < arr.size(); i++){
-
+                //set current char
+                currentCharInArray = arr.get(i);
+                System.out.println("curr is " + currentCharInArray);
                 //create a new variable for the element in the arraylist
                 String var = ctx.NAME().getText();
                 //put the element in the arraylist into the variable
@@ -905,7 +926,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //visit the block
                 //check if theres a return statement
                 Object obj = visit(ctx.block());
-
                 if (obj != null){
                     mappy.pop();
                     mappy.push(map2);
@@ -1060,7 +1080,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
 
             case "For_statementContext":
                 for (int i = 0; i < ctx.line().size(); i++) {
-                    System.out.println("ctx.line(i): " + ctx.line(i).getText());
                     //visit the line
                     Object val = visit(ctx.line(i));
                     //if next line is not null, wait
@@ -1068,15 +1087,21 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         continue;
                     }
                     else {
-                        //check if we are at the last line, if so no wait, else wait for user input
+                        //check if we are at the last line
                         if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
-                            }
+                            //we need to see if the next line is null
+                            continue;
+
                         }
                         else {
-                            System.out.println("BLOCK: Press Enter to continue...");
-                            scanner.nextLine();
+                            //if the current char is not the last non special char, wait
+                            if (currentCharInArray.toString().equals(lastNonSpecialChar)){
+                                continue;
+                            }
+                            else {
+                                System.out.println("BLOCK: Press Enter to continue...");
+                                scanner.nextLine();
+                            }
                         }
                     }
                 }

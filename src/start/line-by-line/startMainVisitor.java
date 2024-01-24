@@ -55,6 +55,21 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 // Wait for user input before executing the next line
                 else if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
+                    //check if any of the parents of the current line are for loops
+                    boolean isForLoop = false;
+                    for (int j = 0; j < ctx.line(i).parent.getChildCount(); j++){
+                        if (ctx.line(i).parent.getChild(j).getText().equals("for")){
+                            isForLoop = true;
+                            break;
+                        }
+                    }
+                    //if the current line is a for loop, continue
+                    if (!isForLoop){
+                        //rest global variables
+                        loopedOver = null;
+                        currentCharInArray = null;
+                        lastNonSpecialChar = null;
+                    }
                     //print the current line content
                     System.out.print("LINE: Press Enter to continue...");
                     scanner.nextLine();
@@ -895,16 +910,20 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         HashMap<String, Object> map2 = new HashMap<String, Object>(mappy.peek());
         //visit the expression within the for loop and assign it to a variable
         Object val = visit(ctx.expression());
+        System.out.println("val is " + val);
         if (loopedOver == null){
             loopedOver = val.toString();
         }
         System.out.println(loopedOver);
-        //find lastNonSpecialChar, cant be either bracket or quote
-        //start from back
+        
         if (lastNonSpecialChar == null){
             for (int i = loopedOver.length() - 1; i >= 0; i--){
-                if (loopedOver.charAt(i) != ']' && loopedOver.charAt(i) != '[' && loopedOver.charAt(i) != '"' && loopedOver.charAt(i) != '\''){
-                    lastNonSpecialChar = Character.toString(loopedOver.charAt(i));
+                if (loopedOver.charAt(i) == ','){
+                    lastNonSpecialChar = loopedOver.substring(i + 1, loopedOver.length()).replaceAll("]", "").replaceAll("\"", "");
+                    //remove the space at the start of the string
+                    if (lastNonSpecialChar.charAt(0) == ' '){
+                        lastNonSpecialChar = lastNonSpecialChar.substring(1, lastNonSpecialChar.length());
+                    }
                     break;
                 }
             }
@@ -927,6 +946,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //check if theres a return statement
                 Object obj = visit(ctx.block());
                 if (obj != null){
+                    //reet global variables
                     mappy.pop();
                     mappy.push(map2);
                     return obj;
@@ -1093,8 +1113,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             continue;
 
                         }
-                        else {
-                            //if the current char is not the last non special char, wait
+                        else {                            //if the current char is not the last non special char, wait
                             if (currentCharInArray.toString().equals(lastNonSpecialChar)){
                                 continue;
                             }

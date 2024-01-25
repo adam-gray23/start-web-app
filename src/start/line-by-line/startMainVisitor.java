@@ -1076,24 +1076,25 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         var parent = ctx.getParent().getClass().getSimpleName();
         switch (parent) {
             case "While_statementContext": //look back at this, use if for reference and test
+            //needs to be able to stop on the line condition also
+            //still need to fix bug with if last line of loop is last program line, dont wait
+            //niall is being difficult
                 for (int i = 0; i < ctx.line().size(); i++) {
                     //visit the line
                     Object val = visit(ctx.line(i));
+                    //print line text
+                    System.out.println("line text is: " + ctx.line(i).getText());
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
                         continue;
                     }
+                    //else if the line starts with loop while
+                    else if (ctx.line(i).getText().startsWith("loop while")){
+                        continue;
+                    }
                     else {
-                        //check if we are at the last line, if so no wait, else wait for user input
-                        if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
-                            }
-                        }
-                        else {
-                            System.out.println("BLOCK: Press Enter to continue...");
-                            scanner.nextLine();
-                        }
+                        System.out.println("BLOCK: Press Enter to continue...");
+                        scanner.nextLine();
                     }
                 }
                 return null;

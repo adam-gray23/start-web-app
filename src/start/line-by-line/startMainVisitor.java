@@ -647,6 +647,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     public Object visitWhile_statement(startParser.While_statementContext ctx) {
         //visit the expression within the while statement and assign it to a variable
         Object val = visit(ctx.expression());
+        //wait after condition is checked
+        System.out.println("AT CONDITION: Press Enter to continue...");
+        scanner.nextLine();
         //while the value is true, visit the block
         while(val instanceof Boolean){
             if(((Boolean)val).booleanValue() == true){
@@ -655,6 +658,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     return obj;
                 }
                 val = visit(ctx.expression());
+                //wait after condition is checked
+                System.out.println("AT CONDITION: Press Enter to continue...");
+                scanner.nextLine();
             }
             else {
                 break;

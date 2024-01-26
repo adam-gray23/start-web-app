@@ -1,5 +1,6 @@
 //import the hashmap and map
 import java.util.*;
+
 import java.io.*;
 public class startMainVisitor extends startBaseVisitor<Object>{
     Scanner scanner = new Scanner(System.in);
@@ -72,6 +73,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     }
                     //print the current line content
                     System.out.print("LINE: Press Enter to continue...");
+                    //print current line number of antlr program
+                    System.out.println("Line: " + ctx.line(i).start.getLine());
                     scanner.nextLine();
                 }
             }
@@ -649,6 +652,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         Object val = visit(ctx.expression());
         //wait after condition is checked
         System.out.println("AT CONDITION: Press Enter to continue...");
+        System.out.println("Line: " + ctx.start.getLine());
         scanner.nextLine();
         //while the value is true, visit the block
         while(val instanceof Boolean){
@@ -660,6 +664,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 val = visit(ctx.expression());
                 //wait after condition is checked
                 System.out.println("AT CONDITION: Press Enter to continue...");
+                //get the current line number
+                System.out.println("Line: " + ctx.start.getLine());
                 scanner.nextLine();
             }
             else {
@@ -1100,6 +1106,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     }
                     else {
                         System.out.println("BLOCK: Press Enter to continue...");
+                        System.out.println("Line: " + ctx.line(i).start.getLine());
                         scanner.nextLine();
                     }
                 }
@@ -1126,6 +1133,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             }
                             else {
                                 System.out.println("BLOCK: Press Enter to continue...");
+                                System.out.println("Line: " + ctx.line(i).start.getLine());
                                 scanner.nextLine();
                             }
                         }
@@ -1159,8 +1167,69 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             }
                         }
                         else {
-                            System.out.println("BLOCK: Press Enter to continue...");
-                            scanner.nextLine();
+                            //if the next line is nl and we are on the second last line, dont wait
+                            if (ctx.line(i + 1).getText().equals("nl") && i == ctx.line().size() - 2){
+                                //we need to check if the next line in program exists
+                                //get parent
+                                var parent2 = ctx.getParent();
+                                //loop back until we find program
+                                while (parent2 != null){
+                                    System.out.println("parent is: " + parent2.getClass().getSimpleName());
+                                    if(parent2 instanceof startParser.ProgramContext){
+                                        //print child 0 of program
+                                        System.out.println("child 0 of program is: " + parent2.getChild(0).getText());
+                                        //get the line that comes after that
+                                        var line = (parent2.getChildCount() - 2);
+                                        System.out.println("line is: " + line);                                        
+                                        //start at this node, while not null update to parent
+                                        var parent3 = ctx.getParent();
+                                        int numOfIfs = 0;
+                                        while (parent3 != null){
+                                            System.out.println("parent3 is: " + parent3.getClass().getSimpleName());
+                                            if (parent3 instanceof startParser.If_statementContext){
+                                                numOfIfs++;
+                                            }
+                                            parent3 = parent3.getParent();
+                                        }
+                                        System.out.println("num of ifs is: " + numOfIfs);
+
+                                        var parent4 = ctx.getParent();
+                                        while (parent4 != null){
+                                            System.out.println("parent4 is: " + parent4.getClass().getSimpleName());
+                                            if (parent4 instanceof startParser.If_statementContext){
+                                                numOfIfs--;
+                                                if (numOfIfs == 0){
+                                                    //get the text of this line, save it
+                                                    String text = parent4.getText();
+                                                    System.out.println("this text is: " + text);
+                                                    String lineText = parent2.getChild(line).getText();
+                                                    System.out.println("line text is: " + lineText);
+                                                    //if the text is the same as text on line, dont wait
+                                                    if (text.equals(lineText)){
+                                                        break;
+                                                    }
+                                                    else{
+                                                        System.out.println("BLOCK: Press Enter to continue...");
+                                                        System.out.println("Line: " + ctx.line(i).start.getLine());
+                                                        scanner.nextLine();
+                                                    }
+                                                }
+                                            }
+                                            parent4 = parent4.getParent();
+                                        }
+
+                                        break;
+                                    }
+                                    else{
+                                        parent2 = parent2.getParent();
+                                    }
+                                }
+                            }
+                            else {
+                                System.out.println("BLOCK: Press Enter to continue...");
+                                System.out.println("Line: " + ctx.line(i).start.getLine());
+                                scanner.nextLine();
+                            }
                         }
                     }
                 }
@@ -1183,6 +1252,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         }
                         else {
                             System.out.println("BLOCK: Press Enter to continue...");
+                            System.out.println("Line: " + ctx.line(i).start.getLine());
                             scanner.nextLine();
                         }
                     }

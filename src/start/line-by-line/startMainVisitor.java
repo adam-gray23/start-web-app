@@ -51,8 +51,19 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     }
                 }
                 //else if next line an nl, and two down is a comment dont wait
-                else if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl") && ctx.line(i + 2).comment() != null){
-                    continue;
+                else if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl") ){
+                    if (ctx.line(i + 2) != null){
+                        if (ctx.line(i + 2).comment() != null){
+                            continue;
+                        }
+                        else{
+                            //print the current line content
+                            System.out.print("LINE: Press Enter to continue...");
+                            //print current line number of antlr program
+                            System.out.println("Line: " + ctx.line(i).start.getLine());
+                            scanner.nextLine();
+                        }
+                    }
                 }
                 // Wait for user input before executing the next line
                 else if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
@@ -617,6 +628,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     public Object visitIf_statement(startParser.If_statementContext ctx) {
         //visit the expression within the if statement and assign it to a variable
         Object val = visit(ctx.expression());
+        //wait for user input after condition is checked
+        System.out.println("AT CONDITION: Press Enter to continue...");
+        System.out.println("Line: " + ctx.start.getLine());
+        scanner.nextLine();
         //if the value is true, visit the block
         if(val instanceof Boolean){
             if(((Boolean)val).booleanValue() == true){

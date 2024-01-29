@@ -1,45 +1,134 @@
 //import the hashmap and map
 import java.util.*;
+
 import java.io.*;
 public class startMainVisitor extends startBaseVisitor<Object>{
     Scanner scanner = new Scanner(System.in);
     Stack<HashMap<String, Object>> mappy = new Stack<HashMap<String, Object>>();
     public startMainVisitor(){
+        readFile();
         HashMap<String, Object> map = new HashMap<String, Object>();
         mappy.push(map);
     }
 
+    public ArrayList<Integer> breakPointArr = new ArrayList<>();
+    //function to read in a text file
+    public void readFile(){
+        //read a text file, only 1 line in the file, will contain numbers separated by commas
+        //split on the commas and store in breakPointArr
+        File file = new File("breakpoints.txt");
+        try {
+            Scanner sc = new Scanner(file);
+            String line = sc.nextLine();
+            //split on comma, if not "" add the position in the array + 1 to the arraylist
+            String[] arr = line.split(",");
+            for (int i = 0; i < arr.length; i++){
+                if (!arr[i].equals("")){
+                    breakPointArr.add(i + 1);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void breakpoint(int line){
+        //change instrcut.txt to say "paused"
+        try (PrintWriter writer = new PrintWriter(new FileWriter("instruct.txt"))) {
+            writer.println("paused");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //call the main function of callFlask.java
+        callFlask.main(line);
+        //call the main function of fileChecker.java
+        fileChecker.main(null);
+    }
+
+    //show the tree
     @Override
     public Object visitProgram(startParser.ProgramContext ctx) {
         // Iterate through each line
         for (int i = 0; ctx.line(i) != null; i++) {
             String lineText = ctx.line(i).getText();
-            //check if the line is a function
             if (ctx.line(i).getText().contains("function")){
                 visit(ctx.line(i));
             }
             else if (ctx.line(i).getText().equals("nl")){
-                continue;
+                //if last line is nl, break
+                if (ctx.line(i + 1) == null){
+                    break;
+                }
+                else{
+                    continue;
+                }
             }
-            else if(ctx.line(i).if_statement() != null || ctx.line(i).while_statement() != null || ctx.line(i).for_statement() != null){
-                visit(ctx.line(i));
-            }
-            else if (!lineText.equals("nl") && ctx.line(i).comment() == null && !ctx.line(i).getText().contains("function")) {
+            else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
                 System.out.println(lineText); //REMOVE LATER
                 // Visit the line
+                System.out.println("current line: " + ctx.line(i).getText());
                 visit(ctx.line(i));
+
+                //if we have just visited an if statement, continue to the next line
+                if (ctx.line(i).if_statement() != null){
+                    continue;
+                }
+
                 //check if we are on the last line
-                if (ctx.line(i + 2) == null){
+                if (ctx.line(i + 1) == null){
                     //check if the last line is a function
-                    if (ctx.line(i + 1).getText().equals("nl")){
+                    if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl")){
                         break;
+                    }
+                    else{
+                        //print the current line content
+                        continue;
+                    }
+                }
+                //else if next line an nl, and two down is a comment dont wait
+                else if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl") ){
+                    if (ctx.line(i + 2) != null){
+                        if (ctx.line(i + 2).comment() != null){
+                            continue;
+                        }
+                        else{
+                            //if the current line in global arraylist of breakpoints, wait for user input
+                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                int line = ctx.line(i).start.getLine();
+                                breakpoint(line);
+                            }
+                            else{
+                                continue;
+                            }
+                        }
                     }
                 }
                 // Wait for user input before executing the next line
-                if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
-                    System.out.print("LINE: Press Enter to continue...");
-                    scanner.nextLine();
-                    
+                else if (ctx.line(i + 1) != null && (!ctx.line(i + 1).getText().equals("function"))) {
+                    //check if any of the parents of the current line are for loops
+                    boolean isForLoop = false;
+                    for (int j = 0; j < ctx.line(i).parent.getChildCount(); j++){
+                        if (ctx.line(i).parent.getChild(j).getText().equals("for")){
+                            isForLoop = true;
+                            break;
+                        }
+                    }
+                    //if the current line is a for loop, continue
+                    if (!isForLoop){
+                        //rest global variables
+                        loopedOver = null;
+                        currentCharInArray = null;
+                        lastNonSpecialChar = null;
+                    }
+                    //if the current line in global arraylist of breakpoints, wait for user input
+                    if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                        int line = ctx.line(i).start.getLine();
+                        breakpoint(line);
+                    }
+                    else{
+                        continue;
+                    }
                 }
             }
         }
@@ -581,6 +670,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     public Object visitIf_statement(startParser.If_statementContext ctx) {
         //visit the expression within the if statement and assign it to a variable
         Object val = visit(ctx.expression());
+        //wait for user input after condition is checked
+        //if the current line in global arraylist of breakpoints, wait for user input
+        if (breakPointArr.contains(ctx.start.getLine())){
+            int line = ctx.start.getLine();
+            breakpoint(line);
+        }
         //if the value is true, visit the block
         if(val instanceof Boolean){
             if(((Boolean)val).booleanValue() == true){
@@ -614,6 +709,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     public Object visitWhile_statement(startParser.While_statementContext ctx) {
         //visit the expression within the while statement and assign it to a variable
         Object val = visit(ctx.expression());
+        //wait after condition is checked
+        //if the current line in global arraylist of breakpoints, wait for user input
+        if (breakPointArr.contains(ctx.start.getLine())){
+            int line = ctx.start.getLine();
+            breakpoint(line);
+        }
         //while the value is true, visit the block
         while(val instanceof Boolean){
             if(((Boolean)val).booleanValue() == true){
@@ -622,6 +723,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     return obj;
                 }
                 val = visit(ctx.expression());
+                //if the current line in global arraylist of breakpoints, wait for user input
+                if (breakPointArr.contains(ctx.start.getLine())){
+                    int line = ctx.start.getLine();
+                    breakpoint(line);
+                }
+                else{
+                    continue;
+                }
             }
             else {
                 break;
@@ -865,6 +974,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         return null;
     }
 
+    public String loopedOver;
+    public Object currentCharInArray;
+    public String lastNonSpecialChar;
+
     //override the visit function for for loops
     @Override
     @SuppressWarnings("unchecked")
@@ -873,12 +986,34 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         HashMap<String, Object> map2 = new HashMap<String, Object>(mappy.peek());
         //visit the expression within the for loop and assign it to a variable
         Object val = visit(ctx.expression());
+        System.out.println("val is " + val);
+        if (loopedOver == null){
+            loopedOver = val.toString();
+        }
+        System.out.println(loopedOver);
+        
+        if (lastNonSpecialChar == null){
+            for (int i = loopedOver.length() - 1; i >= 0; i--){
+                if (loopedOver.charAt(i) == ','){
+                    lastNonSpecialChar = loopedOver.substring(i + 1, loopedOver.length()).replaceAll("]", "").replaceAll("\"", "");
+                    //remove the space at the start of the string
+                    if (lastNonSpecialChar.charAt(0) == ' '){
+                        lastNonSpecialChar = lastNonSpecialChar.substring(1, lastNonSpecialChar.length());
+                    }
+                    break;
+                }
+            }
+        }
+        System.out.println("last non special char is " + lastNonSpecialChar);
         //if the value is an arraylist, visit the block
         if(val instanceof ArrayList){
             //change val to be an ArrayList
             ArrayList<Object> arr = (ArrayList<Object>) val;
             //visit the block for each element in the arraylist
             for(int i = 0; i < arr.size(); i++){
+                //set current char
+                currentCharInArray = arr.get(i);
+                System.out.println("curr is " + currentCharInArray);
                 //create a new variable for the element in the arraylist
                 String var = ctx.NAME().getText();
                 //put the element in the arraylist into the variable
@@ -887,6 +1022,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //check if theres a return statement
                 Object obj = visit(ctx.block());
                 if (obj != null){
+                    //reet global variables
                     mappy.pop();
                     mappy.push(map2);
                     return obj;
@@ -1012,14 +1148,208 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     //visit the override function for block
     @Override
     public Object visitBlock(startParser.BlockContext ctx) {
-        //visit the lines in the block
-        for (int i = 0; i < ctx.line().size(); i++) {
-            //visit the line
-            Object val = visit(ctx.line(i));
-            //if the line is a return statement, return the value
-            if (val != null){
-                return val;
-            }
+        //get the parent node
+        var parent = ctx.getParent().getClass().getSimpleName();
+        switch (parent) {
+            case "While_statementContext": //look back at this, use if for reference and test
+            //needs to be able to stop on the line condition also
+            //still need to fix bug with if last line of loop is last program line, dont wait
+            //niall is being difficult
+                for (int i = 0; i < ctx.line().size(); i++) {
+                    //visit the line
+                    Object val = visit(ctx.line(i));
+                    //print line text
+                    System.out.println("line text is: " + ctx.line(i).getText());
+                    //if the current line equals nl, continue, else wait for input
+                    if (ctx.line(i).getText().equals("nl")){
+                        continue;
+                    }
+                    //else if the line starts with loop while
+                    else if (ctx.line(i).getText().startsWith("loop while")){
+                        continue;
+                    }
+                    else {
+                        //if the current line in global arraylist of breakpoints, wait for user input
+                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            int line = ctx.line(i).start.getLine();
+                            breakpoint(line);
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                }
+                return null;
+
+            case "For_statementContext":
+                for (int i = 0; i < ctx.line().size(); i++) {
+                    //visit the line
+                    Object val = visit(ctx.line(i));
+                    //if next line is not null, wait
+                    if (ctx.line(i).getText().equals("nl")){
+                        continue;
+                    }
+                    else {
+                        //check if we are at the last line
+                        if (i == ctx.line().size() - 1){
+                            //we need to see if the next line is null
+                            continue;
+
+                        }
+                        else {                            //if the current char is not the last non special char, wait
+                            if (currentCharInArray.toString().equals(lastNonSpecialChar)){
+                                continue;
+                            }
+                            else {
+                                //if the current line in global arraylist of breakpoints, wait for user input
+                                if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                    int line = ctx.line(i).start.getLine();
+                                    breakpoint(line);
+                                }
+                                else{
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+                return null;
+
+            case "FunctionContext":
+                for (int i = 0; i < ctx.line().size(); i++) {
+                    //visit the line
+                    Object val = visit(ctx.line(i));
+                    if (val != null){
+                        return val;
+                    }
+                }
+                return null;
+
+            case "If_statementContext":
+                for (int i = 0; i < ctx.line().size(); i++) {
+                    //visit the line
+                    Object val = visit(ctx.line(i));
+                    //if the current line equals nl, continue, else wait for input
+                    if (ctx.line(i).getText().equals("nl")){
+                        continue;
+                    }
+                    else {
+                        //check if we are at the last line, if so no wait, else wait for user input
+                        if (i == ctx.line().size() - 1){
+                            if (val != null){
+                                return val;
+                            }
+                        }
+                        else {
+                            //if the next line is nl and we are on the second last line, dont wait
+                            if (ctx.line(i + 1).getText().equals("nl") && i == ctx.line().size() - 2){
+                                //we need to check if the next line in program exists
+                                //get parent
+                                var parent2 = ctx.getParent();
+                                //loop back until we find program
+                                while (parent2 != null){
+                                    System.out.println("parent is: " + parent2.getClass().getSimpleName());
+                                    if(parent2 instanceof startParser.ProgramContext){
+                                        //print child 0 of program
+                                        System.out.println("child 0 of program is: " + parent2.getChild(0).getText());
+                                        //get the line that comes after that
+                                        var line = (parent2.getChildCount() - 2);
+                                        System.out.println("line is: " + line);                                        
+                                        //start at this node, while not null update to parent
+                                        var parent3 = ctx.getParent();
+                                        int numOfIfs = 0;
+                                        while (parent3 != null){
+                                            System.out.println("parent3 is: " + parent3.getClass().getSimpleName());
+                                            if (parent3 instanceof startParser.If_statementContext){
+                                                numOfIfs++;
+                                            }
+                                            parent3 = parent3.getParent();
+                                        }
+                                        System.out.println("num of ifs is: " + numOfIfs);
+
+                                        var parent4 = ctx.getParent();
+                                        while (parent4 != null){
+                                            System.out.println("parent4 is: " + parent4.getClass().getSimpleName());
+                                            if (parent4 instanceof startParser.If_statementContext){
+                                                numOfIfs--;
+                                                if (numOfIfs == 0){
+                                                    //get the text of this line, save it
+                                                    String text = parent4.getText();
+                                                    System.out.println("this text is: " + text);
+                                                    String lineText = parent2.getChild(line).getText();
+                                                    System.out.println("line text is: " + lineText);
+                                                    //if the text is the same as text on line, dont wait
+                                                    if (text.equals(lineText)){
+                                                        break;
+                                                    }
+                                                    else{
+                                                        //if the current line in global arraylist of breakpoints, wait for user input
+                                                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                                            int lineToPass = ctx.line(i).start.getLine();
+                                                            breakpoint(lineToPass);
+                                                        }
+                                                        else{
+                                                            continue;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            parent4 = parent4.getParent();
+                                        }
+
+                                        break;
+                                    }
+                                    else{
+                                        parent2 = parent2.getParent();
+                                    }
+                                }
+                            }
+                            else {
+                                //if the current line in global arraylist of breakpoints, wait for user input
+                                if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                    int line = ctx.line(i).start.getLine();
+                                    breakpoint(line);
+                                }
+                                else{
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+                return null;
+
+            case "Elif_blockContext":
+                for (int i = 0; i < ctx.line().size(); i++) {
+                    //visit the line
+                    Object val = visit(ctx.line(i));
+                    //if the current line equals nl, continue, else wait for input
+                    if (ctx.line(i).getText().equals("nl")){
+                        continue;
+                    }
+                    else {
+                        //check if we are at the last line, if so no wait, else wait for user input
+                        if (i == ctx.line().size() - 1){
+                            if (val != null){
+                                return val;
+                            }
+                        }
+                        else {
+                            //if the current line in global arraylist of breakpoints, wait for user input
+                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                int line = ctx.line(i).start.getLine();
+                                breakpoint(line);
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                    }
+                }
+                return null;
+
+            default:
+                break;
         }
         return null;
     }

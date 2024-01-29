@@ -1,4 +1,4 @@
-*.txt !backend/backend/input/input.txt !backend/backend/input/output.txt
+*.txt
 *.pyc
 *.pyo
 *.pyd

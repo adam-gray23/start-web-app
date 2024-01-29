@@ -44,6 +44,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         callFlask.main(line);
         //call the main function of fileChecker.java
         fileChecker.main(null);
+        readFile();
     }
 
     //show the tree

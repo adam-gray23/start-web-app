@@ -21,6 +21,8 @@ from startwebapp import views
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('admin/', admin.site.urls),
-    path('upload-code/', views.upload_code, name='upload-code')
+    path('upload-code/', views.upload_code, name='upload-code'),
+    path('step-code/', views.step_code, name='step-code'),
+    path('pause-code/', views.pause_code, name='pause-code')
 
 ]

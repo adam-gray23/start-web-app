@@ -5,6 +5,8 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
+paused = False
+
 # Create your views here.
 def home_view(request):
     return render(request, 'index.html')
@@ -34,3 +36,32 @@ def upload_code(request):
             except requests.RequestException as e:
                 # Handle request error
                 return JsonResponse({'error': str(e)}, status=500)
+            
+def step_code(request):
+    if request.method == 'POST':
+        breakpoints = request.POST.get('breakpoints', '')
+
+        # Define the URL where the Flask server is running
+        flask_url = f'http://{settings.FLASK_HOST}:{settings.FLASK_PORT}/step'
+
+        try:
+            # Send a POST request to the Flask server
+            response = requests.post(
+                flask_url, 
+                headers={'X-Csrftoken': request.headers.get('X-Csrftoken')},
+                data={'breakpoints': breakpoints}
+            )
+            response_data = response.json()
+
+            # Print the response body
+            return JsonResponse({'result': response_data})
+        except requests.RequestException as e:
+            # Handle request error
+            return JsonResponse({'error': str(e)}, status=500)
+        
+def pause_code(request):
+    print('here')
+    return render(request, 'index.html')
+
+
+

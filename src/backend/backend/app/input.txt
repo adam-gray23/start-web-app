@@ -1,0 +1,3 @@
+write ("hello") nl
+write ("hi") nl
+write ("no") nl

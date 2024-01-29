@@ -1,0 +1,3 @@
+write ("line1") nl
+write ("line2") nl
+write ("line3") nl

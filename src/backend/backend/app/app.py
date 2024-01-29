@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 from flask import Flask, jsonify, request
+import requests
 
 app = Flask(__name__)
 
@@ -51,6 +52,43 @@ def upload_file():
     finally:
         # Remove the uploaded file after processing
         os.remove(file_path)
+
+
+@app.route('/step', methods=['POST'])
+def step_code():
+    print("step code receved")
+
+    breakpoints = (request.form.get('breakpoints')).split(',')
+    token = request.headers.get('X-Csrftoken')
+
+    print (request.headers)
+    print (token)
+
+    working_dir = os.getcwd()
+    file_path = os.path.join(working_dir, 'instruct.txt')
+    
+    with open(file_path, 'w') as f:
+        f.write("step")
+
+    django_url = f'http://localhost:8000/pause-code/'
+
+    # Send a POST request to the Django server
+    response = requests.post(django_url, headers={'X-CSRFToken': token}, cookies={'csrftoken': token}, data={})
+
+
+    return jsonify({'output': 'success', 'error': ''}), 200
+
+@app.route('/pause', methods=['POST'])
+def pause_code():
+    working_dir = os.getcwd()
+    file_path = os.path.join(working_dir, 'instruct.txt')
+    
+    with open(file_path, 'w') as f:
+        f.write("pause")
+
+    
+
+    return 200
     
 
 

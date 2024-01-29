@@ -38,8 +38,14 @@ public class start {
             }
             //if no errors, run the program
             else{
-                startMainVisitor eval = new startMainVisitor();
-                eval.visit(tree);
+                if(args.length > 1){
+                    startMainVisitor eval = new startMainVisitor(args[1]);
+                    eval.visit(tree);
+                }
+                else{
+                    startMainVisitor eval = new startMainVisitor();
+                    eval.visit(tree);
+                }
             }
         //catch file not found error
         }

@@ -4,8 +4,16 @@ import java.util.*;
 import java.io.*;
 public class startMainVisitor extends startBaseVisitor<Object>{
     Scanner scanner = new Scanner(System.in);
+    String sessionToken = "";
     Stack<HashMap<String, Object>> mappy = new Stack<HashMap<String, Object>>();
     public startMainVisitor(){
+        readFile();
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        mappy.push(map);
+    }
+
+    public startMainVisitor(String token){
+        sessionToken = token;
         readFile();
         HashMap<String, Object> map = new HashMap<String, Object>();
         mappy.push(map);
@@ -41,9 +49,10 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             e.printStackTrace();
         }
         //call the main function of callFlask.java
-        callFlask.main(line);
+        callFlask.main(line, sessionToken);
         //call the main function of fileChecker.java
         fileChecker.main(null);
+        readFile();
     }
 
     //show the tree

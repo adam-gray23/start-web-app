@@ -14,24 +14,30 @@ def index():
 def upload_file():
     print("file receved")
 
+    token = request.headers.get('X-Csrftoken')
+
     file = request.form.get('file')
     debugMode = int(request.form.get('debugMode'))
-    breakpoints = (request.form.get('breakpoints')).split(',')
+    breakpoints = (request.form.get('breakpoints'))
 
 
     working_dir = os.getcwd()
     file_path = os.path.join(working_dir, 'input.txt')
+    breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
     
     with open(file_path, 'w') as f:
         f.write(file)
+
+    with open(breakpoint_path, 'w') as f:
+        f.write(breakpoints)
         
 
     #print contents of file
     print (file)
 
-    jar_path = os.path.join(working_dir, 'start-complete.jar')
+    jar_path = os.path.join(working_dir, 'start-breakpoints.jar')
 
-    command = f'java -jar {jar_path} {file_path}'
+    command = f'java -jar {jar_path} {file_path} {token}'
 
     try:
         # Run the command
@@ -53,42 +59,46 @@ def upload_file():
         # Remove the uploaded file after processing
         os.remove(file_path)
 
-
 @app.route('/step', methods=['POST'])
 def step_code():
     print("step code receved")
 
-    breakpoints = (request.form.get('breakpoints')).split(',')
-    token = request.headers.get('X-Csrftoken')
-
-    print (request.headers)
-    print (token)
+    breakpoints = (request.form.get('breakpoints'))
 
     working_dir = os.getcwd()
     file_path = os.path.join(working_dir, 'instruct.txt')
+    breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
     
     with open(file_path, 'w') as f:
-        f.write("step")
+        f.write("continue")
 
-    django_url = f'http://localhost:8000/pause-code/'
+    with open(breakpoint_path, 'w') as f:
+        f.write(breakpoints)
 
-    # Send a POST request to the Django server
-    response = requests.post(django_url, headers={'X-CSRFToken': token}, cookies={'csrftoken': token}, data={})
 
 
     return jsonify({'output': 'success', 'error': ''}), 200
 
 @app.route('/pause', methods=['POST'])
 def pause_code():
-    working_dir = os.getcwd()
-    file_path = os.path.join(working_dir, 'instruct.txt')
-    
-    with open(file_path, 'w') as f:
-        f.write("pause")
+    #print the line that was sent
+    data = (request.get_data().decode('utf-8')).split(" ")
 
-    
+    print (data[0])
+    print (data[1])
 
-    return 200
+    django_url = f'http://localhost:8000/pause-code/'
+
+
+    # Send a POST request to the Django server
+    response = requests.post(
+        django_url,
+        headers={'X-CSRFToken': data[1]},
+        cookies={'csrftoken': data[1]},
+        data={'line': data[0]}
+    )
+    #return success message
+    return jsonify({'output': "success", 'error': "none"}), 200
     
 
 

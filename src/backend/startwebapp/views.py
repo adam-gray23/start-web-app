@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
-paused = False
+paused = True           # Bad practice, but it works for now, chnage to session storage later
 
 # Create your views here.
 def home_view(request):
@@ -13,6 +13,9 @@ def home_view(request):
 
 def upload_code(request):
     if request.method == 'POST':
+        global paused
+        paused = False
+
         text_content = request.POST.get('text_content', '')
         debugMode = request.POST.get('debugMode', '')
         breakpoints = request.POST.get('breakpoints', '')
@@ -24,11 +27,14 @@ def upload_code(request):
 
             try:
                 # Send a POST request to the Flask server
-                response = requests.post(flask_url, data={
-                    'file': text_content,
-                    'debugMode': debugMode,
-                    'breakpoints': breakpoints
-                })
+                response = requests.post(
+                    flask_url,
+                    headers={'X-Csrftoken': request.headers.get('X-Csrftoken')},
+                    data={
+                        'file': text_content,
+                        'debugMode': debugMode,
+                        'breakpoints': breakpoints
+                    })
                 response_data = response.json()
 
                 # Print the response body
@@ -39,6 +45,13 @@ def upload_code(request):
             
 def step_code(request):
     if request.method == 'POST':
+        # if not paused return 
+        global paused
+        if not paused:
+            return JsonResponse({'result': 'not paused'})
+
+        paused = False
+
         breakpoints = request.POST.get('breakpoints', '')
 
         # Define the URL where the Flask server is running
@@ -60,8 +73,12 @@ def step_code(request):
             return JsonResponse({'error': str(e)}, status=500)
         
 def pause_code(request):
-    print('here')
-    return render(request, 'index.html')
+    global paused
+    paused = True
+    # get line number from request body
+    line_number = request.POST.get('line_number', '')
+    # send line number to frontend
+    return JsonResponse({'result': line_number})
 
 
 

@@ -58,6 +58,8 @@
 <body>
 
 <div id="editor">write ("hello") nl
+write ("hello") nl
+write ("hello") nl
 </div>
 
 <div>
@@ -182,12 +184,7 @@
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
 
-                if (response.result.error != "") {
-                    console.error(response.result.error);
-                }
-                else{
-                    generateResult(response.result.output);
-                }
+                console.log(response)
             } else {
                 console.error("Error sending text content to the server");
             }
@@ -235,7 +232,7 @@
                 var response = JSON.parse(xhr.responseText);
 
                 if (response.result.error != "") {
-                    console.error(response.result.error);
+                    generateResult(response.result.error);
                 }
                 else{
                     generateResult(response.result.output);

@@ -2,7 +2,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 public class callFlask {
-    public static void main(int line) {
+    public static void main(int line, String token) {
         try {
             // Set the URL of your Flask server endpoint
             String url = "http://localhost:80/pause";
@@ -18,8 +18,8 @@ public class callFlask {
 
             // Send the request
             OutputStream os = connection.getOutputStream();
-            byte[] intBytes = String.valueOf(line).getBytes();
-            os.write(intBytes);
+            byte[] bArr = (String.valueOf(line).concat(" " + token)).getBytes();
+            os.write(bArr);
             os.flush();
             os.close();
 

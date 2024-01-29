@@ -5,8 +5,11 @@ public class fileChecker {
 
     public static void main(String[] args) {
         // Specify the file path you want to monitor
-        Path filePath = Paths.get("C:\\Users\\adamg\\Documents\\code\\DCU\\Case4\\project\\2024-ca400-kellyn88-graya27\\src\\start\\breakpoints\\instruct.txt");
-
+        // get current working directory
+        String currentWorkingDirectory = System.getProperty("user.dir");
+        //append file path to current working directory
+        String filePathString = currentWorkingDirectory + "\\instruct.txt";
+        Path filePath = Paths.get(filePathString);
         try {
             // Get the file's directory
             Path dir = filePath.getParent();

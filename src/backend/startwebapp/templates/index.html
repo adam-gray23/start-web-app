@@ -210,7 +210,7 @@ write ("hello") nl
     }
 
 
-    function commFunc() {         
+    function uploadCode() {         
         var dummy = document.getElementsByClassName("ace_content")[0].innerText;
         var formData = new FormData();
         formData.append("text_content", dummy);
@@ -268,7 +268,7 @@ write ("hello") nl
 
     (function () {
     //Click the button when the page inside the iframe is loaded
-    getCode.addEventListener('click', commFunc); 
+    getCode.addEventListener('click', uploadCode);
 
     debugSetting.addEventListener('click', changeDebugMode)
 

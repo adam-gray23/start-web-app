@@ -1,4 +1,5 @@
 *.txt
+!src/start/CI-CD-testing/standard/*.txt
 *.pyc
 *.pyo
 *.pyd
@@ -10,14 +11,18 @@ __pycache__/
 *.interp
 *.tokens
 *.MF
-src/start/branch-by-branch/.antlr/
-src/start/branch-by-branch/javax/
-src/start/branch-by-branch/META-INF/
-src/start/branch-by-branch/org/
-src/start/line-by-line/.antlr/
-src/start/line-by-line/javax/
-src/start/line-by-line/META-INF/
-src/start/line-by-line/org/
+src/start/(deprecated)breakpoints/.antlr/
+src/start/(deprecated)breakpoints/javax/
+src/start/(deprecated)breakpoints/META-INF/
+src/start/(deprecated)breakpoints/org/
+src/start/breakpoints(current)/.antlr/
+src/start/breakpoints(current)/javax/
+src/start/breakpoints(current)/META-INF/
+src/start/breakpoints(current)/org/
+src/start/line-by-line(deprecated)/.antlr/
+src/start/line-by-line(deprecated)/javax/
+src/start/line-by-line(deprecated)/META-INF/
+src/start/line-by-line(deprecated)/org/
 
 # IDE - VSCode
 .vscode

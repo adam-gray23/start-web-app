@@ -1,0 +1,3 @@
+char at positionn 0 is:  h
+char at positionn 3 is:  l
+space is:    before here

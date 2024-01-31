@@ -28,6 +28,24 @@
         position: absolute;
         top: 90%;
     }
+    #debugSetting {
+        position: absolute;
+        top: 80%;
+    }
+    .breakpoint {
+        position: relative;
+        top: -12.5px;
+        left: -13.5px;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+    .ace_gutter-cell.ace_breakpoint{
+        border-radius: 20px 0px 0px 20px;
+        box-shadow: 0px 0px 1px 1px red inset;
+    }
 
     /* Todo: Move this out of this file */
 
@@ -35,10 +53,12 @@
 </head>
 <body>
 
-<div id="editor">function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
-}</div>
+<div id="editor">write ("hello") nl
+</div>
+
+<div>
+    <button id="debugSetting">Normal</button>
+</div>
 
 <div id="result"></div>
 
@@ -49,23 +69,89 @@
     
 <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
 <script>
+    let debugMode = 0;
+
+    let breakpoints = [];
+
     var editor = ace.edit("editor", {
         theme: "ace/theme/tomorrow_night_eighties",
         mode: "ace/mode/start",
         minLines: 30,
         maxLines: 30,
-        wrap: true,
+        wrap: false,
         autoScrollEditorIntoView: true
     });
 
     var result = ace.edit("result", {
         theme: "ace/theme/tomorrow_night_eighties",
-        mode: "ace/mode/javascript",                        // will need 'blank' mode for this
+        mode: "ace/mode/text",
         minLines: 5,
         maxLines: 15,
-        wrap: true,
-        autoScrollEditorIntoView: true
+        wrap: false,
+        autoScrollEditorIntoView: true,
+        readOnly: true
     });
+
+    editor.on("guttermousedown", function(e) {
+    var target = e.domEvent.target;
+
+    console.log(target.className)
+
+    if (target.className.indexOf("ace_gutter-cell") == -1){
+        return;
+    }
+
+    if (!editor.isFocused()){
+        return; 
+    }
+
+    if (e.clientX > 25 + target.getBoundingClientRect().left){
+        return;
+    }
+
+    var breakpoints = e.editor.session.getBreakpoints(row, 0);
+    var row = e.getDocumentPosition().row;
+
+    // If there's a breakpoint already defined, it should be removed, offering the toggle feature
+    if(typeof breakpoints[row] === typeof undefined){
+        // var bp = document.createElement('div');
+        // bp.className = 'breakpoint';
+
+        // var gutter_cell = document.getElementsByClassName('ace_gutter-cell')[row];
+        // gutter_cell.appendChild(bp);
+        e.editor.session.setBreakpoint(row);
+    }else{
+        // console.log("here")
+        // var gutter_cell = document.getElementsByClassName('ace_gutter-cell')[row];
+        // var bp = gutter_cell.getElementsByClassName('breakpoint')[0];
+        // gutter_cell.removeChild(bp);
+        e.editor.session.clearBreakpoint(row);
+    }
+
+    e.stop();
+});
+
+    function changeDebugMode() {
+        if (debugMode == 2){
+            debugMode = 0
+        }
+        else{
+            debugMode++;
+        }
+
+        console.log(debugMode)
+
+        var button = document.getElementById("debugSetting");
+        if (debugMode == 1){
+            button.innerHTML = 'Line-by-Line'
+        }
+        else if (debugMode == 2){
+            button.innerHTML = 'Dynamic'
+        }
+        else{
+            button.innerHTML = 'Normal'
+        }
+    }
 
     (function () {
 
@@ -88,6 +174,8 @@
             var dummy = document.getElementsByClassName("ace_content")[0].innerText;
             var formData = new FormData();
             formData.append("text_content", dummy);
+            formData.append("debugMode", debugMode)
+            formData.append("breakpoints", editor.session.getBreakpoints());
 
             var xhr = new XMLHttpRequest();
 
@@ -101,7 +189,14 @@
             // Define a callback function to handle the response from the server
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    console.log("Text content sent to the server successfully");
+                    var response = JSON.parse(xhr.responseText);
+
+                    if (response.result.error != "") {
+                        console.error(response.result.error);
+                    }
+                    else{
+                        generateResult(response.result.output);
+                    }
                 } else {
                     console.error("Error sending text content to the server");
                 }
@@ -109,7 +204,22 @@
 
             // Send the FormData with the text content to the server
             xhr.send(formData);
+
         };
+
+        function generateResult(text_content){
+            result.session.setValue("");
+
+            var resultDiv = document.getElementById("result");
+            // chnage result.session length to the length of the output
+
+            result.session.insert({
+                row: 0,
+                column: 0
+            }, text_content);
+
+
+        }
 
         editor.onload = function () {
             setTimeout(commFunc, 1000); //Adjust the time required to load
@@ -118,6 +228,8 @@
 
         //Click the button when the page inside the iframe is loaded
         getCode.addEventListener('click', commFunc); 
+
+        debugSetting.addEventListener('click', changeDebugMode)
     })();
 
     /* Todo: Move this out of this file */

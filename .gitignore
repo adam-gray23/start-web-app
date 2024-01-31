@@ -14,6 +14,10 @@ src/start/branch-by-branch/.antlr/
 src/start/branch-by-branch/javax/
 src/start/branch-by-branch/META-INF/
 src/start/branch-by-branch/org/
+src/start/branch-by-branch/.antlr/
+src/start/branch-by-branch/javax/
+src/start/branch-by-branch/META-INF/
+src/start/branch-by-branch/org/
 src/start/line-by-line/.antlr/
 src/start/line-by-line/javax/
 src/start/line-by-line/META-INF/

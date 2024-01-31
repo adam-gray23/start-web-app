@@ -44,6 +44,7 @@ flask-build:
     - Stop-Process -ID $process.Id -Force
     - echo "Django server tests successful."
 
+
 start-complete-test:
   stage: test
   only:

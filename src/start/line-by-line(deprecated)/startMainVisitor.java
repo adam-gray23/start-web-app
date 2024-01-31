@@ -10,6 +10,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         mappy.push(map);
     }
 
+    
     //show the tree
     @Override
     public Object visitProgram(startParser.ProgramContext ctx) {

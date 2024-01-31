@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 from flask import Flask, jsonify, request
@@ -11,10 +12,21 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     print("file receved")
+
+    file = request.form.get('file')
+    debugMode = int(request.form.get('debugMode'))
+    breakpoints = (request.form.get('breakpoints')).split(',')
+
+
     working_dir = os.getcwd()
-    file = request.files['file']
-    file_path = os.path.join(working_dir, file.filename)
-    file.save(file_path)
+    file_path = os.path.join(working_dir, 'input.txt')
+    
+    with open(file_path, 'w') as f:
+        f.write(file)
+        
+
+    #print contents of file
+    print (file)
 
     jar_path = os.path.join(working_dir, 'start-complete.jar')
 
@@ -22,7 +34,7 @@ def upload_file():
 
     try:
         # Run the command
-        result = subprocess.run(command, shell=True, capture_output=True, text=True, check=True)
+        result = subprocess.run(command, shell=False, capture_output=True, text=True, check=True)
 
         # Process the result as needed
         output = result.stdout

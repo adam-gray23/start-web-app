@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
     
 django-build:
   stage: build
@@ -42,3 +43,15 @@ flask-build:
     - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 80).OwningProcess
     - Stop-Process -ID $process.Id -Force
     - echo "Django server tests successful."
+
+start-complete-test:
+  stage: test
+  only:
+  - master
+  - dev
+  image: java:18
+  script:
+    - echo "Starting complete test..."
+    - cd src/start/CI-CD-testing/standard
+    - ./test.sh
+    - echo "Complete test finished."

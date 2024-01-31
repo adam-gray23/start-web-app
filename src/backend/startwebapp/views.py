@@ -4,6 +4,8 @@ import subprocess
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 paused = True           # Bad practice, but it works for now, chnage to session storage later
 
@@ -76,7 +78,10 @@ def pause_code(request):
     global paused
     paused = True
     # get line number from request body
-    line_number = request.POST.get('line_number', '')
+    line_number = request.POST.get('line', '')
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)('test', {'type': 'send_message', 'message': line_number})
     # send line number to frontend
     return JsonResponse({'result': line_number})
 

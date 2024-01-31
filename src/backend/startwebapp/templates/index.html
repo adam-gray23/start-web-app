@@ -80,6 +80,25 @@ write ("hello") nl
     
 <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
 <script>
+
+    const socket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/test/'
+    );
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+    }
+
+    socket.onclose = function(e) {
+        console.error('Websocket closed unexpectedly');
+    };
+
+
+
+
     let debugMode = 0;
 
     let breakpoints = [];

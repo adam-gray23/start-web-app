@@ -1,6 +1,7 @@
 stages:
   - build
-    
+  - test
+
 django-build:
   stage: build
   only:

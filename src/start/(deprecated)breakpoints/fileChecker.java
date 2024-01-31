@@ -5,7 +5,7 @@ public class fileChecker {
 
     public static void main(String[] args) {
         // Specify the file path you want to monitor
-        Path filePath = Paths.get("C:\\Users\\02nke\\dcu\\yr4\\4yp\\2024-ca400-kellyn88-graya27\\src\\backend\\backend\\app\\instruct.txt");
+        Path filePath = Paths.get("C:\\Users\\adamg\\Documents\\code\\DCU\\Case4\\project\\2024-ca400-kellyn88-graya27\\src\\start\\breakpoints\\instruct.txt");
 
         try {
             // Get the file's directory

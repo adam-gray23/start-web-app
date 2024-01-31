@@ -126,5 +126,5 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-FLASK_HOST = 'localhost'
-FLASK_PORT = 80
+DOCKER_CONTAINER_HOST = 'localhost'  # or the IP address of your Docker host
+DOCKER_CONTAINER_PORT = 80

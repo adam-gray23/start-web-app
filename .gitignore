@@ -10,18 +10,14 @@ __pycache__/
 *.interp
 *.tokens
 *.MF
-src/start/(deprecated)breakpoints/.antlr/
-src/start/(deprecated)breakpoints/javax/
-src/start/(deprecated)breakpoints/META-INF/
-src/start/(deprecated)breakpoints/org/
-src/start/breakpoints(current)/.antlr/
-src/start/breakpoints(current)/javax/
-src/start/breakpoints(current)/META-INF/
-src/start/breakpoints(current)/org/
-src/start/line-by-line(deprecated)/.antlr/
-src/start/line-by-line(deprecated)/javax/
-src/start/line-by-line(deprecated)/META-INF/
-src/start/line-by-line(deprecated)/org/
+src/start/breakpoints/.antlr/
+src/start/breakpoints/javax/
+src/start/breakpoints/META-INF/
+src/start/breakpoints/org/
+src/start/line-by-line/.antlr/
+src/start/line-by-line/javax/
+src/start/line-by-line/META-INF/
+src/start/line-by-line/org/
 
 # IDE - VSCode
 .vscode

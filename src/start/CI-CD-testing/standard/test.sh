@@ -17,4 +17,3 @@ for file_name in $files_to_process; do
         echo "Success: Files are the same for ${given_file_name}."
     fi
 done
-echo "All tests passed."

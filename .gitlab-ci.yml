@@ -49,6 +49,7 @@ start-complete-test:
   only:
   - master
   - dev
+  - adam-local-dev
   image: java:18
   script:
     - echo "Starting complete test..."

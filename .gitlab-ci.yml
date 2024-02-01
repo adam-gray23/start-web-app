@@ -49,10 +49,14 @@ start-complete-test:
   only:
   - master
   - dev
-  - adam-local-dev
   image: java:18
   script:
-    - echo "Starting complete test..."
+    - echo "Starting test for standard jar..."
     - cd src/start/CI-CD-testing/standard
     - ./test.sh
-    - echo "Complete test finished."
+    - echo "Standard test finished."
+
+    -echo "Starting test for debug jar..."
+    - cd src/start/CI-CD-testing/debug
+    - ./test.sh
+    - echo "Debug test finished."

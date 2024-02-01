@@ -78,6 +78,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             System.exit(0);
         }
         //output successful message
+        System.out.println();
         System.out.println("Output file and number of stops match!");
     }
 
@@ -91,7 +92,6 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     //show the tree
     @Override
     public Object visitProgram(startParser.ProgramContext ctx) {
-        System.out.println("in program");
         // Iterate through each line
         for (int i = 0; ctx.line(i) != null; i++) {
             String lineText = ctx.line(i).getText();
@@ -1328,7 +1328,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                                         //if the current line in global arraylist of breakpoints, wait for user input
                                                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                                             int lineToPass = ctx.line(i).start.getLine();
-                                                            System.out.println("Line " + lineToPass);
                                                             breakpoint(lineToPass);
                                                         }
                                                         else{

@@ -37,6 +37,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (NoSuchElementException e){
+            //do nothing
         }
     }
 
@@ -49,7 +51,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             e.printStackTrace();
         }
         //call the main function of callFlask.java
-        callFlask.main(line, sessionToken);
+        callDjango.main(line, sessionToken);
         //call the main function of fileChecker.java
         fileChecker.main(null);
         readFile();
@@ -67,16 +69,16 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             else if (ctx.line(i).getText().equals("nl")){
                 //if last line is nl, break
                 if (ctx.line(i + 1) == null){
+                    visit(ctx.line(i));
                     break;
                 }
                 else{
+                    visit(ctx.line(i));
                     continue;
                 }
             }
             else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
-                System.out.println(lineText); //REMOVE LATER
                 // Visit the line
-                System.out.println("current line: " + ctx.line(i).getText());
                 visit(ctx.line(i));
 
                 //if we have just visited an if statement, continue to the next line
@@ -995,11 +997,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         HashMap<String, Object> map2 = new HashMap<String, Object>(mappy.peek());
         //visit the expression within the for loop and assign it to a variable
         Object val = visit(ctx.expression());
-        System.out.println("val is " + val);
         if (loopedOver == null){
             loopedOver = val.toString();
         }
-        System.out.println(loopedOver);
         
         if (lastNonSpecialChar == null){
             for (int i = loopedOver.length() - 1; i >= 0; i--){
@@ -1013,7 +1013,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
             }
         }
-        System.out.println("last non special char is " + lastNonSpecialChar);
         //if the value is an arraylist, visit the block
         if(val instanceof ArrayList){
             //change val to be an ArrayList
@@ -1022,7 +1021,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             for(int i = 0; i < arr.size(); i++){
                 //set current char
                 currentCharInArray = arr.get(i);
-                System.out.println("curr is " + currentCharInArray);
                 //create a new variable for the element in the arraylist
                 String var = ctx.NAME().getText();
                 //put the element in the arraylist into the variable
@@ -1168,9 +1166,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     //visit the line
                     Object val = visit(ctx.line(i));
                     //print line text
-                    System.out.println("line text is: " + ctx.line(i).getText());
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
+                        visit(ctx.line(i));
                         continue;
                     }
                     //else if the line starts with loop while
@@ -1196,6 +1194,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //if next line is not null, wait
                     if (ctx.line(i).getText().equals("nl")){
+                        visit(ctx.line(i));
                         continue;
                     }
                     else {
@@ -1240,6 +1239,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
+                        visit(ctx.line(i));
                         continue;
                     }
                     else {
@@ -1257,36 +1257,28 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 var parent2 = ctx.getParent();
                                 //loop back until we find program
                                 while (parent2 != null){
-                                    System.out.println("parent is: " + parent2.getClass().getSimpleName());
                                     if(parent2 instanceof startParser.ProgramContext){
                                         //print child 0 of program
-                                        System.out.println("child 0 of program is: " + parent2.getChild(0).getText());
                                         //get the line that comes after that
                                         var line = (parent2.getChildCount() - 2);
-                                        System.out.println("line is: " + line);                                        
                                         //start at this node, while not null update to parent
                                         var parent3 = ctx.getParent();
                                         int numOfIfs = 0;
                                         while (parent3 != null){
-                                            System.out.println("parent3 is: " + parent3.getClass().getSimpleName());
                                             if (parent3 instanceof startParser.If_statementContext){
                                                 numOfIfs++;
                                             }
                                             parent3 = parent3.getParent();
                                         }
-                                        System.out.println("num of ifs is: " + numOfIfs);
 
                                         var parent4 = ctx.getParent();
                                         while (parent4 != null){
-                                            System.out.println("parent4 is: " + parent4.getClass().getSimpleName());
                                             if (parent4 instanceof startParser.If_statementContext){
                                                 numOfIfs--;
                                                 if (numOfIfs == 0){
                                                     //get the text of this line, save it
                                                     String text = parent4.getText();
-                                                    System.out.println("this text is: " + text);
                                                     String lineText = parent2.getChild(line).getText();
-                                                    System.out.println("line text is: " + lineText);
                                                     //if the text is the same as text on line, dont wait
                                                     if (text.equals(lineText)){
                                                         break;
@@ -1334,6 +1326,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
+                        visit(ctx.line(i));
                         continue;
                     }
                     else {

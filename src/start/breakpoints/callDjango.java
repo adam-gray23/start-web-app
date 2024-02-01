@@ -1,11 +1,11 @@
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-public class callFlask {
+public class callDjango {
     public static void main(int line, String token) {
         try {
-            // Set the URL of your Flask server endpoint
-            String url = "http://localhost:80/pause";
+            // Set the URL of your Django server endpoint
+            String url = "http://localhost:8000/pause-code/";
 
             // Create the HttpURLConnection
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -17,8 +17,12 @@ public class callFlask {
             connection.setDoOutput(true);
 
             // Send the request
+            // put the token in the header
+            connection.setRequestProperty("X-CSRFToken", token);
+            // set cookies value to the token value
+            connection.setRequestProperty("Cookie", "csrftoken=" + token);
             OutputStream os = connection.getOutputStream();
-            byte[] bArr = (String.valueOf(line).concat(" " + token)).getBytes();
+            byte[] bArr = String.valueOf(line).getBytes();
             os.write(bArr);
             os.flush();
             os.close();

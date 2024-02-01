@@ -51,6 +51,12 @@
         box-shadow: 0px 0px 1px 1px red inset;
     }
 
+    .myMarker {
+        position:absolute;
+        background:yellow;
+        z-index:20
+    }
+
     /* Todo: Move this out of this file */
 
 </style>
@@ -89,7 +95,14 @@ write ("hello") nl
 
     socket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        console.log(data);
+        console.log(data)
+
+        // get the integer value from the data
+        var line = data["message"]
+        line -= 1
+
+        var Range = ace.require('ace/range').Range;
+        editor.session.addMarker(new Range(line, 0, line, 1), "myMarker", "fullLine");
     }
 
     socket.onclose = function(e) {
@@ -230,9 +243,9 @@ write ("hello") nl
 
 
     function uploadCode() {         
-        var dummy = document.getElementsByClassName("ace_content")[0].innerText;
+        var ideText = document.getElementsByClassName("ace_content")[0].innerText;
         var formData = new FormData();
-        formData.append("text_content", dummy);
+        formData.append("text_content", ideText);
         formData.append("debugMode", debugMode)
         formData.append("breakpoints", editor.session.getBreakpoints());
 
@@ -250,11 +263,11 @@ write ("hello") nl
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
 
-                if (response.result.error != "") {
-                    generateResult(response.result.error);
+                if (response.error != "") {
+                    generateResult(response.error);
                 }
                 else{
-                    generateResult(response.result.output);
+                    generateResult(response.output);
                 }
             } else {
                 console.error("Error sending text content to the server");

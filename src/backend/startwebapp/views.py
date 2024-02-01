@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 import subprocess
@@ -21,26 +22,44 @@ def upload_code(request):
         text_content = request.POST.get('text_content', '')
         debugMode = request.POST.get('debugMode', '')
         breakpoints = request.POST.get('breakpoints', '')
+        token = request.headers.get('X-Csrftoken')
 
         # Process and save the text content to a directory
         if text_content:
             # Define the URL where the Flask server is running
-            flask_url = f'http://{settings.FLASK_HOST}:{settings.FLASK_PORT}/upload'
 
             try:
-                # Send a POST request to the Flask server
-                response = requests.post(
-                    flask_url,
-                    headers={'X-Csrftoken': request.headers.get('X-Csrftoken')},
-                    data={
-                        'file': text_content,
-                        'debugMode': debugMode,
-                        'breakpoints': breakpoints
-                    })
-                response_data = response.json()
+                working_dir = os.getcwd()
+                file_path = os.path.join(working_dir, 'input.txt')
+                breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
 
-                # Print the response body
-                return JsonResponse({'result': response_data})
+                with open(file_path, 'w') as f:
+                    f.write(text_content)
+                with open(breakpoint_path, 'w') as f:
+                    f.write(breakpoints)
+
+                jar_path = os.path.join(working_dir, 'start-breakpoints.jar')
+
+                command = ['java', '-jar', jar_path, file_path, token]
+
+                try:
+                    # Run the command
+                    result = subprocess.run(command, capture_output=True, text=True, check=True)
+
+                    # Process the result as needed
+                    output = result.stdout
+                    error = result.stderr
+
+                    # You can return the output to the client or perform further processing
+                    os.remove(file_path)
+                    os.remove(breakpoint_path)
+
+                    return JsonResponse({'output': output, 'error': error}, status=200)
+
+                except subprocess.CalledProcessError as e:
+                    # Handle the case where the command fails
+                    return JsonResponse({'error': f'Command failed with return code {e.returncode}', 'output': e.output}, status=500)
+
             except requests.RequestException as e:
                 # Handle request error
                 return JsonResponse({'error': str(e)}, status=500)
@@ -56,29 +75,26 @@ def step_code(request):
 
         breakpoints = request.POST.get('breakpoints', '')
 
-        # Define the URL where the Flask server is running
-        flask_url = f'http://{settings.FLASK_HOST}:{settings.FLASK_PORT}/step'
+        working_dir = os.getcwd()
+        file_path = os.path.join(working_dir, 'instruct.txt')
+        breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+        
+        with open(file_path, 'w') as f:
+            f.write("continue")
 
-        try:
-            # Send a POST request to the Flask server
-            response = requests.post(
-                flask_url, 
-                headers={'X-Csrftoken': request.headers.get('X-Csrftoken')},
-                data={'breakpoints': breakpoints}
-            )
-            response_data = response.json()
+        with open(breakpoint_path, 'w') as f:
+            f.write(breakpoints)
 
-            # Print the response body
-            return JsonResponse({'result': response_data})
-        except requests.RequestException as e:
-            # Handle request error
-            return JsonResponse({'error': str(e)}, status=500)
+
+        return JsonResponse({'output': 'success', 'error': ''}, status=200)
         
 def pause_code(request):
     global paused
     paused = True
     # get line number from request body
-    line_number = request.POST.get('line', '')
+
+    # get the line number from the request body
+    line_number = json.loads(request.body.decode('utf-8'))
 
     layer = get_channel_layer()
     async_to_sync(layer.group_send)('test', {'type': 'send_message', 'message': line_number})

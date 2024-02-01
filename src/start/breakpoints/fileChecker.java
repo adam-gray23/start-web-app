@@ -33,11 +33,9 @@ public class fileChecker {
                         // Check if the modified file is the one you're interested in
                         if (modifiedFilePath.equals(filePath.getFileName())) {
                             // Perform your content checking logic here
-                            System.out.println("File modified. Check for certain contents...");
                             // Example: Read the file contents and perform checks
                             String fileContent = new String(Files.readAllBytes(filePath));
                             if (fileContent.contains("continue")) {
-                                System.out.println("Found certain content in the file!");
                                 key.reset();
                                 return;
                             }

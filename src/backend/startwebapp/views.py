@@ -1,9 +1,14 @@
+import json
 import os
 import requests
 import subprocess
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+paused = True           # Bad practice, but it works for now, chnage to session storage later
 
 # Create your views here.
 def home_view(request):
@@ -11,26 +16,90 @@ def home_view(request):
 
 def upload_code(request):
     if request.method == 'POST':
+        global paused
+        paused = False
+
         text_content = request.POST.get('text_content', '')
         debugMode = request.POST.get('debugMode', '')
         breakpoints = request.POST.get('breakpoints', '')
+        token = request.headers.get('X-Csrftoken')
 
         # Process and save the text content to a directory
         if text_content:
             # Define the URL where the Flask server is running
-            flask_url = f'http://{settings.FLASK_HOST}:{settings.FLASK_PORT}/upload'
 
             try:
-                # Send a POST request to the Flask server
-                response = requests.post(flask_url, data={
-                    'file': text_content,
-                    'debugMode': debugMode,
-                    'breakpoints': breakpoints
-                })
-                response_data = response.json()
+                working_dir = os.getcwd()
+                file_path = os.path.join(working_dir, 'input.txt')
+                breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
 
-                # Print the response body
-                return JsonResponse({'result': response_data})
+                with open(file_path, 'w') as f:
+                    f.write(text_content)
+                with open(breakpoint_path, 'w') as f:
+                    f.write(breakpoints)
+
+                jar_path = os.path.join(working_dir, 'start-breakpoints.jar')
+
+                command = ['java', '-jar', jar_path, file_path, token]
+
+                try:
+                    # Run the command
+                    result = subprocess.run(command, capture_output=True, text=True, check=True)
+
+                    # Process the result as needed
+                    output = result.stdout
+                    error = result.stderr
+
+                    # You can return the output to the client or perform further processing
+                    os.remove(file_path)
+                    os.remove(breakpoint_path)
+
+                    return JsonResponse({'output': output, 'error': error}, status=200)
+
+                except subprocess.CalledProcessError as e:
+                    # Handle the case where the command fails
+                    return JsonResponse({'error': f'Command failed with return code {e.returncode}', 'output': e.output}, status=500)
+
             except requests.RequestException as e:
                 # Handle request error
                 return JsonResponse({'error': str(e)}, status=500)
+            
+def step_code(request):
+    if request.method == 'POST':
+        # if not paused return 
+        global paused
+        if not paused:
+            return JsonResponse({'result': 'not paused'})
+
+        paused = False
+
+        breakpoints = request.POST.get('breakpoints', '')
+
+        working_dir = os.getcwd()
+        file_path = os.path.join(working_dir, 'instruct.txt')
+        breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+        
+        with open(file_path, 'w') as f:
+            f.write("continue")
+
+        with open(breakpoint_path, 'w') as f:
+            f.write(breakpoints)
+
+
+        return JsonResponse({'output': 'success', 'error': ''}, status=200)
+        
+def pause_code(request):
+    global paused
+    paused = True
+    # get line number from request body
+
+    # get the line number from the request body
+    line_number = json.loads(request.body.decode('utf-8'))
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)('test', {'type': 'send_message', 'message': line_number})
+    # send line number to frontend
+    return JsonResponse({'result': line_number})
+
+
+

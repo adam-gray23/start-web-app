@@ -23,27 +23,6 @@ django-build:
     - Stop-Process -ID $process.Id -Force
     - echo "Django server tests successful."
 
-flask-build:
-  stage: build
-  only:
-  - master
-  - dev
-  image: python:3.11
-  dependencies:
-    - django-build
-  before_script:
-    - python -m pip install Flask
-    - cd src/backend/backend/app
-    - echo "Starting Flask server..."
-    - Start-Process python -ArgumentList "-m flask run --host 0.0.0.0 --port 80" -NoNewWindow
-    - sleep 20
-  script:
-    - echo "Flask server started. Init test..."
-    - echo "Test finished."
-    - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 80).OwningProcess
-    - Stop-Process -ID $process.Id -Force
-    - echo "Django server tests successful."
-
 start-complete-test:
   stage: test
   only:

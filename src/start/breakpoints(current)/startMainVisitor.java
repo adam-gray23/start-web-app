@@ -49,7 +49,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             e.printStackTrace();
         }
         //call the main function of callFlask.java
-        callDjango.main(line, sessionToken);
+        //callFlask.main(line, sessionToken);
         //call the main function of fileChecker.java
         fileChecker.main(null);
         readFile();

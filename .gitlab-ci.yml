@@ -34,7 +34,8 @@ start-complete-test:
     - cd src/start/CI-CD-testing/standard
     - ./test.sh
     - echo "Standard test finished."
+
     - echo "Starting test for debug jar..."
-    - cd src/start/CI-CD-testing/debug
+    - cd ../debug
     - ./test.sh
     - echo "Debug test finished."

@@ -23,28 +23,6 @@ var result = ace.edit("result", {
     readOnly: true
 });
 
-const bpSocket = new WebSocket(
-    'ws://'
-    + window.location.host
-    + '/ws/breakpoint/'
-);
-
-bpSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    console.log(data)
-
-    // get the integer value from the data
-    var line = data["message"]
-    line -= 1
-
-    var Range = ace.require('ace/range').Range;
-    editor.session.addMarker(new Range(line, 0, line, 1), "myMarker", "fullLine");
-}
-
-bpSocket.onclose = function(e) {
-    console.error('Websocket closed unexpectedly');
-};
-
 editor.on("guttermousedown", function(e) {
     var target = e.domEvent.target;
 
@@ -155,6 +133,14 @@ function stepFunc() {
             console.error("Error sending text content to the server");
         }
     };
+
+    const prevMarkers = editor.session.getMarkers();
+    if (prevMarkers) {
+        const prevMarkersArr = Object.keys(prevMarkers);
+        for (let item of prevMarkersArr) {
+            editor.session.removeMarker(prevMarkers[item].id);
+        }
+    }
 
     // Send the FormData with the text content to the server
     xhr.send(formData);

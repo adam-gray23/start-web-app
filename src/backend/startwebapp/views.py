@@ -14,6 +14,8 @@ paused = True           # Bad practice, but it works for now, chnage to session 
 def home_view(request):
     return render(request, 'index.html')
 
+# Requests
+
 def upload_code(request):
     if request.method == 'POST':
         global paused
@@ -97,7 +99,7 @@ def pause_code(request):
     line_number = json.loads(request.body.decode('utf-8'))
 
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)('test', {'type': 'send_message', 'message': line_number})
+    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': line_number})
     # send line number to frontend
     return JsonResponse({'result': line_number})
 

@@ -2,10 +2,10 @@ import os
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-class  TestConsumer(AsyncWebsocketConsumer):
+class BreakpointConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.group_name = 'test'
+        self.group_name = 'breakpoint'
 
         await self.channel_layer.group_add(
             self.group_name,
@@ -22,12 +22,6 @@ class  TestConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-
-        working_dir = os.getcwd()
-        file_path = os.path.join(working_dir, 'test.txt')
-
-        with open(file_path, 'w') as f:
-            f.write(text_data_json)
 
         message = text_data_json['message']
 

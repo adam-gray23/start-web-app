@@ -39,7 +39,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (NoSuchElementException e){
+        } catch(NoSuchElementException e){
             //do nothing
         }
     }
@@ -107,8 +107,13 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                         break;
                     }
                     else{
-                        //print the current line content
-                        continue;
+                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            int line = ctx.line(i).start.getLine();
+                            breakpoint(line);
+                        }
+                        else{
+                            continue;
+                        }
                     }
                 }
                 //else if next line an nl, and two down is a comment dont wait
@@ -126,6 +131,16 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                             else{
                                 continue;
                             }
+                        }
+                    }
+                    else{
+                        //means next line is the last line and is nl
+                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            int line = ctx.line(i).start.getLine();
+                            breakpoint(line);
+                        }
+                        else{
+                            continue;
                         }
                     }
                 }
@@ -1148,13 +1163,25 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else {
                         //check if we are at the last line
                         if (i == ctx.line().size() - 1){
-                            //we need to see if the next line is null
-                            continue;
+                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                int line = ctx.line(i).start.getLine();
+                                breakpoint(line);
+                            }
+                            else{
+                                continue;
+                            }
 
                         }
                         else {                            //if the current char is not the last non special char, wait
                             if (currentCharInArray.toString().equals(lastNonSpecialChar)){
-                                continue;
+                                //if the current line in global arraylist of breakpoints, wait for user input
+                                if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                    int line = ctx.line(i).start.getLine();
+                                    breakpoint(line);
+                                }
+                                else{
+                                    continue;
+                                }
                             }
                             else {
                                 //if the current line in global arraylist of breakpoints, wait for user input
@@ -1193,8 +1220,17 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else {
                         //check if we are at the last line, if so no wait, else wait for user input
                         if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
+                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                int line = ctx.line(i).start.getLine();
+                                breakpoint(line);
+                                if (val != null){
+                                    return val;
+                                }
+                            }
+                            else{
+                                if (val != null){
+                                    return val;
+                                }
                             }
                         }
                         else {
@@ -1229,7 +1265,13 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                                     String lineText = parent2.getChild(line).getText();
                                                     //if the text is the same as text on line, dont wait
                                                     if (text.equals(lineText)){
-                                                        break;
+                                                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                                            int lineCheck = ctx.line(i).start.getLine();
+                                                            breakpoint(lineCheck);
+                                                        }
+                                                        else{
+                                                            continue;
+                                                        }
                                                     }
                                                     else{
                                                         //if the current line in global arraylist of breakpoints, wait for user input
@@ -1280,8 +1322,17 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else {
                         //check if we are at the last line, if so no wait, else wait for user input
                         if (i == ctx.line().size() - 1){
-                            if (val != null){
-                                return val;
+                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                int line = ctx.line(i).start.getLine();
+                                breakpoint(line);
+                                if (val != null){
+                                    return val;
+                                }
+                            }
+                            else{
+                                if (val != null){
+                                    return val;
+                                }
                             }
                         }
                         else {

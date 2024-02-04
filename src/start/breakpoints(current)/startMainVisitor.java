@@ -48,8 +48,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //call the main function of callFlask.java
-        //callFlask.main(line, sessionToken);
+        //call the main function of callDjango.java
+        callDjango.pauseCode(line, sessionToken);
         //call the main function of fileChecker.java
         fileChecker.main(null);
         readFile();

@@ -95,15 +95,17 @@ function uploadCode() {
             var response = JSON.parse(xhr.responseText);
 
             if (response.error != "") {
-                generateResult(response.error);
+                console.log(response.error)
             }
             else{
-                generateResult(response.output);
+                console.log(response.output)
             }
         } else {
             console.error("Error sending text content to the server");
         }
     };
+
+    result.session.setValue("");
 
     // Send the FormData with the text content to the server
     xhr.send(formData);
@@ -127,8 +129,6 @@ function stepFunc() {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-
-            console.log(response)
         } else {
             console.error("Error sending text content to the server");
         }

@@ -91,8 +91,13 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                         break;
                     }
                     else{
-                        //print the current line content
-                        continue;
+                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            int line = ctx.line(i).start.getLine();
+                            breakpoint(line);
+                        }
+                        else{
+                            continue;
+                        }
                     }
                 }
                 //else if next line an nl, and two down is a comment dont wait
@@ -110,6 +115,16 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                             else{
                                 continue;
                             }
+                        }
+                    }
+                    else{
+                        //means next line is the last line and is nl
+                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            int line = ctx.line(i).start.getLine();
+                            breakpoint(line);
+                        }
+                        else{
+                            continue;
                         }
                     }
                 }

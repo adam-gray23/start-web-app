@@ -103,5 +103,28 @@ def pause_code(request):
     # send line number to frontend
     return JsonResponse({'result': line_number})
 
+def print_line(request):
+    # get the line number from the request body
+    
+    data = request.body.decode('utf-8')
+    data = data.split(' ')
+    line = " ".join(data[:len(data)-2])
+    line_number = data[len(data)-2]
+    column = data[len(data)-1]
+    
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)(
+        'print',
+        {
+            'type': 'send_message',
+            'line': line,
+            'line_number': line_number,
+            'column': column
+        }
+    )
+    # send line number to frontend
+    return JsonResponse({'result': line_number})
+
 
 

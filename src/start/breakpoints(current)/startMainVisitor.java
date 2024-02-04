@@ -1202,8 +1202,24 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 for (int i = 0; i < ctx.line().size(); i++) {
                     //visit the line
                     Object val = visit(ctx.line(i));
-                    if (val != null){
-                        return val;
+                    //check if line is nl
+                    if (ctx.line(i).getText().equals("nl")){
+                        visit(ctx.line(i));
+                        continue;
+                    }
+                    else {
+                        if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            int line = ctx.line(i).start.getLine();
+                            breakpoint(line);
+                            if (val != null){
+                                return val;
+                            }
+                        }
+                        else{
+                            if (val != null){
+                                return val;
+                            }
+                        }
                     }
                 }
                 return null;

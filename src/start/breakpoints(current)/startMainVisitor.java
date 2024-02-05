@@ -1,6 +1,8 @@
 //import the hashmap and map
 import java.util.*;
 
+import org.antlr.v4.runtime.Token;
+
 import java.io.*;
 public class startMainVisitor extends startBaseVisitor<Object>{
     Scanner scanner = new Scanner(System.in);
@@ -90,6 +92,9 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     visit(ctx.line(i));
                     continue;
                 }
+            }
+            else if (ctx.line(i).comment() != null){
+                visit(ctx.line(i));
             }
             else if (!lineText.equals("nl") && ctx.line(i).comment() == null) {
                 // Visit the line
@@ -1416,6 +1421,32 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     @Override
     public Object visitNl(startParser.NlContext ctx){
         printLine("\n");
+        return null;
+    }
+
+    @Override
+    //visit comment
+    public Object visitComment(startParser.CommentContext ctx){
+        ArrayList<Integer> comments = new ArrayList<Integer>();
+        int firstLineOfComment = ctx.start.getLine();
+        comments.add(firstLineOfComment);
+        // Add all lines covered by the comment
+        Token startToken = ctx.start;
+        Token stopToken = ctx.stop;
+        int startLine = startToken.getLine();
+        int stopLine = stopToken.getLine();
+        for (int i = startLine + 1; i <= stopLine; i++) {
+            comments.add(i);
+        }
+        // or check if anything in breakPointArr is in comments
+        for (int i = 0; i < comments.size(); i++) {
+            if (breakPointArr.contains(comments.get(i))) {
+                int line = comments.get(i);
+                breakpoint(line);
+                //remove the line from breakPointArr
+                breakPointArr.remove(comments.get(i));
+            }
+        }
         return null;
     }
 }

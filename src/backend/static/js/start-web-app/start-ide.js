@@ -74,7 +74,7 @@ function changeDebugMode() {
 }
 
 function uploadCode() {         
-    var ideText = document.getElementsByClassName("ace_content")[0].innerText;
+    var ideText = editor.session.getValue();
     var formData = new FormData();
     formData.append("text_content", ideText);
     formData.append("debugMode", debugMode)
@@ -134,6 +134,13 @@ function stepFunc() {
         }
     };
 
+    clearHighlightedLines();
+
+    // Send the FormData with the text content to the server
+    xhr.send(formData);
+}
+
+function clearHighlightedLines() {
     const prevMarkers = editor.session.getMarkers();
     if (prevMarkers) {
         const prevMarkersArr = Object.keys(prevMarkers);
@@ -141,21 +148,4 @@ function stepFunc() {
             editor.session.removeMarker(prevMarkers[item].id);
         }
     }
-
-    // Send the FormData with the text content to the server
-    xhr.send(formData);
-}
-
-function generateResult(text_content){
-    result.session.setValue("");
-
-    var resultDiv = document.getElementById("result");
-    // chnage result.session length to the length of the output
-
-    result.session.insert({
-        row: 0,
-        column: 0
-    }, text_content);
-
-
 }

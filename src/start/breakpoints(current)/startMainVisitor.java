@@ -7,6 +7,8 @@ import java.io.*;
 public class startMainVisitor extends startBaseVisitor<Object>{
     Scanner scanner = new Scanner(System.in);
     String sessionToken = "";
+    int currentPrintLine = 0;
+    int currentLineLength = 0;
     Stack<HashMap<String, Object>> mappy = new Stack<HashMap<String, Object>>();
     public startMainVisitor(){
         readFile();
@@ -57,6 +59,18 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         //call the main function of fileChecker.java
         fileChecker.main(null);
         readFile();
+    }
+
+    public void printLine(String line){
+        callDjango.printLine(line, currentPrintLine, currentLineLength, sessionToken);
+        // increase currentPrintLine by number of \n characters in line
+        for (int i = 0; i < line.length(); i++){
+            currentLineLength++;
+            if (line.charAt(i) == '\n'){
+                currentLineLength = 0;
+                currentPrintLine++;
+            }
+        }
     }
 
     //show the tree
@@ -241,10 +255,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
 
         if(!map.containsKey(var)){
             //print out the line number and column number
-            System.out.println("Assignment Error!");
-            System.out.println("Token: " + var);
-            System.out.print("line " + ctx.start.getLine() + ", column " + ctx.start.getCharPositionInLine() + ": ");
-            System.out.println("Variable " + var + " is not defined!");
+            printLine("Assignment Error!\nToken: " + var + "\nline " + ctx.start.getLine() + ", column " + ctx.start.getCharPositionInLine() + ": Variable " + var + " is not defined!\n");
             System.exit(0);
         }
 
@@ -289,10 +300,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 else{
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only add two numbers or two strings together!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only add two numbers or two strings together!\n");
                     System.exit(0);
                 }
             case "sub":
@@ -311,10 +319,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 else{
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only subtract two numbers!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only subtract two numbers!\n");
                     System.exit(0);
                 }
             default:
@@ -345,27 +350,20 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 else{
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only multiply two numbers!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only multiply two numbers!\n");
                     System.exit(0);
                 }
             case "div":
             case "/":
                 if (right instanceof Float){
                     if ((Float) right == 0.0){
-                        System.out.println("Error: Divide by zero error.");
-                        int line = ctx.start.getLine();
-                        System.out.println("line " + line);
+                        printLine("Error: Divide by zero error!\nLine " + ctx.start.getLine() + "\n");
                         System.exit(0);
                     }
                 }
                 if (right instanceof Integer){
                     if ((Integer) right == 0){
-                        System.out.println("Error: Divide by zero error.");
-                        int line = ctx.start.getLine();
-                        System.out.println("line " + line);
+                        printLine("Error: Divide by zero error!\nLine " + ctx.start.getLine() + "\n");
                         System.exit(0);
                     }
                 }
@@ -384,10 +382,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     return l / r;
                 }
                 else{
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only divide two numbers!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only divide two numbers!\n");
                     System.exit(0);
                 }
             case "mod":
@@ -406,10 +401,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 else{
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only get the mod of two numbers!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only get the mod of two numbers!\n");
                     System.exit(0);
                 }
             default:
@@ -438,10 +430,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         }
         else{
             //invalid operation
-            System.out.println("Invalid Operation!");
-            int line = ctx.getStart().getLine();
-            System.out.println("Line " + line);
-            System.out.println("Remember, you can only raise a number to another number!");
+            printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only raise a number to another number!\n");
             System.exit(0);
         }
         return null;
@@ -493,10 +482,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     }
     //if the expression is not a boolean, print an error message and exit
     else{
-        System.out.println("Invalid Operation!");
-        int line = ctx.getStart().getLine();
-        System.out.println("Line " + line);
-        System.out.println("Remember, you can only negate a boolean!");
+        printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only negate a boolean!\n");
         System.exit(0);
     }
     return null;
@@ -545,10 +531,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 else {
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only compare two numbers or two strings!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    System.exit(0);
                 }
             }
         case "<=":
@@ -577,10 +561,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 else {
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only compare two numbers or two strings!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    System.exit(0);
                 }
             }
         case ">":
@@ -609,10 +591,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 else {
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only compare two numbers or two strings!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    System.exit(0);
                 }
             }
         case "<":
@@ -641,18 +621,13 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 else {
                     //invalid operation
-                    System.out.println("Invalid Operation!");
-                    int line = ctx.getStart().getLine();
-                    System.out.println("Line " + line);
-                    System.out.println("Remember, you can only compare two numbers or two strings!");
+                    printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    System.exit(0);
                 }
             }
         default:
         //default case is an error
         try{
-            System.out.println("Error: Invalid comparison!");
-            //get the line
-            int line = ctx.getStart().getLine();
             var lclass = left.getClass();
             var rclass = right.getClass();
             //split classes on the .
@@ -661,16 +636,13 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             //get the last element of the split
             String lclass2 = lsplit[lsplit.length - 1];
             String rclass2 = rsplit[rsplit.length - 1];
-            System.out.println("Line " + line + ": " + lclass2 + " cannot be compared to " + rclass2);
+            printLine("Error: Invalid comparison!\nLine " + ctx.getStart().getLine() + ": " + lclass2 + " cannot be compared to " + rclass2 + "\n");
             System.exit(0);
             return null;
         }
         //catch the null pointer exception if there is one
         catch(Exception e){
-            System.out.println("Error: Null values cannot be compared!");
-            int line = ctx.getStart().getLine();
-            System.out.println("Line " + line);
-            System.out.println("Try and ensure that no nullable values are compared!");
+            printLine("Error: Null values cannot be compared!\nLine " + ctx.getStart().getLine() + "\nTry and ensure that no nullable values are compared!\n");
             System.exit(0);
             return null;
         }
@@ -691,7 +663,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             //add the expression to the string
             out += (visit(ctx.expression(i)));
         }
-        System.out.print(out);
+        printLine(out);
         //return null
         return null;
     }
@@ -726,10 +698,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         //invalid if statement
         else{
-            System.out.println("Error: Invalid if/otherwise statement!");
-            int line = ctx.getStart().getLine();
-            System.out.println("Line " + line);
-            System.out.println("Remember, you can only use a boolean value in an if statement!");
+            printLine("Error: Invalid if/otherwise statement!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only use a boolean value in an if statement!\n");
             System.exit(0);
         }
         return null;
@@ -805,8 +774,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 //if there is an index error print it
                 else{
-                    System.out.println("Error: Index: '" + index + "' is not an integer!");
-                    System.out.println("Line: " + ctx.start.getLine());
+                    printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
                     System.exit(0);
                 }
             }
@@ -820,8 +788,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 //otherwise print an error
                 else{
-                    System.out.println("Error: Index: '" + index + "' is not an integer!");
-                    System.out.println("Line: " + ctx.start.getLine());
+                    printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
                     System.exit(0);
                 }
             }
@@ -833,8 +800,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     return s.charAt((Integer) index);
                 }
                 else{
-                    System.out.println("Error: Index: '" + index + "' is not an integer!");
-                    System.out.println("Line: " + ctx.start.getLine());
+                    printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
                     System.exit(0);
                 }
             }
@@ -853,14 +819,13 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 //otherwise print an error
                 else{
-                    System.out.println("Error: Index: '" + index + "' is not an integer!");
-                    System.out.println("Line: " + ctx.start.getLine());
+                    printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
                     System.exit(0);
                 }
             }
             //if the val is not an arraylist, print an error
             else{
-                System.out.println("Error: " + ctx.NAME().getText() + " is not an array, string or number, or has not been defined!");
+                printLine("Error: " + ctx.NAME().getText() + " is not an array, string or number, or has not been defined!\nLine " + ctx.start.getLine() + "\n");
                 System.exit(0);
             }
             //return null
@@ -870,11 +835,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         catch (Exception e){
             String s = e.toString();
             String[] parts = s.split(" ");
-            System.out.println("Error: Index " + parts[2] + " out of bounds for array of length " + parts[parts.length - 1]);
-            System.err.println("Offending Symbol/Token: " + ctx.NAME().getText());
             int line = ctx.start.getLine();
-            System.err.println("Line: " + line);
-            System.out.println("Remember: Arrays are indexed from 0 to length of the array - 1");
+            printLine("Error: Index " + parts[2] + " out of bounds for array of length " + parts[parts.length - 1] + "\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember: Arrays are indexed from 0 to length of the array - 1\n");
             System.exit(0);
         }
         return null;
@@ -909,11 +871,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         catch (Exception e){
             String s = e.toString();
             String[] parts = s.split(" ");
-            System.out.println("Error: Index " + parts[2] + " out of bounds for array of length " + parts[parts.length - 1]);
-            System.err.println("Offending Symbol/Token: " + ctx.NAME().getText());
             int line = ctx.start.getLine();
-            System.err.println("Line: " + line);
-            System.out.println("Remember: Arrays are indexed from 0 to length of the array - 1");
+            printLine("Error: Index " + parts[2] + " out of bounds for array of length " + parts[parts.length - 1] + "\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember: Arrays are indexed from 0 to length of the array - 1\n");
             System.exit(0);
         }
         //return null
@@ -937,9 +896,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         //error if both expressions are not arrays
         else{
-            System.out.println("Error: Both expressions must be arrays!");
-            int line = ctx.start.getLine();
-            System.err.println("Line: " + line);
+            printLine("Error: Both expressions must be arrays!\nLine " + ctx.start.getLine() + "\nRemember: You can only append two arrays together!\n");
             System.exit(0);
         }
         //return null
@@ -997,8 +954,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //error if the expression is not a list or a string
         else{
             String[] a = visit(ctx.expression()).getClass().toString().split("\\.");
-            System.out.println("Error: Cannot get length of " + a[a.length - 1]);
-            System.out.println("Line: " + ctx.start.getLine());
+            printLine("Error: Cannot get length of " + a[a.length - 1] + "\nLine: " + ctx.start.getLine() + "\nRemember: You can only get the length of an array or a string!\n");
             System.exit(0);
         }
         //return null
@@ -1076,11 +1032,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         //otherwise error
         else{
-            System.out.println("Error: " + val + " is not an array or a string");
-            System.err.println("Offending Symbol/Token: " + ctx.NAME().getText());
             int line = ctx.start.getLine();
-            System.err.println("Line: " + line);
-            System.out.println("Remember to loop up in numbers use a while loop");
+            printLine("Error: " + val + " is not an array or string\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to loop up in numbers use a while loop\n");
             System.exit(0);
         }
         return null;
@@ -1133,10 +1086,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             startParser.BlockContext block = func.block;
             //check if the number of arguments is correct
             if (args.size() != ctx.expression().size()){
-                System.err.println("Error: Incorrect number of arguments for function " + ctx.NAME().getText());
-                System.err.println("Offending Symbol/Token: " + ctx.NAME().getText());
                 int line = ctx.start.getLine();
-                System.err.println("Line: " + line);
+                printLine("Error: Incorrect number of arguments for function " + ctx.NAME().getText() + "\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to use the correct number of arguments for the function!\n");
                 System.exit(0);
             }
             //put the args into the original map
@@ -1162,11 +1113,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         //if the function is not defined, error
         catch (Exception e){
-            System.err.println("Error: Function " + ctx.NAME().getText() + " not defined!");
-            System.err.println("Offending Symbol/Token: " + ctx.NAME().getText());
             int line = ctx.start.getLine();
-            System.err.println("Line: " + line);
-            System.out.println("Remember to define your functions before you call them!");
+            printLine("Error: Function " + ctx.NAME().getText() + " not defined!\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to define your functions before you call them!\n");
             System.exit(0);
         }
         return null;
@@ -1463,11 +1411,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             }
         }
         //throw error
-        System.err.println("Error: Return statement outside of function");
-        System.err.println("Offending Symbol/Token: " + ctx.getText());
         int line = ctx.start.getLine();
-        System.err.println("Line: " + line);
-        System.out.println("Remember to return a value from a function!");
+        printLine("Error: Return statement outside of function\nOffending Symbol/Token: " + ctx.getText() + "\nLine: " + line + "\nRemember to return a value from a function!\n");
         System.exit(0);
         return null;
     }
@@ -1475,7 +1420,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     //override the visit function for the new line
     @Override
     public Object visitNl(startParser.NlContext ctx){
-        System.out.println();
+        printLine("\n");
         return null;
     }
 

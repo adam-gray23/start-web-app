@@ -19,3 +19,28 @@ bpSocket.onmessage = function(e) {
 bpSocket.onclose = function(e) {
     console.error('Websocket closed unexpectedly');
 };
+
+plSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/print/'
+);
+
+plSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+
+    console.log(data)
+    
+    var line = data["line"]
+    var line_number = parseInt(data["line_number"], 10)
+    var column = parseInt(data["column"], 10)
+
+    result.session.insert({
+        row: line_number,
+        column: column
+    }, line);
+}
+
+plSocket.onclose = function(e) {
+    console.error('Websocket closed unexpectedly');
+};

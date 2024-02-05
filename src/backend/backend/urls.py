@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('upload-code/', views.upload_code, name='upload-code'),
     path('step-code/', views.step_code, name='step-code'),
-    path('pause-code/', views.pause_code, name='pause-code')
+    path('pause-code/', views.pause_code, name='pause-code'),
+    path('print-line/', views.print_line, name='print-line')
 ]

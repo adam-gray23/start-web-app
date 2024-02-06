@@ -2,6 +2,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -25,6 +26,16 @@ public class start {
                 is = new FileInputStream(inputFile);
             }
 
+            String fileName = "token.txt";
+            File file = new File(fileName);
+            if (!file.exists()){
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             //output arg[1] to token.txt
             if (args.length >= 2) {
                 System.out.println("args[1]: " + args[1]);
@@ -32,7 +43,7 @@ public class start {
                 System.out.println("Writing number to token.txt: " + numberAsString);
                 try {
                     // Create a BufferedWriter object to write to file
-                    BufferedWriter writer = new BufferedWriter(new FileWriter("token.txt"));
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
                     // Write the number to the file
                     writer.write(numberAsString);
                     // Close the writer

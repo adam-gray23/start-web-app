@@ -1,8 +1,11 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import org.antlr.v4.runtime.CharStreams;
+
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 public class start {
     public static void main(String[] args) throws Exception {
@@ -22,6 +25,26 @@ public class start {
                 is = new FileInputStream(inputFile);
             }
 
+            //output arg[1] to token.txt
+            if (args.length >= 2) {
+                System.out.println("args[1]: " + args[1]);
+                String numberAsString = args[1];
+                System.out.println("Writing number to token.txt: " + numberAsString);
+                try {
+                    // Create a BufferedWriter object to write to file
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("token.txt"));
+                    // Write the number to the file
+                    writer.write(numberAsString);
+                    // Close the writer
+                    writer.flush();
+                    System.out.println("Number has been written to token.txt successfully.");
+                } catch (IOException e) {
+                    System.out.println("An error occurred while writing to the file: " + e.getMessage());
+                }
+            } else {
+                System.out.println("Please provide a number as arg[1].");
+            }
+
             // Create lexer and parser
             startLexer lexer = new startLexer(CharStreams.fromStream(is));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -30,7 +53,9 @@ public class start {
             parser.removeErrorListeners();
             parser.addErrorListener(new startErrorListener());
             //create a parse tree for the program
+            System.out.println("Parsing the program...");
             ParseTree tree = parser.program();
+
 
             //check for errors
             //if so errorListener will print the error and exit

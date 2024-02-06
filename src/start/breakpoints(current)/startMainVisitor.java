@@ -193,12 +193,22 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         map.put(var, val);
         //output all of the current values of each variable in the map to a txt file
         //one k,v per line
-        writeHashMapToFile(map, "output.txt");
+        writeHashMapToFile(map, "memory.csv");
         //return null
         return null;
     }
 
     private void writeHashMapToFile(HashMap<String, Object> map, String fileName) {
+        //check if file exists, if not make it in current dir
+        File file = new File(fileName);
+        if (!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
             for (HashMap.Entry<String, Object> entry : map.entrySet()) {
                 writer.println(entry.getKey() + "," + entry.getValue());

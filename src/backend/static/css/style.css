@@ -47,3 +47,12 @@ body {
     background:yellow;
     z-index:20
 }
+
+#memory {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 60%;
+    overflow: auto;
+}

@@ -1,3 +1,5 @@
+// breakpoint socket
+
 const bpSocket = new WebSocket(
     'ws://'
     + window.location.host
@@ -19,6 +21,8 @@ bpSocket.onmessage = function(e) {
 bpSocket.onclose = function(e) {
     console.error('Websocket closed unexpectedly');
 };
+
+// print line socket
 
 plSocket = new WebSocket(
     'ws://'
@@ -42,5 +46,28 @@ plSocket.onmessage = function(e) {
 }
 
 plSocket.onclose = function(e) {
+    console.error('Websocket closed unexpectedly');
+};
+
+// print memory socket
+
+pmSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/memory/'
+);
+
+pmSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+
+    console.log(data)
+    
+    var memory = data["message"]
+
+    document.getElementById("memoryContent").innerHTML = ""
+    document.getElementById("memoryContent").innerHTML = memory
+}
+
+pmSocket.onclose = function(e) {
     console.error('Websocket closed unexpectedly');
 };

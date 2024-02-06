@@ -9,6 +9,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 paused = True           # Bad practice, but it works for now, chnage to session storage later
+running = False         # Change to session storage later
 
 # Create your views here.
 def home_view(request):
@@ -19,6 +20,11 @@ def home_view(request):
 def upload_code(request):
     if request.method == 'POST':
         global paused
+        global running
+        if running:
+            return JsonResponse({'result': 'running'})
+        
+        running = True
         paused = False
 
         text_content = request.POST.get('text_content', '')
@@ -34,6 +40,7 @@ def upload_code(request):
                 working_dir = os.getcwd()
                 file_path = os.path.join(working_dir, 'input.txt')
                 breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+                memory_path = os.path.join(working_dir, 'memory.csv')
 
                 with open(file_path, 'w') as f:
                     f.write(text_content)
@@ -52,9 +59,25 @@ def upload_code(request):
                     output = result.stdout
                     error = result.stderr
 
+                    # get text from memory.csv
+                    try:
+                        with open(memory_path, 'r') as f:
+                            memory = f.read()
+                    except:
+                        memory = ''
+
+                    layer = get_channel_layer()
+                    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
+
                     # You can return the output to the client or perform further processing
                     os.remove(file_path)
                     os.remove(breakpoint_path)
+                    try:
+                        os.remove(memory_path)
+                    except:
+                        pass
+
+                    running = False
 
                     return JsonResponse({'output': output, 'error': error}, status=200)
 
@@ -95,11 +118,21 @@ def pause_code(request):
     paused = True
     # get line number from request body
 
+    working_dir = os.getcwd()
+    memory_path = os.path.join(working_dir, 'memory.csv')
+
+    try:
+        with open(memory_path, 'r') as f:
+            memory = f.read()
+    except:
+        memory = ''
+
     # get the line number from the request body
     line_number = json.loads(request.body.decode('utf-8'))
 
     layer = get_channel_layer()
     async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': line_number})
+    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
     # send line number to frontend
     return JsonResponse({'result': line_number})
 

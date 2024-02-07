@@ -8,6 +8,33 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     int currentPrintLine = 0;
     int currentLineLength = 0;
     Stack<HashMap<String, Object>> mappy = new Stack<HashMap<String, Object>>();
+    HashMap<String, nameTextLine> memoryMap = new HashMap<String, nameTextLine>();
+
+    public class nameTextLine{
+        public String text;
+        public int line;
+        public nameTextLine(String text, int line){
+            this.text = text;
+            this.line = line;
+        }
+
+        public String getString() {
+            return text;
+        }
+
+        public void setString(String text) {
+            this.text = text;
+        }
+
+        public int getIntValue() {
+            return line;
+        }
+
+        public void setIntValue(int line) {
+            this.line = line;
+        }
+    }
+
     public startMainVisitor(){
         readFile();
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -19,6 +46,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         readFile();
         HashMap<String, Object> map = new HashMap<String, Object>();
         mappy.push(map);
+
     }
 
     public ArrayList<Integer> breakPointArr = new ArrayList<>();
@@ -201,6 +229,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         //put the variable and value into the hashmap
         HashMap<String, Object> map = mappy.peek();
         map.put(var, val);
+        memoryMap.put(var, new nameTextLine(val.toString(), ctx.start.getLine()));
         //output all of the current values of each variable in the map to a txt file
         //one k,v per line
         writeHashMapToFile(map, "memory.csv");
@@ -218,9 +247,20 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 e.printStackTrace();
             }
         }
+
+        for (HashMap.Entry<String, nameTextLine> entry : memoryMap.entrySet()) {
+            if (entry.getValue().getString().contains("$Function@")){
+                entry.getValue().setString("function at line " + entry.getValue().getIntValue());
+            }
+        }
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
             for (HashMap.Entry<String, Object> entry : map.entrySet()) {
+                //if the current entry value contains $Function@, change it to value of the function of same name in memoryMap
+                if (entry.getValue().toString().contains("$Function@")){
+                    //set the value to just be the value of the function in memoryMap
+                    entry.setValue(memoryMap.get(entry.getKey()).getString());
+                }
                 writer.println(entry.getKey() + "," + entry.getValue());
                 writer.flush();
             }
@@ -888,6 +928,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 //replace the arraylist in the map with the new arraylist
                 map.put(ctx.NAME().getText(), arr);
+                memoryMap.put(ctx.NAME().getText(), new nameTextLine(arr.toString(), ctx.start.getLine()));
                 //write to the memory
                 writeHashMapToFile(map, "memory.csv");
             }
@@ -949,6 +990,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 arr.removeAll(Collections.singleton(exp));
                 //replace the arraylist in the map with the new arraylist
                 map.put(ctx.NAME().getText(), arr);
+                memoryMap.put(ctx.NAME().getText(), new nameTextLine(arr.toString(), ctx.start.getLine()));
                 //write to the memory
                 writeHashMapToFile(map, "memory.csv");
                 //return null
@@ -960,6 +1002,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             arr.remove(index);
             //replace the arraylist in the map with the new arraylist
             map.put(ctx.NAME().getText(), arr);
+            memoryMap.put(ctx.NAME().getText(), new nameTextLine(arr.toString(), ctx.start.getLine()));
             writeHashMapToFile(map, "memory.csv");
         }
         //return null
@@ -1083,7 +1126,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         Function func = new Function(args, ctx.block());
         //print out the block
         map.put(ctx.NAME(0).getText(), func);
+        memoryMap.put(ctx.NAME(0).getText(), new nameTextLine(func.toString(), ctx.start.getLine()));
         //return null
+        //check if we need to wait
+        if (breakPointArr.contains(ctx.start.getLine())){
+            int line = ctx.start.getLine();
+            linesStoppedOnSoFar.add(line);
+            breakpoint(line);
+        }
         return null;
     }
 

@@ -29,6 +29,17 @@ write ("hello") nl
             <button id="getCode">Run Code</button>
         </div>
 
+        {% if user.is_authenticated %}
+            <div id="util">
+                {% csrf_token %}
+                <button id="save">Save Session</button>
+                {% csrf_token %}
+                <button id="load">Load Session</button>
+                {% csrf_token %}
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </div>
+        {% endif %}
+
         <div>
             {% csrf_token %}
             <button id="step">|></button>
@@ -47,5 +58,13 @@ write ("hello") nl
             })();
 
         </script>
+        {% if user.is_authenticated %}
+        <script>
+            (function () {
+                save.addEventListener('click', saveSession)
+                load.addEventListener('click', loadSession)
+            })();
+        </script>
+        {% endif %}
     </body>
 </html>

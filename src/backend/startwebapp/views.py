@@ -4,9 +4,16 @@ import requests
 import subprocess
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.contrib.auth.forms import UserCreationForm
+from .forms import RegisterUserForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from .models import *
+from django.contrib.auth.decorators import login_required
+
 
 paused = True           # Bad practice, but it works for now, chnage to session storage later
 running = False         # Change to session storage later
@@ -16,6 +23,43 @@ def home_view(request):
     return render(request, 'index.html')
 
 # Requests
+
+def login_user(request):
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('home')
+		else:
+			messages.success(request, ("There Was An Error Logging In, Try Again..."))	
+			return redirect('login')	
+
+
+	else:
+		return render(request, 'login.html')
+     
+def logout_user(request):
+	logout(request)
+	messages.success(request, ("You Were Logged Out!"))
+	return redirect('home')
+
+def register_user(request):
+	if request.method == "POST":
+		form = RegisterUserForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password1']
+			user = authenticate(username=username, password=password)
+			login(request, user)
+			messages.success(request, ("Registration Successful!"))
+			return redirect('home')
+	else:
+		form = RegisterUserForm()
+
+	return render(request, 'register.html', {'form': form })
 
 def upload_code(request):
     if request.method == 'POST':
@@ -159,5 +203,31 @@ def print_line(request):
     # send line number to frontend
     return JsonResponse({'result': line_number})
 
+@login_required
+def save_session(request):
+    if request.method == 'POST':
 
+        text_content = request.POST.get('text_content', '')
+        user = request.user
 
+        sessions = Session.objects.filter(username=user.username)
+        if len(sessions) >= 10:
+            return JsonResponse({'result': 'limit reached'})
+
+        session = Session(username=request.user.username, session=text_content)
+        session.save()
+
+        return JsonResponse({'result': 'success'})
+    
+@login_required
+def load_session(request):
+    if request.method == 'GET':
+        user = request.user
+        sessions = Session.objects.filter(username=user.username)
+
+        if len(sessions) == 0:
+            return JsonResponse({'session': 'none'})
+
+        data = sessions[0].session
+
+        return JsonResponse({'session': data})

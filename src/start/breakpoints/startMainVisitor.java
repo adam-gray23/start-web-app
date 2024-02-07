@@ -22,6 +22,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     }
 
     public ArrayList<Integer> breakPointArr = new ArrayList<>();
+    public ArrayList<Integer> linesStoppedOnSoFar = new ArrayList<>();
     //function to read in a text file
     public void readFile(){
         //read a text file, only 1 line in the file, will contain numbers separated by commas
@@ -112,6 +113,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     else{
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
                             int line = ctx.line(i).start.getLine();
+                            linesStoppedOnSoFar.add(line);
                             breakpoint(line);
                         }
                         else{
@@ -123,12 +125,20 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 else if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl") ){
                     if (ctx.line(i + 2) != null){
                         if (ctx.line(i + 2).comment() != null){
-                            continue;
+                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                int line = ctx.line(i).start.getLine();
+                                linesStoppedOnSoFar.add(line);
+                                breakpoint(line);
+                            }
+                            else{
+                                continue;
+                            }
                         }
                         else{
                             //if the current line in global arraylist of breakpoints, wait for user input
                             if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                 int line = ctx.line(i).start.getLine();
+                                linesStoppedOnSoFar.add(line);
                                 breakpoint(line);
                             }
                             else{
@@ -140,6 +150,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                         //means next line is the last line and is nl
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
                             int line = ctx.line(i).start.getLine();
+                            linesStoppedOnSoFar.add(line);
                             breakpoint(line);
                         }
                         else{
@@ -167,6 +178,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     //if the current line in global arraylist of breakpoints, wait for user input
                     if (breakPointArr.contains(ctx.line(i).start.getLine())){
                         int line = ctx.line(i).start.getLine();
+                        linesStoppedOnSoFar.add(line);
                         breakpoint(line);
                     }
                     else{
@@ -685,6 +697,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //if the current line in global arraylist of breakpoints, wait for user input
         if (breakPointArr.contains(ctx.start.getLine())){
             int line = ctx.start.getLine();
+            linesStoppedOnSoFar.add(line);
             breakpoint(line);
         }
         //if the value is true, visit the block
@@ -721,6 +734,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //if the current line in global arraylist of breakpoints, wait for user input
         if (breakPointArr.contains(ctx.start.getLine())){
             int line = ctx.start.getLine();
+            linesStoppedOnSoFar.add(line);
             breakpoint(line);
         }
         //while the value is true, visit the block
@@ -734,6 +748,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //if the current line in global arraylist of breakpoints, wait for user input
                 if (breakPointArr.contains(ctx.start.getLine())){
                     int line = ctx.start.getLine();
+                    linesStoppedOnSoFar.add(line);
                     breakpoint(line);
                 }
                 else{
@@ -873,6 +888,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 //replace the arraylist in the map with the new arraylist
                 map.put(ctx.NAME().getText(), arr);
+                //write to the memory
+                writeHashMapToFile(map, "memory.csv");
             }
         }
         //catch the error if the index is out of bounds
@@ -932,6 +949,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 arr.removeAll(Collections.singleton(exp));
                 //replace the arraylist in the map with the new arraylist
                 map.put(ctx.NAME().getText(), arr);
+                //write to the memory
+                writeHashMapToFile(map, "memory.csv");
                 //return null
                 return null;
             }
@@ -941,6 +960,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             arr.remove(index);
             //replace the arraylist in the map with the new arraylist
             map.put(ctx.NAME().getText(), arr);
+            writeHashMapToFile(map, "memory.csv");
         }
         //return null
         return null;
@@ -1155,6 +1175,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         //if the current line in global arraylist of breakpoints, wait for user input
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
                             int line = ctx.line(i).start.getLine();
+                            linesStoppedOnSoFar.add(line);
                             breakpoint(line);
                         }
                         else{
@@ -1178,6 +1199,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         if (i == ctx.line().size() - 1){
                             if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                 int line = ctx.line(i).start.getLine();
+                                linesStoppedOnSoFar.add(line);
                                 breakpoint(line);
                             }
                             else{
@@ -1190,6 +1212,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 //if the current line in global arraylist of breakpoints, wait for user input
                                 if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                     int line = ctx.line(i).start.getLine();
+                                    linesStoppedOnSoFar.add(line);
                                     breakpoint(line);
                                 }
                                 else{
@@ -1200,6 +1223,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 //if the current line in global arraylist of breakpoints, wait for user input
                                 if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                     int line = ctx.line(i).start.getLine();
+                                    linesStoppedOnSoFar.add(line);
                                     breakpoint(line);
                                 }
                                 else{
@@ -1223,6 +1247,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else {
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
                             int line = ctx.line(i).start.getLine();
+                            linesStoppedOnSoFar.add(line);
                             breakpoint(line);
                             if (val != null){
                                 return val;
@@ -1246,11 +1271,16 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         visit(ctx.line(i));
                         continue;
                     }
+                    //if line is an if statement dont wait, we have already waited
+                    else if (ctx.line(i).getText().startsWith("if")){
+                        continue;
+                    }
                     else {
                         //check if we are at the last line, if so no wait, else wait for user input
                         if (i == ctx.line().size() - 1){
                             if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                 int line = ctx.line(i).start.getLine();
+                                linesStoppedOnSoFar.add(line);
                                 breakpoint(line);
                                 if (val != null){
                                     return val;
@@ -1328,6 +1358,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 //if the current line in global arraylist of breakpoints, wait for user input
                                 if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                     int line = ctx.line(i).start.getLine();
+                                    linesStoppedOnSoFar.add(line);
                                     breakpoint(line);
                                 }
                                 else{
@@ -1353,6 +1384,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         if (i == ctx.line().size() - 1){
                             if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                 int line = ctx.line(i).start.getLine();
+                                linesStoppedOnSoFar.add(line);
                                 breakpoint(line);
                                 if (val != null){
                                     return val;
@@ -1368,6 +1400,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             //if the current line in global arraylist of breakpoints, wait for user input
                             if (breakPointArr.contains(ctx.line(i).start.getLine())){
                                 int line = ctx.line(i).start.getLine();
+                                linesStoppedOnSoFar.add(line);
                                 breakpoint(line);
                             }
                             else{
@@ -1448,8 +1481,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         // or check if anything in breakPointArr is in comments
         for (int i = 0; i < comments.size(); i++) {
-            if (breakPointArr.contains(comments.get(i))) {
+            if (breakPointArr.contains(comments.get(i)) && !linesStoppedOnSoFar.contains(comments.get(i))) {
                 int line = comments.get(i);
+                linesStoppedOnSoFar.add(line);
                 breakpoint(line);
                 //remove the line from breakPointArr
                 breakPointArr.remove(comments.get(i));

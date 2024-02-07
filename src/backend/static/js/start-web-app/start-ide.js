@@ -140,6 +140,58 @@ function stepFunc() {
     xhr.send(formData);
 }
 
+function saveSession () {
+    var formData = new FormData();
+    formData.append("text_content", editor.session.getValue());
+
+    var xhr = new XMLHttpRequest();
+
+    var url = "/save-session/";
+
+    xhr.open("POST", url, true);
+
+    // Set the appropriate headers if needed
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+
+    // Define a callback function to handle the response from the server
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+        } else {
+            console.error("Error sending text content to the server");
+        }
+    };
+
+    // Send the FormData with the text content to the server
+    xhr.send(formData);
+}
+
+function loadSession () {
+
+    var xhr = new XMLHttpRequest();
+
+    var url = "/load-session/";
+
+    xhr.open("GET", url, true);
+
+    // Set the appropriate headers if needed
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+
+    // Define a callback function to handle the response from the server
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            editor.session.setValue(response.session);
+        } else {
+            console.error("Error sending text content to the server");
+        }
+    };
+
+    // Send the FormData with the text content to the server
+    xhr.send();
+}
+
+
 function clearHighlightedLines() {
     const prevMarkers = editor.session.getMarkers();
     if (prevMarkers) {

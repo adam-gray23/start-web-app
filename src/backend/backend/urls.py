@@ -20,9 +20,14 @@ from startwebapp import views
 
 urlpatterns = [
     path('', views.home_view, name='home'),
+    path('register/', views.register_user, name='register'),
+    path('login/', views.login_user, name='login'),
+    path('logout/', views.logout_user, name='logout'),
     path('admin/', admin.site.urls),
     path('upload-code/', views.upload_code, name='upload-code'),
     path('step-code/', views.step_code, name='step-code'),
     path('pause-code/', views.pause_code, name='pause-code'),
-    path('print-line/', views.print_line, name='print-line')
+    path('print-line/', views.print_line, name='print-line'),
+    path('save-session/', views.save_session, name='save-session'),
+    path('load-session/', views.load_session, name='load-session'),
 ]

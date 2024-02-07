@@ -1,9 +1,7 @@
-//import the hashmap and map
 import java.util.*;
-
 import org.antlr.v4.runtime.Token;
-
 import java.io.*;
+
 public class startMainVisitor extends startBaseVisitor<Object>{
     Scanner scanner = new Scanner(System.in);
     String sessionToken = "";

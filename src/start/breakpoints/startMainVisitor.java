@@ -256,13 +256,13 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
             for (HashMap.Entry<String, Object> entry : map.entrySet()) {
-                //if the current entry value contains $Function@, change it to value of the function of same name in memoryMap
+                //if the current entry value contains $Function@, we want to output the value of same function in memoryMap, else output the value
                 if (entry.getValue().toString().contains("$Function@")){
-                    //set the value to just be the value of the function in memoryMap
-                    entry.setValue(memoryMap.get(entry.getKey()).getString());
+                    writer.println(entry.getKey() + "," + memoryMap.get(entry.getKey()).getString());
                 }
-                writer.println(entry.getKey() + "," + entry.getValue());
-                writer.flush();
+                else{
+                    writer.println(entry.getKey() + "," + entry.getValue());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -1191,6 +1191,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         //if the function is not defined, error
         catch (Exception e){
+            //show the error
+            printLine(e.toString());
             int line = ctx.start.getLine();
             printLine("Error: Function " + ctx.NAME().getText() + " not defined!\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to define your functions before you call them!\n");
             System.exit(0);

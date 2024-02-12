@@ -127,7 +127,6 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 // Visit the line
                 visit(ctx.line(i));
 
-                printLine("loop visited\n");
                 //if we have just visited an if statement, continue to the next line
                 if (ctx.line(i).if_statement() != null){
                     continue;
@@ -135,13 +134,11 @@ public class startMainVisitor extends startBaseVisitor<Object>{
 
                 //check if we are on the last line
                 if (ctx.line(i + 1) == null){
-                    printLine("Went to last line else if\n");
                     //check if the last line is a function
                     if (ctx.line(i + 1) != null && ctx.line(i + 1).getText().equals("nl")){
                         break;
                     }
                     else{
-                        printLine("Went to else\n");
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
                             //if line not in stopped on, then stop
                             if (!linesStoppedOnSoFar.contains(ctx.line(i).start.getLine())){
@@ -777,12 +774,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     //override the visit function for while_statement
     @Override
     public Object visitWhile_statement(startParser.While_statementContext ctx) {
+        //LOOK AT DOUBLE LOOPS BREAKING, PROBABLY TO DO with linesStoppedOnSoFar
         //visit the expression within the while statement and assign it to a variable
         Object val = visit(ctx.expression());
         //wait after condition is checked
         //if the current line in global arraylist of breakpoints, wait for user input
         if (breakPointArr.contains(ctx.start.getLine())){
-            printLine("Breakpoint hit on first line " + ctx.start.getLine() + "\n");
             int line = ctx.start.getLine();
             linesStoppedOnSoFar.add(line);
             breakpoint(line);
@@ -797,7 +794,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 val = visit(ctx.expression());
                 //if the current line in global arraylist of breakpoints, wait for user input
                 if (breakPointArr.contains(ctx.start.getLine())){
-                    printLine("Breakpoint hit on first line " + ctx.start.getLine() + "\n");
                     int line = ctx.start.getLine();
                     linesStoppedOnSoFar.add(line);
                     breakpoint(line);
@@ -809,11 +805,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             else {
                 break;
             }
-        }
-        printLine("end of while loop\n");
-        //show all lines stopped on so far
-        for (int i = 0; i < linesStoppedOnSoFar.size(); i++){
-            printLine("Stopped on line " + linesStoppedOnSoFar.get(i) + "\n");
         }
         //return null
         return null;
@@ -1226,7 +1217,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //get all lines the block covers
                 int startWhile = ctx.start.getLine();
                 int endWhile = ctx.stop.getLine();
-                printLine("startWhile: " + startWhile + " endWhile: " + endWhile + "\n");
                 ArrayList<Integer> linesWhile = new ArrayList<Integer>();
                 for (int i = startWhile; i <= endWhile; i++){
                     linesWhile.add(i);
@@ -1235,17 +1225,11 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 int firstlineWhile = ctx.line(0).start.getLine();
                 //find what line the last .line() is on
                 int lastlineWhile = ctx.line(ctx.line().size() - 1).start.getLine();
-                printLine("firstlineWhile: " + firstlineWhile + " lastlineWhile: " + lastlineWhile + "\n");
                 //for all the lines in lines before the first line, check if any need to be stopped on
                 for (int i = 0; i < firstlineWhile; i++){
                     if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
-                        //if line doesnt contain loop while, stop
-                        if (!ctx.line(i).getText().contains("loop while")){
-                            printLine("line: " + i + " does not contain loop while" + "\n");
-                            int line = i;
-                            linesStoppedOnSoFar.add(line);
-                            breakpoint(line);
-                        }
+                        int line = i;
+                        breakpoint(line);
                     }
                 }
 
@@ -1265,7 +1249,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else {
                         //if the current line in global arraylist of breakpoints, wait for user input
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
-                            printLine("line: " + ctx.line(i).start.getLine() + " does not contain loop while and is a breakpoint" + "\n");
                             int line = ctx.line(i).start.getLine();
                             linesStoppedOnSoFar.add(line);
                             breakpoint(line);
@@ -1278,9 +1261,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //for all the lines in lines after the last line, check if any need to be stopped on
                 for (int i = lastlineWhile + 1; i <= linesWhile.get(linesWhile.size() - 1); i++){
                     if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
-                        printLine("line: " + i + " does not contain loop while" + "\n");
                         int line = i;
-                        linesStoppedOnSoFar.add(line);
                         breakpoint(line);
                     }
                 }

@@ -774,9 +774,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     //override the visit function for while_statement
     @Override
     public Object visitWhile_statement(startParser.While_statementContext ctx) {
-        //LOOK AT DOUBLE LOOPS BREAKING, PROBABLY TO DO with linesStoppedOnSoFar
+        //get the first line of the while statement
         //visit the expression within the while statement and assign it to a variable
         Object val = visit(ctx.expression());
+        //reset the startOfIf to prev in case of nested while loops
         //wait after condition is checked
         //if the current line in global arraylist of breakpoints, wait for user input
         if (breakPointArr.contains(ctx.start.getLine())){
@@ -1214,7 +1215,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         var parent = ctx.getParent().getClass().getSimpleName();
         switch (parent) {
             case "While_statementContext": //look back at this, use if for reference and test
-                //get all lines the block covers
+                int parentLine = ctx.getParent().start.getLine();
                 int startWhile = ctx.start.getLine();
                 int endWhile = ctx.stop.getLine();
                 ArrayList<Integer> linesWhile = new ArrayList<Integer>();
@@ -1226,7 +1227,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //find what line the last .line() is on
                 int lastlineWhile = ctx.line(ctx.line().size() - 1).start.getLine();
                 //for all the lines in lines before the first line, check if any need to be stopped on
-                for (int i = 0; i < firstlineWhile; i++){
+                for (int i = parentLine; i < firstlineWhile; i++){
                     if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
                         int line = i;
                         breakpoint(line);

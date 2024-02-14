@@ -1137,11 +1137,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         memoryMap.put(ctx.NAME(0).getText(), new nameTextLine(func.toString(), ctx.start.getLine()));
         //return null
         //check if we need to wait
-        if (breakPointArr.contains(ctx.start.getLine())){
-            int line = ctx.start.getLine();
-            linesStoppedOnSoFar.add(line);
-            breakpoint(line);
-        }
         return null;
     }
 
@@ -1319,6 +1314,25 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 return null;
 
             case "FunctionContext":
+                //get all lines the block covers
+                int startFunc = ctx.start.getLine();
+                int endFunc = ctx.stop.getLine();
+                ArrayList<Integer> linesFunc = new ArrayList<Integer>();
+                for (int i = startFunc; i <= endFunc; i++){
+                    linesFunc.add(i);
+                }
+                //find what line the first .line() is on
+                int firstlineFunc = ctx.line(0).start.getLine();
+                //find what line the last .line() is on
+                int lastlineFunc = ctx.line(ctx.line().size() - 1).start.getLine();
+                //for all the lines in lines before the first line, check if any need to be stopped on
+                for (int i = 0; i < firstlineFunc; i++){
+                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                        int line = i;
+                        linesStoppedOnSoFar.add(line);
+                        breakpoint(line);
+                    }
+                }
                 for (int i = 0; i < ctx.line().size(); i++) {
                     //visit the line
                     Object val = visit(ctx.line(i));
@@ -1341,6 +1355,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 return val;
                             }
                         }
+                    }
+                }
+                //for all the lines in lines after the last line, check if any need to be stopped on
+                for (int i = lastlineFunc + 1; i <= linesFunc.get(linesFunc.size() - 1); i++){
+                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                        int line = i;
+                        linesStoppedOnSoFar.add(line);
+                        breakpoint(line);
                     }
                 }
                 return null;

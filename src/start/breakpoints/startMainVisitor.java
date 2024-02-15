@@ -109,6 +109,10 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             if (ctx.line(i).getText().contains("function")){
                 visit(ctx.line(i));
             }
+            else if (ctx.line(i).getText().contains("loop for")){
+                //dont wait because we will stop inside the loop function
+                visit(ctx.line(i));
+            }
             else if (ctx.line(i).getText().equals("nl")){
                 //if last line is nl, break
                 if (ctx.line(i + 1) == null){
@@ -1082,6 +1086,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 map.put(var, arr.get(i));
                 //visit the block
                 //check if theres a return statement
+                //wait here if the current line is in the global arraylist of breakpoints
+                if (breakPointArr.contains(ctx.start.getLine())){
+                    int line = ctx.start.getLine();
+                    linesStoppedOnSoFar.add(line);
+                    breakpoint(line);
+                }
                 Object obj = visit(ctx.block());
                 if (obj != null){
                     //reet global variables
@@ -1264,8 +1274,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 return null;
 
             case "For_statementContext":
-                    
-
+                //get all lines the block covers
+                int startFor = ctx.start.getLine();
+                int endFor = ctx.stop.getLine();
+                ArrayList<Integer> linesFor = new ArrayList<Integer>();
+                for (int i = startFor; i <= endFor; i++){
+                    linesFor.add(i);
+                }
+                printLine("linesFor: " + linesFor);
                 for (int i = 0; i < ctx.line().size(); i++) {
                     //visit the line
                     Object val = visit(ctx.line(i));
@@ -1277,7 +1293,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else {
                         //check if we are at the last line
                         if (i == ctx.line().size() - 1){
-                            if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                            //make sure line is not start with loop for, dont wanna have 2 stops for the same line
+                            if (breakPointArr.contains(ctx.line(i).start.getLine()) && !ctx.line(i).getText().startsWith("loop for")){
                                 int line = ctx.line(i).start.getLine();
                                 linesStoppedOnSoFar.add(line);
                                 breakpoint(line);
@@ -1290,7 +1307,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         else {                            //if the current char is not the last non special char, wait
                             if (currentCharInArray.toString().equals(lastNonSpecialChar)){
                                 //if the current line in global arraylist of breakpoints, wait for user input
-                                if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                if (breakPointArr.contains(ctx.line(i).start.getLine()) && !ctx.line(i).getText().startsWith("loop for")){
                                     int line = ctx.line(i).start.getLine();
                                     linesStoppedOnSoFar.add(line);
                                     breakpoint(line);
@@ -1301,7 +1318,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             }
                             else {
                                 //if the current line in global arraylist of breakpoints, wait for user input
-                                if (breakPointArr.contains(ctx.line(i).start.getLine())){
+                                if (breakPointArr.contains(ctx.line(i).start.getLine()) && !ctx.line(i).getText().startsWith("loop for")){
                                     int line = ctx.line(i).start.getLine();
                                     linesStoppedOnSoFar.add(line);
                                     breakpoint(line);

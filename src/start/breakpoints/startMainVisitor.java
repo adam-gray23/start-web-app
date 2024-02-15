@@ -1282,6 +1282,18 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     linesFor.add(i);
                 }
                 printLine("linesFor: " + linesFor);
+                //find what line the first .line() is on
+                int firstlineFor = ctx.line(0).start.getLine();
+                //find what line the last .line() is on
+                int lastlineFor = ctx.line(ctx.line().size() - 1).start.getLine();
+                //for all the lines in lines before the first line, check if any need to be stopped on
+                for (int i = 0; i < firstlineFor; i++){
+                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                        int line = i;
+                        linesStoppedOnSoFar.add(line);
+                        breakpoint(line);
+                    }
+                }
                 for (int i = 0; i < ctx.line().size(); i++) {
                     //visit the line
                     Object val = visit(ctx.line(i));
@@ -1328,6 +1340,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 }
                             }
                         }
+                    }
+                }
+                // for all the lines in lines after the last line, check if any need to be stopped on
+                for (int i = lastlineFor + 1; i <= linesFor.get(linesFor.size() - 1); i++){
+                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                        int line = i;
+                        linesStoppedOnSoFar.add(line);
+                        breakpoint(line);
                     }
                 }
                 return null;

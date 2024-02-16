@@ -26,6 +26,10 @@ var result = ace.edit("result", {
 editor.on("guttermousedown", function(e) {
     var target = e.domEvent.target;
 
+    if (debugMode != 2){
+        return;
+    }
+
     if (target.className.indexOf("ace_gutter-cell") == -1){
         return;
     }
@@ -43,7 +47,10 @@ editor.on("guttermousedown", function(e) {
 
     // If there's a breakpoint already defined, it should be removed, offering the toggle feature
     if(typeof breakpoints[row] === typeof undefined){
-        e.editor.session.setBreakpoint(row);
+        console.log(editor.session.getLine(row))
+        if (editor.session.getLine(row).trim() != ""){
+            e.editor.session.setBreakpoint(row);
+        }
     }else{
         e.editor.session.clearBreakpoint(row);
     }
@@ -64,12 +71,20 @@ function changeDebugMode() {
     var button = document.getElementById("debugSetting");
     if (debugMode == 1){
         button.innerHTML = 'Line-by-Line'
+        for (let i = 0; i < editor.session.getLength(); i++){
+            if (editor.session.getLine(i).trim() != ""){
+                editor.session.setBreakpoint(i);
+            }
+        }
     }
     else if (debugMode == 2){
         button.innerHTML = 'Dynamic'
+        editor.session.clearBreakpoints();
+
     }
     else{
         button.innerHTML = 'Normal'
+        editor.session.clearBreakpoints();
     }
 }
 

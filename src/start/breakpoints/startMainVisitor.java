@@ -66,6 +66,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                     breakPointArr.add(i + 1);
                 }
             }
+            sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch(NoSuchElementException e){
@@ -226,6 +227,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             }
         }
         scanner.close();
+        callDjango.endCode(sessionToken);
         return null;
     }
 

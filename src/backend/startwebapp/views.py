@@ -1,5 +1,6 @@
 import json
 import os
+import psutil
 import requests
 import subprocess
 from django.conf import settings
@@ -13,10 +14,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import *
 from django.contrib.auth.decorators import login_required
-
-
-paused = True           # Bad practice, but it works for now, chnage to session storage later
-running = False         # Change to session storage later
 
 # Create your views here.
 def home_view(request):
@@ -63,28 +60,18 @@ def register_user(request):
 
 def upload_code(request):
     if request.method == 'POST':
-        global paused
-        global running
-        if running:
-            return JsonResponse({'result': 'running'})
-        
-        running = True
-        paused = False
 
         text_content = request.POST.get('text_content', '')
         debugMode = request.POST.get('debugMode', '')
         breakpoints = request.POST.get('breakpoints', '')
         token = request.headers.get('X-Csrftoken')
 
-        # Process and save the text content to a directory
         if text_content:
-            # Define the URL where the Flask server is running
 
             try:
                 working_dir = os.getcwd()
                 file_path = os.path.join(working_dir, 'input.txt')
                 breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
-                memory_path = os.path.join(working_dir, 'memory.csv')
 
                 with open(file_path, 'w') as f:
                     f.write(text_content)
@@ -97,33 +84,9 @@ def upload_code(request):
 
                 try:
                     # Run the command
-                    result = subprocess.run(command, capture_output=True, text=True, check=True)
+                    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-                    # Process the result as needed
-                    output = result.stdout
-                    error = result.stderr
-
-                    # get text from memory.csv
-                    try:
-                        with open(memory_path, 'r') as f:
-                            memory = f.read()
-                    except:
-                        memory = ''
-
-                    layer = get_channel_layer()
-                    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
-
-                    # You can return the output to the client or perform further processing
-                    os.remove(file_path)
-                    os.remove(breakpoint_path)
-                    try:
-                        os.remove(memory_path)
-                    except:
-                        pass
-
-                    running = False
-
-                    return JsonResponse({'output': output, 'error': error}, status=200)
+                    return JsonResponse({'process': process.pid}, status=200)
 
                 except subprocess.CalledProcessError as e:
                     # Handle the case where the command fails
@@ -135,12 +98,6 @@ def upload_code(request):
             
 def step_code(request):
     if request.method == 'POST':
-        # if not paused return 
-        global paused
-        if not paused:
-            return JsonResponse({'result': 'not paused'})
-
-        paused = False
 
         breakpoints = request.POST.get('breakpoints', '')
 
@@ -158,9 +115,6 @@ def step_code(request):
         return JsonResponse({'output': 'success', 'error': ''}, status=200)
         
 def pause_code(request):
-    global paused
-    paused = True
-    # get line number from request body
 
     working_dir = os.getcwd()
     memory_path = os.path.join(working_dir, 'memory.csv')
@@ -179,6 +133,67 @@ def pause_code(request):
     async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
     # send line number to frontend
     return JsonResponse({'result': line_number})
+
+def cancel_code(request):
+    pid = request.POST.get('process', '')
+    pid = int(pid)
+    working_dir = os.getcwd()
+    try:
+        if psutil.pid_exists(pid):
+            process = psutil.Process(pid)
+            if process.is_running():
+                # Check if the process is a JAR execution
+                cmdline = process.cmdline()
+                if any("java" in arg for arg in cmdline) and any(".jar" in arg for arg in cmdline):
+                    # Send SIGTERM signal to kill the process
+                    os.kill(pid, 15)
+                    file_path = os.path.join(working_dir, 'input.txt')
+                    breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+                    memory_path = os.path.join(working_dir, 'memory.csv')
+
+                    os.remove(file_path)
+                    os.remove(breakpoint_path)
+                    try:
+                        os.remove(memory_path)
+                    except:
+                        pass
+                    return JsonResponse({'message': f'Process with PID {pid} (JAR execution) killed successfully.'}, status=200)
+                else:
+                    return JsonResponse({'error': f'Process with PID {pid} is not a JAR execution.'}, status=400)
+            else:
+                return JsonResponse({'error': f'Process with PID {pid} is not running.'}, status=400)
+        else:
+            return JsonResponse({'error': f'Process with PID {pid} does not exist.'}, status=400)
+    except (ValueError, TypeError):
+        return JsonResponse({'error': f'Invalid PID. {pid}'}, status=400)
+
+    
+def end_code(request): 
+    working_dir = os.getcwd()
+    file_path = os.path.join(working_dir, 'input.txt')
+    breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+    memory_path = os.path.join(working_dir, 'memory.csv')
+
+    # get text from memory.csv
+    try:
+        with open(memory_path, 'r') as f:
+            memory = f.read()
+    except:
+        memory = ''
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
+    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': 'end'})
+
+    # You can return the output to the client or perform further processing
+    os.remove(file_path)
+    os.remove(breakpoint_path)
+    try:
+        os.remove(memory_path)
+    except:
+        pass
+
+    return JsonResponse({'output': 'success', 'error': ''}, status=200)
 
 def print_line(request):
     # get the line number from the request body

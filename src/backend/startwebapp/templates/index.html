@@ -44,6 +44,11 @@ write ("hello") nl
             {% csrf_token %}
             <button id="step">|></button>
         </div>
+
+        <div>
+            {% csrf_token %}
+            <button id="cancel">X</button>
+        </div>
     
         <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/cookie.js' %}" type="text/javascript" charset="utf-8"></script>
@@ -55,6 +60,7 @@ write ("hello") nl
                 getCode.addEventListener('click', uploadCode);
                 debugSetting.addEventListener('click', changeDebugMode)
                 step.addEventListener('click', stepFunc)
+                cancel.addEventListener('click', cancelFunc)
             })();
 
         </script>

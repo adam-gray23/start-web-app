@@ -26,6 +26,7 @@ public class startErrorListener extends BaseErrorListener{
         //System.err.println("Syntax Error!");
         String final_msg = "Syntax Error!" + "\n" + "Offending Symbol/Token: " + ((Token) offendingSymbol).getText() + "\n" + "line " + line + ", column " + (charpos) + ": " + msg; 
         cd.printLine(final_msg, token);
+        callDjango.endCode(token);
         System.exit(0);
     }
 

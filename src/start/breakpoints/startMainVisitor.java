@@ -55,9 +55,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     public void readFile(){
         //read a text file, only 1 line in the file, will contain numbers separated by commas
         //split on the commas and store in breakPointArr
-        File file = new File("breakpoints.txt");
         try {
-            Scanner sc = new Scanner(file);
+            Scanner sc = new Scanner(new File("breakpoints.txt"));
             String line = sc.nextLine();
             //split on comma, if not "" add the position in the array + 1 to the arraylist
             String[] arr = line.split(",");
@@ -328,6 +327,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         if(!map.containsKey(var)){
             //print out the line number and column number
             printLine("Assignment Error!\nToken: " + var + "\nline " + ctx.start.getLine() + ", column " + ctx.start.getCharPositionInLine() + ": Variable " + var + " is not defined!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
 
@@ -373,6 +373,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 else{
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only add two numbers or two strings together!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             case "sub":
@@ -392,6 +393,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 else{
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only subtract two numbers!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             default:
@@ -423,6 +425,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 else{
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only multiply two numbers!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             case "div":
@@ -430,12 +433,14 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 if (right instanceof Float){
                     if ((Float) right == 0.0){
                         printLine("Error: Divide by zero error!\nLine " + ctx.start.getLine() + "\n");
+                        callDjango.endCode(sessionToken);
                         System.exit(0);
                     }
                 }
                 if (right instanceof Integer){
                     if ((Integer) right == 0){
                         printLine("Error: Divide by zero error!\nLine " + ctx.start.getLine() + "\n");
+                        callDjango.endCode(sessionToken);
                         System.exit(0);
                     }
                 }
@@ -455,6 +460,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 }
                 else{
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only divide two numbers!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             case "mod":
@@ -474,6 +480,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 else{
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only get the mod of two numbers!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             default:
@@ -503,6 +510,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         else{
             //invalid operation
             printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only raise a number to another number!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         return null;
@@ -555,6 +563,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     //if the expression is not a boolean, print an error message and exit
     else{
         printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only negate a boolean!\n");
+        callDjango.endCode(sessionToken);
         System.exit(0);
     }
     return null;
@@ -604,6 +613,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 else {
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -634,6 +644,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 else {
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -664,6 +675,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 else {
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -694,6 +706,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 else {
                     //invalid operation
                     printLine("Invalid Operation!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only compare two numbers or two strings!\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -709,12 +722,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             String lclass2 = lsplit[lsplit.length - 1];
             String rclass2 = rsplit[rsplit.length - 1];
             printLine("Error: Invalid comparison!\nLine " + ctx.getStart().getLine() + ": " + lclass2 + " cannot be compared to " + rclass2 + "\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
             return null;
         }
         //catch the null pointer exception if there is one
         catch(Exception e){
             printLine("Error: Null values cannot be compared!\nLine " + ctx.getStart().getLine() + "\nTry and ensure that no nullable values are compared!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
             return null;
         }
@@ -772,6 +787,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //invalid if statement
         else{
             printLine("Error: Invalid if/otherwise statement!\nLine " + ctx.getStart().getLine() + "\nRemember, you can only use a boolean value in an if statement!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         return null;
@@ -852,6 +868,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //if there is an index error print it
                 else{
                     printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -866,6 +883,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //otherwise print an error
                 else{
                     printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -878,6 +896,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 else{
                     printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
@@ -897,12 +916,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //otherwise print an error
                 else{
                     printLine("Error: Index: '" + index + "' is not an integer!\nLine " + ctx.start.getLine() + "\n");
+                    callDjango.endCode(sessionToken);
                     System.exit(0);
                 }
             }
             //if the val is not an arraylist, print an error
             else{
                 printLine("Error: " + ctx.NAME().getText() + " is not an array, string or number, or has not been defined!\nLine " + ctx.start.getLine() + "\n");
+                callDjango.endCode(sessionToken);
                 System.exit(0);
             }
             //return null
@@ -914,6 +935,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             String[] parts = s.split(" ");
             int line = ctx.start.getLine();
             printLine("Error: Index " + parts[2] + " out of bounds for array of length " + parts[parts.length - 1] + "\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember: Arrays are indexed from 0 to length of the array - 1\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         return null;
@@ -953,6 +975,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             String[] parts = s.split(" ");
             int line = ctx.start.getLine();
             printLine("Error: Index " + parts[2] + " out of bounds for array of length " + parts[parts.length - 1] + "\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember: Arrays are indexed from 0 to length of the array - 1\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         //return null
@@ -977,6 +1000,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //error if both expressions are not arrays
         else{
             printLine("Error: Both expressions must be arrays!\nLine " + ctx.start.getLine() + "\nRemember: You can only append two arrays together!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         //return null
@@ -1040,6 +1064,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         else{
             String[] a = visit(ctx.expression()).getClass().toString().split("\\.");
             printLine("Error: Cannot get length of " + a[a.length - 1] + "\nLine: " + ctx.start.getLine() + "\nRemember: You can only get the length of an array or a string!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         //return null
@@ -1125,6 +1150,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         else{
             int line = ctx.start.getLine();
             printLine("Error: " + val + " is not an array or string\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to loop up in numbers use a while loop\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         return null;
@@ -1181,6 +1207,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             if (args.size() != ctx.expression().size()){
                 int line = ctx.start.getLine();
                 printLine("Error: Incorrect number of arguments for function " + ctx.NAME().getText() + "\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to use the correct number of arguments for the function!\n");
+                callDjango.endCode(sessionToken);
                 System.exit(0);
             }
             //put the args into the original map
@@ -1210,6 +1237,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             printLine(e.toString());
             int line = ctx.start.getLine();
             printLine("Error: Function " + ctx.NAME().getText() + " not defined!\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to define your functions before you call them!\n");
+            callDjango.endCode(sessionToken);
             System.exit(0);
         }
         return null;
@@ -1637,6 +1665,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //throw error
         int line = ctx.start.getLine();
         printLine("Error: Return statement outside of function\nOffending Symbol/Token: " + ctx.getText() + "\nLine: " + line + "\nRemember to return a value from a function!\n");
+        callDjango.endCode(sessionToken);
         System.exit(0);
         return null;
     }

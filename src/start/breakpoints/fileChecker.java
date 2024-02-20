@@ -3,12 +3,12 @@ import java.nio.file.*;
 
 public class fileChecker {
 
-    public static void main(String[] args) {
+    public static void checkFile(String id) {
         // Specify the file path you want to monitor
         // get current working directory
         String currentWorkingDirectory = System.getProperty("user.dir");
         //append file path to current working directory
-        String filePathString = currentWorkingDirectory + "\\instruct.txt";
+        String filePathString = currentWorkingDirectory + "\\user-files\\instruct" + id + ".txt";
         Path filePath = Paths.get(filePathString);
         try {
             // Get the file's directory

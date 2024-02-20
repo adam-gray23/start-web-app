@@ -3,22 +3,23 @@ import org.antlr.v4.runtime.*;
 
 
 public class startErrorListener extends BaseErrorListener{
+    String token = "";
+    String id = "";
+
+    public startErrorListener(){
+        super();
+    }
+
+    public startErrorListener(String token, String id){
+        super();
+        this.token = token;
+        this.id = id;
+    }
 
     public static boolean hasError = false;
     //override the syntaxError method in antlr
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charpos, String msg, RecognitionException e){
-        //get the token from token.txt
-        String token = "";
-        try{
-            Scanner sc = new Scanner(new java.io.File("token.txt"));
-            token = sc.nextLine();
-            sc.close();
-            System.out.println("Token: " + token);
-        }
-        catch(Exception ex){
-            System.out.println("Error: " + ex.getMessage());
-        }
         callDjango cd = new callDjango();
         hasError = true;
         msg = errorChecker(msg, offendingSymbol);
@@ -26,7 +27,7 @@ public class startErrorListener extends BaseErrorListener{
         //System.err.println("Syntax Error!");
         String final_msg = "Syntax Error!" + "\n" + "Offending Symbol/Token: " + ((Token) offendingSymbol).getText() + "\n" + "line " + line + ", column " + (charpos) + ": " + msg; 
         cd.printLine(final_msg, token);
-        callDjango.endCode(token);
+        callDjango.endCode(token, id);
         System.exit(0);
     }
 

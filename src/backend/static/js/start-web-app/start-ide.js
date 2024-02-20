@@ -107,6 +107,7 @@ function uploadCode() {
     formData.append("text_content", ideText);
     formData.append("debugMode", debugMode)
     formData.append("breakpoints", editor.session.getBreakpoints());
+    formData.append("uuid", sessionStorage.getItem("uuid"));
 
     var xhr = new XMLHttpRequest();
 
@@ -149,6 +150,7 @@ function stepFunc() {
 
     var formData = new FormData();
     formData.append("breakpoints", editor.session.getBreakpoints());
+    formData.append("uuid", sessionStorage.getItem("uuid"));
 
     var xhr = new XMLHttpRequest();
 
@@ -186,6 +188,7 @@ function cancelFunc() {
     
     var formData = new FormData();
     formData.append("process", process);
+    formData.append("uuid", sessionStorage.getItem("uuid"));
 
     var xhr = new XMLHttpRequest();
 

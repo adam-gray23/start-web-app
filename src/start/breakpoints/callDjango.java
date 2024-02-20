@@ -2,7 +2,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 public class callDjango {
-    public static void pauseCode(int line, String token) {
+    public static void pauseCode(int line, String token, String id) {
         try {
             // Set the URL of your Django server endpoint
             String url = "http://localhost:8000/pause-code/";
@@ -22,7 +22,7 @@ public class callDjango {
             // set cookies value to the token value
             connection.setRequestProperty("Cookie", "csrftoken=" + token);
             OutputStream os = connection.getOutputStream();
-            byte[] bArr = String.valueOf(line).getBytes();
+            byte[] bArr = String.valueOf(line + " " + id).getBytes();
             os.write(bArr);
             os.flush();
             os.close();
@@ -118,7 +118,7 @@ public class callDjango {
         }
     }
 
-    public static void endCode(String token){
+    public static void endCode(String token, String id){
         try {
             // Set the URL of your Django server endpoint
             String url = "http://localhost:8000/end-code/";
@@ -137,6 +137,11 @@ public class callDjango {
             connection.setRequestProperty("X-CSRFToken", token);
             // set cookies value to the token value
             connection.setRequestProperty("Cookie", "csrftoken=" + token);
+
+            OutputStream os = connection.getOutputStream();
+            byte[] bArr = String.valueOf(id).getBytes();
+            os.write(bArr);
+            os.flush();
 
             // Check the response code
             int responseCode = connection.getResponseCode();

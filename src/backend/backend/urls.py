@@ -23,6 +23,7 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
+    path('add-uuid/', views.add_uuid, name='add-uuid'),
     path('admin/', admin.site.urls),
     path('upload-code/', views.upload_code, name='upload-code'),
     path('step-code/', views.step_code, name='step-code'),

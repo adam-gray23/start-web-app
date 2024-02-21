@@ -751,7 +751,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         //get the start and end of the whole elif block
         startBlock = ctx.start.getLine();
         endBlock = ctx.stop.getLine();
-        printLine("startBlock: " + startBlock + " endBlock: " + endBlock + "\n");
         //visit the expression within the if statement and assign it to a variable
         Object val = visit(ctx.expression());
         //wait for user input after condition is checked
@@ -783,7 +782,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             //if there is an else if block, visit it
             else if (ctx.elif_block() != null) {
                 var returnElif = visit(ctx.elif_block());
-                printLine("out of elif\n");
                 return returnElif;
             }
             else {
@@ -1496,25 +1494,31 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
-                        visit(ctx.line(i));
+                        //visit(ctx.line(i));
                         continue;
                     }
                     //if line is an if statement dont wait, we have already waited
                     else if (ctx.line(i).getText().startsWith("if")){
-                        //get the line this if block starts on
+                        //get the line of the program this .line() is on
                         int line = ctx.line(i).start.getLine();
-                        //get the line this if block ends on
                         int line2 = ctx.line(ctx.line().size() - 1).start.getLine();
                         //add all lines between to a tmpArr
                         ArrayList<Integer> tmpArr = new ArrayList<Integer>();
-                        for (int j = line; j <= line2; j++){
+                        for (int j = line; j < line2; j++){
                             tmpArr.add(j);
                         }
                         //push tmpArr onto the stack
                         stackOfLines.push(tmpArr);
                         //remove all lines in breakPointArr that are in tmpArr
                         breakPointArr.removeAll(tmpArr);
-                        continue;
+                        //print breakPointArr
+                        //visit the if statement
+                        visit(ctx.line(i));
+                        //pop tmpArr off the stack
+                        //check if stack is empty
+                        if (!stackOfLines.isEmpty()){
+                            stackOfLines.pop();
+                        }
                     }
                     else {
                         //check if we are at the last line, if so no wait, else wait for user input
@@ -1623,11 +1627,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                         linesStoppedOnSoFar.add(line);
                         breakpoint(line);
                     }
-                }
-                //readd all lines on the stack back to the global arraylist of breakpoints
-                //only do this if we need to
-                if (!stackOfLines.isEmpty()){
-                    breakPointArr.addAll(stackOfLines.pop());
                 }
                 if (valToReturn != null){
                     return valToReturn;
@@ -1755,7 +1754,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             currentEndElif = 0;
             currentLine1 = 0;
             currentLineMinus1 = 0;
-            printLine("elif done\n");
             return returnVal;
         }
     }

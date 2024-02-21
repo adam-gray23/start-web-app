@@ -2,7 +2,8 @@ let debugMode = 0;
 
 let breakpoints = [];
 
-let paused = false;
+sessionStorage.setItem("paused", "true");
+sessionStorage.setItem("running", "false");
 
 var editor = ace.edit("editor", {
     theme: "ace/theme/tomorrow_night_eighties",
@@ -59,6 +60,12 @@ editor.on("guttermousedown", function(e) {
 });
 
 function changeDebugMode() {
+    let running = sessionStorage.getItem("running");
+    if (running == "true"){
+        console.log("Code is running, please wait for it to finish")
+        return;
+    }
+
     if (debugMode == 2){
         debugMode = 0
     }
@@ -88,12 +95,19 @@ function changeDebugMode() {
     }
 }
 
-function uploadCode() {         
+function uploadCode() {       
+    let running = sessionStorage.getItem("running");
+    if (running == "true"){
+        console.log("Code is running, please wait for it to finish")
+        return;
+    }
+    
     var ideText = editor.session.getValue();
     var formData = new FormData();
     formData.append("text_content", ideText);
     formData.append("debugMode", debugMode)
     formData.append("breakpoints", editor.session.getBreakpoints());
+    formData.append("uuid", sessionStorage.getItem("uuid"));
 
     var xhr = new XMLHttpRequest();
 
@@ -108,13 +122,8 @@ function uploadCode() {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-
-            if (response.error != "") {
-                console.log(response.error)
-            }
-            else{
-                console.log(response.output)
-            }
+            sessionStorage.setItem("process", response.process);
+            sessionStorage.setItem("running", "true");
         } else {
             console.error("Error sending text content to the server");
         }
@@ -128,8 +137,20 @@ function uploadCode() {
 };
 
 function stepFunc() {
+    let running = sessionStorage.getItem("running");
+    let paused = sessionStorage.getItem("paused");
+    if (running == "false"){
+        console.log("Code is not running, please upload code first")
+        return;
+    }
+    if (paused == "false"){
+        console.log("Code is not paused, please wait for it to pause")
+        return;
+    }
+
     var formData = new FormData();
     formData.append("breakpoints", editor.session.getBreakpoints());
+    formData.append("uuid", sessionStorage.getItem("uuid"));
 
     var xhr = new XMLHttpRequest();
 
@@ -144,6 +165,7 @@ function stepFunc() {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
+            sessionStorage.setItem("paused", "false");
         } else {
             console.error("Error sending text content to the server");
         }
@@ -155,7 +177,53 @@ function stepFunc() {
     xhr.send(formData);
 }
 
+function cancelFunc() {
+    let running = sessionStorage.getItem("running");
+    if (running == "false"){
+        console.log("Code is not running, please upload code first")
+        return;
+    }
+
+    let process = sessionStorage.getItem("process");
+    
+    var formData = new FormData();
+    formData.append("process", process);
+    formData.append("uuid", sessionStorage.getItem("uuid"));
+
+    var xhr = new XMLHttpRequest();
+
+    var url = "/cancel-code/";
+
+    xhr.open("POST", url, true);
+
+    // Set the appropriate headers if needed
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+
+    // Define a callback function to handle the response from the server
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            sessionStorage.setItem("running", "false");
+            sessionStorage.setItem("paused", "true");
+            clearHighlightedLines();
+        } else {
+            console.error("Error sending text content to the server");
+        }
+    }
+
+    // Send the FormData with the text content to the server
+    xhr.send(formData);
+}
+
+
 function saveSession () {
+    let running = sessionStorage.getItem("running");
+    if (running == "true"){
+        console.log("Code is running, please wait for it to finish")
+        return;
+    }
+
+
     var formData = new FormData();
     formData.append("text_content", editor.session.getValue());
 
@@ -182,6 +250,11 @@ function saveSession () {
 }
 
 function loadSession () {
+    let running = sessionStorage.getItem("running");
+    if (running == "true"){
+        console.log("Code is running, please wait for it to finish")
+        return;
+    }
 
     var xhr = new XMLHttpRequest();
 

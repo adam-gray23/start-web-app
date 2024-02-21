@@ -1,3 +1,4 @@
+clear
 echo "Shutting down server..."
 docker stop redis
 docker rm redis

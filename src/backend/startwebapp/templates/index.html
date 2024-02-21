@@ -6,7 +6,7 @@
         <title>Home Page</title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     </head>
-    <body>
+    <body onload="genUUID()">
 
         <div id="editor">write ("hello") nl
 write ("hello") nl
@@ -44,9 +44,14 @@ write ("hello") nl
             {% csrf_token %}
             <button id="step">|></button>
         </div>
+
+        <div>
+            {% csrf_token %}
+            <button id="cancel">X</button>
+        </div>
     
         <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-        <script src="{% static 'js/start-web-app/cookie.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'js/start-web-app/users.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/start-ide.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/sockets.js' %}" type="text/javascript" charset="utf-8"></script>
         <script>
@@ -55,6 +60,7 @@ write ("hello") nl
                 getCode.addEventListener('click', uploadCode);
                 debugSetting.addEventListener('click', changeDebugMode)
                 step.addEventListener('click', stepFunc)
+                cancel.addEventListener('click', cancelFunc)
             })();
 
         </script>

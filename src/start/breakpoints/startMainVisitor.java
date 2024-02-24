@@ -1218,6 +1218,17 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             }
             //push the map onto the stack
             mappy.push(map);
+            //check if there is no lines in the block
+            if (block.line().size() == 0){
+                //we need to stop on the function definition line
+                //this is the first line of the block - 1
+                int line = block.start.getLine() - 1;
+                //if the current line in global arraylist of breakpoints, wait for user input
+                if (breakPointArr.contains(line) && !linesStoppedOnSoFar.contains(line)){
+                    linesStoppedOnSoFar.add(line);
+                    breakpoint(line);
+                }
+            }
             //check if there is a return statement
             if (block.return_statement() != null){
                 //return the value of the return statement
@@ -1246,11 +1257,81 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
 
     //stack to store an ArrayList of ints
     public Stack<ArrayList<Integer>> stackOfLines = new Stack<ArrayList<Integer>>();
+    public boolean openBraceInLoop = false;
+    public boolean closeBraceInLoop = false;
     //visit the override function for block
     @Override
     public Object visitBlock(startParser.BlockContext ctx) {
         //get the parent node
         var parent = ctx.getParent().getClass().getSimpleName();
+        //check if the block is empty
+        if (ctx.line().size() == 0){
+            //get the line of the opening curly brace
+            int line = ctx.start.getLine();
+            //get the line of the closing curly brace
+            int line2 = ctx.stop.getLine();
+            //check if we need to stop on the opening curly brace
+            if (breakPointArr.contains(line) && !linesStoppedOnSoFar.contains(line)){
+                //check if any of the parent nodes are not while or for statements
+                var checkParent = ctx.getParent();
+                while (checkParent != null){
+                    //if the parent is an if statement break
+                    if (checkParent.getClass().getSimpleName().equals("For_statementContext") || checkParent.getClass().getSimpleName().equals("While_statementContext")){
+                        openBraceInLoop = true;
+                        break;
+                    }
+                    //try to get the next parent
+                    try{
+                        checkParent = checkParent.getParent();
+                    }
+                    //if there is an error, break
+                    catch (Exception e){
+                        checkParent = null;
+                        break;
+                    }
+                }
+                //if we have found a loop, then we dont add the line to linesStoppedOnSoFar
+                //else we add the line to linesStoppedOnSoFar
+                if (!openBraceInLoop){
+                    linesStoppedOnSoFar.add(line);
+                    breakpoint(line);
+                }
+                else{
+                    breakpoint(line);
+                }
+            }
+            //check if we need to stop on the closing curly brace
+            if (breakPointArr.contains(line2) && !linesStoppedOnSoFar.contains(line2)){
+                //check if any of the parent nodes are not while or for statements
+                var checkParent = ctx.getParent();
+                while (checkParent != null){
+                    //if the parent is an if statement break
+                    if (checkParent.getClass().getSimpleName().equals("For_statementContext") || checkParent.getClass().getSimpleName().equals("While_statementContext")){
+                        closeBraceInLoop = true;
+                        break;
+                    }
+                    //try to get the next parent
+                    try{
+                        checkParent = checkParent.getParent();
+                    }
+                    //if there is an error, break
+                    catch (Exception e){
+                        checkParent = null;
+                        break;
+                    }
+                }
+                //if we have found a loop, then we dont add the line to linesStoppedOnSoFar
+                //else we add the line to linesStoppedOnSoFar
+                if (!closeBraceInLoop){
+                    linesStoppedOnSoFar.add(line2);
+                    breakpoint(line2);
+                }
+                else{
+                    breakpoint(line2);
+                }
+            }
+            return null;
+        }
         switch (parent) {
             case "While_statementContext": //look back at this, use if for reference and test
                 int parentLine = ctx.getParent().start.getLine();
@@ -1439,7 +1520,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 return null;
 
             case "If_statementContext":
-                int startIf;
+                try {
+                    int startIf;
                 int endIf;
                 int firstlineIf;
                 int lastlineIf;
@@ -1632,6 +1714,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     return valToReturn;
                 }
                 return null;
+                } catch (Exception e) {
+                    printLine(e.toString());
+                }
 
             case "Elif_blockContext":
                 // get all lines the block covers
@@ -1741,10 +1826,19 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             //get the line this elif block ends on
             int endElif;
             endElif = ctx.if_statement().block().stop.getLine();
-            //line1 will be the first .line() in the block
-            currentLine1 = ctx.if_statement().block().line(0).start.getLine();
-            //lineMinus1 will be the last .line() in the block
-            currentLineMinus1 = ctx.if_statement().block().line(ctx.if_statement().block().line().size() - 1).start.getLine();
+            //check if the block has any .line()s
+            if (ctx.if_statement().block().line().size() > 0){
+                //get the line the first .line() is on
+                currentLine1 = ctx.if_statement().block().line(0).start.getLine();
+                //get the line the last .line() is on
+                currentLineMinus1 = ctx.if_statement().block().line(ctx.if_statement().block().line().size() - 1).start.getLine();
+            }
+            else{
+                //get the line the first .line() is on
+                currentLine1 = ctx.if_statement().block().start.getLine();
+                //get the line the last .line() is on
+                currentLineMinus1 = ctx.if_statement().block().stop.getLine();
+            }
             currentStartElif = startElif;
             currentEndElif = endElif;
             //visit the elif block

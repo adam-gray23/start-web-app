@@ -1,66 +1,163 @@
+import json
 import os
 import requests
 import subprocess
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+paused = True           # Bad practice, but it works for now, chnage to session storage later
+running = False         # Change to session storage later
 
 # Create your views here.
 def home_view(request):
     return render(request, 'index.html')
 
-# def run_shell_script():
-#     # Replace 'path_to_script' with the actual path to your shell script
-#     script_path = "C:/Users/02nke/dcu/yr4/4yp/2024-ca400-kellyn88-graya27/src/backend/backend/run-docker.bat"
-
-#     # Run the shell script using subprocess
-#     subprocess.call([script_path])
-
+# Requests
 
 def upload_code(request):
     if request.method == 'POST':
+        global paused
+        global running
+        if running:
+            return JsonResponse({'result': 'running'})
+        
+        running = True
+        paused = False
+
         text_content = request.POST.get('text_content', '')
+        debugMode = request.POST.get('debugMode', '')
+        breakpoints = request.POST.get('breakpoints', '')
+        token = request.headers.get('X-Csrftoken')
 
         # Process and save the text content to a directory
         if text_content:
-            send_file_to_docker_input(text_content)
+            # Define the URL where the Flask server is running
 
-        #run_shell_script()
+            try:
+                working_dir = os.getcwd()
+                file_path = os.path.join(working_dir, 'input.txt')
+                breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+                memory_path = os.path.join(working_dir, 'memory.csv')
 
-        return JsonResponse({'message': 'Text content saved successfully'})
-    else:
-        return JsonResponse({'message': 'Invalid request'}, status=400)
-    
-def send_file_to_docker_input(text_content):
-    # Define the directory where you want to save the text files
-    save_directory = "C:/Users/02nke/dcu/yr4/4yp/2024-ca400-kellyn88-graya27/src/backend/backend/input"
+                with open(file_path, 'w') as f:
+                    f.write(text_content)
+                with open(breakpoint_path, 'w') as f:
+                    f.write(breakpoints)
 
-    # Ensure the directory exists
-    if not os.path.exists(save_directory):
-        os.makedirs(save_directory)
+                jar_path = os.path.join(working_dir, 'start-breakpoints.jar')
 
-    # Generate a unique filename or use an existing one
-    # You can use a timestamp or other method to create unique file names
-    # In this example, we use a timestamp as the file name
+                command = ['java', '-jar', jar_path, file_path, token]
 
-    # Construct the full path for the text file
-    file_path = os.path.join(save_directory, "input.txt")
+                try:
+                    # Run the command
+                    result = subprocess.run(command, capture_output=True, text=True, check=True)
 
-    # Write the text content to the file
-    with open(file_path, 'w') as file:
-        file.write(text_content)
+                    # Process the result as needed
+                    output = result.stdout
+                    error = result.stderr
 
-def communicate_with_docker(request):
-    # Construct the URL for your Docker container
-    docker_url = f'http://{settings.DOCKER_CONTAINER_HOST}:{settings.DOCKER_CONTAINER_PORT}/upload'
+                    # get text from memory.csv
+                    try:
+                        with open(memory_path, 'r') as f:
+                            memory = f.read()
+                    except:
+                        memory = ''
 
-    # Make a request to the Docker container
+                    layer = get_channel_layer()
+                    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
+
+                    # You can return the output to the client or perform further processing
+                    os.remove(file_path)
+                    os.remove(breakpoint_path)
+                    try:
+                        os.remove(memory_path)
+                    except:
+                        pass
+
+                    running = False
+
+                    return JsonResponse({'output': output, 'error': error}, status=200)
+
+                except subprocess.CalledProcessError as e:
+                    # Handle the case where the command fails
+                    return JsonResponse({'error': f'Command failed with return code {e.returncode}', 'output': e.output}, status=500)
+
+            except requests.RequestException as e:
+                # Handle request error
+                return JsonResponse({'error': str(e)}, status=500)
+            
+def step_code(request):
+    if request.method == 'POST':
+        # if not paused return 
+        global paused
+        if not paused:
+            return JsonResponse({'result': 'not paused'})
+
+        paused = False
+
+        breakpoints = request.POST.get('breakpoints', '')
+
+        working_dir = os.getcwd()
+        file_path = os.path.join(working_dir, 'instruct.txt')
+        breakpoint_path = os.path.join(working_dir, 'breakpoints.txt')
+        
+        with open(file_path, 'w') as f:
+            f.write("continue")
+
+        with open(breakpoint_path, 'w') as f:
+            f.write(breakpoints)
+
+
+        return JsonResponse({'output': 'success', 'error': ''}, status=200)
+        
+def pause_code(request):
+    global paused
+    paused = True
+    # get line number from request body
+
+    working_dir = os.getcwd()
+    memory_path = os.path.join(working_dir, 'memory.csv')
+
     try:
-        files = {'file': 'hello'}
-        response = requests.post(docker_url, files=files)
-        response_data = response.json()  # Assuming the response is in JSON format
-        # Process the data from the Docker container
-        return JsonResponse({'result': response_data})
-    except requests.RequestException as e:
-        # Handle request error
-        return JsonResponse({'error': str(e)}, status=500)
+        with open(memory_path, 'r') as f:
+            memory = f.read()
+    except:
+        memory = ''
+
+    # get the line number from the request body
+    line_number = json.loads(request.body.decode('utf-8'))
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': line_number})
+    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
+    # send line number to frontend
+    return JsonResponse({'result': line_number})
+
+def print_line(request):
+    # get the line number from the request body
+    
+    data = request.body.decode('utf-8')
+    data = data.split(' ')
+    line = " ".join(data[:len(data)-2])
+    line_number = data[len(data)-2]
+    column = data[len(data)-1]
+    
+
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)(
+        'print',
+        {
+            'type': 'send_message',
+            'line': line,
+            'line_number': line_number,
+            'column': column
+        }
+    )
+    # send line number to frontend
+    return JsonResponse({'result': line_number})
+
+
+

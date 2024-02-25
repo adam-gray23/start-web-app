@@ -1,0 +1,58 @@
+body {
+    background-color: grey;
+}
+#editor { 
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+}
+#result {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    width: 50%;
+}
+#getCode {
+    position: absolute;
+    top: 90%;
+}
+#debugSetting {
+    position: absolute;
+    top: 80%;
+}
+#step {
+    position: absolute;
+    top: 85%;
+}
+.breakpoint {
+    position: relative;
+    top: -12.5px;
+    left: -13.5px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.ace_gutter-cell.ace_breakpoint{
+    border-radius: 20px 0px 0px 20px;
+    box-shadow: 0px 0px 1px 1px red inset;
+}
+
+.myMarker {
+    position:absolute;
+    background:yellow;
+    z-index:20
+}
+
+#memory {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 60%;
+    overflow: auto;
+}

@@ -1520,8 +1520,8 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 return null;
 
             case "If_statementContext":
-                try {
-                    int startIf;
+                
+                int startIf;
                 int endIf;
                 int firstlineIf;
                 int lastlineIf;
@@ -1550,10 +1550,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     //get all lines the block covers
                     startIf = ctx.start.getLine();
                     endIf = ctx.stop.getLine();
+                    printLine("startIf: " + startIf + " endIf: " + endIf + "\n");
                     //find what line the first .line() is on
                     firstlineIf = ctx.line(0).start.getLine();
                     //find what line the last .line() is on
                     lastlineIf = ctx.line(ctx.line().size() - 1).start.getLine();
+                    printLine("firstlineIf: " + firstlineIf + " lastlineIf: " + lastlineIf + "\n");
                     for (int i = startIf; i <= endIf; i++){
                         linesIf.add(i);
                     }
@@ -1714,9 +1716,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     return valToReturn;
                 }
                 return null;
-                } catch (Exception e) {
-                    printLine(e.toString());
-                }
 
             case "Elif_blockContext":
                 // get all lines the block covers

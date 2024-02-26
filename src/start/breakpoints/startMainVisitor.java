@@ -1366,6 +1366,9 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     else if (ctx.line(i).getText().startsWith("loop while")){
                         continue;
                     }
+                    else if (ctx.line(i).getText().startsWith("if")){
+                        continue;
+                    }
                     else {
                         //if the current line in global arraylist of breakpoints, wait for user input
                         if (breakPointArr.contains(ctx.line(i).start.getLine())){
@@ -1520,29 +1523,69 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 return null;
 
             case "If_statementContext":
-                
+                printLine("If statement\n");
                 int startIf;
                 int endIf;
                 int firstlineIf;
                 int lastlineIf;
                 ArrayList<Integer> linesIf = new ArrayList<Integer>();
+                ArrayList<Integer> thisPass = new ArrayList<Integer>();
+                printLine("thisPass: " + thisPass + "\n");
+                boolean loopCheck = false;
                 //check if we are in an elif block by checking if currentStartElif and currentEndElif are not 0
                 if (currentStartElif != 0 && currentEndElif != 0){
+                    printLine("currentStartElif: " + currentStartElif + " currentEndElif: " + currentEndElif + "\n");
                     //then the start line is the currentStartElif and the end line is the currentEndElif
                     startIf = currentStartElif;
                     endIf = currentEndElif;
                     firstlineIf = currentLine1;
                     lastlineIf = currentLineMinus1;
+                    printLine("startIf: " + startIf + " endIf: " + endIf + "\n");
+                    printLine("firstlineIf: " + firstlineIf + " lastlineIf: " + lastlineIf + "\n");
                     for (int i = startIf; i <= endIf; i++){
                         linesIf.add(i);
                     }
+                    var checkParent = ctx.getParent();
+                    while (checkParent != null){
+                        //if the parent is an if statement break
+                        if (checkParent.getClass().getSimpleName().equals("For_statementContext") || checkParent.getClass().getSimpleName().equals("While_statementContext")){
+                            loopCheck = true;
+                            break;
+                        }
+                        //try to get the next parent
+                        try{
+                            checkParent = checkParent.getParent();
+                        }
+                        //if there is an error, break
+                        catch (Exception e){
+                            checkParent = null;
+                            break;
+                        }
+                    }
                     //for all the lines in lines before the first line, check if any need to be stopped on
                     for (int i = startIf; i < firstlineIf; i++){
-                        if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && !linesVisitedInIf.contains(i)){
-                            int line = i;
-                            linesStoppedOnSoFar.add(line);
-                            linesVisitedInIf.add(line);
-                            breakpoint(line);
+                        if(loopCheck){
+                            //if were in a loop, we need to still be able to stop multiple times on the same line
+                            if (breakPointArr.contains(i) && !linesVisitedInIf.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                                //check if we have been there this pass
+                                if (thisPass.contains(i)){
+                                    continue;
+                                }
+                                else{
+                                    int line = i;
+                                    thisPass.add(line);
+                                    printLine("thisPass: " + thisPass + "\n");
+                                    breakpoint(line);
+                                }
+                            }
+                        }
+                        else{
+                            if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && !linesVisitedInIf.contains(i)){
+                                int line = i;
+                                linesStoppedOnSoFar.add(line);
+                                linesVisitedInIf.add(line);
+                                breakpoint(line);
+                            }
                         }
                     }
                 }
@@ -1559,13 +1602,49 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     for (int i = startIf; i <= endIf; i++){
                         linesIf.add(i);
                     }
+                    var checkParent = ctx.getParent();
+                    while (checkParent != null){
+                        //if the parent is an if statement break
+                        if (checkParent.getClass().getSimpleName().equals("For_statementContext") || checkParent.getClass().getSimpleName().equals("While_statementContext")){
+                            loopCheck = true;
+                            break;
+                        }
+                        //try to get the next parent
+                        try{
+                            checkParent = checkParent.getParent();
+                        }
+                        //if there is an error, break
+                        catch (Exception e){
+                            checkParent = null;
+                            break;
+                        }
+                    }
+
                     //for all the lines in lines before the first line, check if any need to be stopped on
-                    for (int i = 0; i < firstlineIf; i++){
-                        if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && !linesVisitedInIf.contains(i)){
-                            int line = i;
-                            linesStoppedOnSoFar.add(line);
-                            linesVisitedInIf.add(line);
-                            breakpoint(line);
+                    for (int i = startIf; i < firstlineIf; i++){
+                        if (loopCheck){
+                            //if were in a loop, we need to still be able to stop multiple times on the same line
+                            if (breakPointArr.contains(i) && !linesVisitedInIf.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                                //check if we have been there this pass
+                                if (thisPass.contains(i)){
+                                    continue;
+                                }
+                                else{
+                                    int line = i;
+                                    linesVisitedInIf.add(line);
+                                    thisPass.add(line);
+                                    printLine("thisPass: " + thisPass + "\n");
+                                    breakpoint(line);
+                                }
+                            }
+                        }
+                        else{
+                            if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && !linesVisitedInIf.contains(i)){
+                                int line = i;
+                                linesStoppedOnSoFar.add(line);
+                                linesVisitedInIf.add(line);
+                                breakpoint(line);
+                            }
                         }
                     }
                 }
@@ -1610,7 +1689,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             if (breakPointArr.contains(ctx.line(i).start.getLine()) && !linesVisitedInIf.contains(ctx.line(i).start.getLine())){
                                 int line = ctx.line(i).start.getLine();
                                 linesStoppedOnSoFar.add(line);
-                                linesVisitedInIf.add(line);
+                                //if not loopCheck, then we need to add the line to linesVisitedInIf
+                                if (!loopCheck){
+                                    linesVisitedInIf.add(line);
+                                }
                                 breakpoint(line);
                                 if (val != null){
                                     valToReturn = val;
@@ -1658,7 +1740,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                                     if (text.equals(lineText)){
                                                         if (breakPointArr.contains(ctx.line(i).start.getLine()) && !linesVisitedInIf.contains(ctx.line(i).start.getLine())){
                                                             int lineCheck = ctx.line(i).start.getLine();
-                                                            linesVisitedInIf.add(lineCheck);
+                                                            //if not loopCheck, then we need to add the line to linesVisitedInIf
+                                                            if (!loopCheck){
+                                                                linesVisitedInIf.add(line);
+                                                            }
                                                             breakpoint(lineCheck);
                                                         }
                                                         else{
@@ -1669,7 +1754,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                                         //if the current line in global arraylist of breakpoints, wait for user input
                                                         if (breakPointArr.contains(ctx.line(i).start.getLine()) && !linesVisitedInIf.contains(ctx.line(i).start.getLine())){
                                                             int lineToPass = ctx.line(i).start.getLine();
-                                                            linesVisitedInIf.add(lineToPass);
+                                                            //if not loopCheck, then we need to add the line to linesVisitedInIf
+                                                            if (!loopCheck){
+                                                                linesVisitedInIf.add(line);
+                                                            }
                                                             breakpoint(lineToPass);
                                                         }
                                                         else{
@@ -1693,7 +1781,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 if (breakPointArr.contains(ctx.line(i).start.getLine()) && !linesVisitedInIf.contains(ctx.line(i).start.getLine())){
                                     int line = ctx.line(i).start.getLine();
                                     linesStoppedOnSoFar.add(line);
-                                    linesVisitedInIf.add(line);
+                                    //if not loopCheck, then we need to add the line to linesVisitedInIf
+                                    if (!loopCheck){
+                                        linesVisitedInIf.add(line);
+                                    }
                                     breakpoint(line);
                                 }
                                 else{
@@ -1706,12 +1797,27 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //for all the lines in lines after the last line, check if any need to be stopped on
                 for (int i = lastlineIf + 1; i <= linesIf.get(linesIf.size() - 1); i++){
                     int line = i;
-                    //if the current line in global arraylist of breakpoints, wait for user input
-                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && !linesVisitedInIf.contains(i)){
-                        linesStoppedOnSoFar.add(line);
-                        breakpoint(line);
+                    if (loopCheck){
+                        if (breakPointArr.contains(i) && !linesVisitedInIf.contains(i) && !linesStoppedOnSoFar.contains(i)){
+                            //check if we have been there this pass
+                            if (thisPass.contains(i)){
+                                continue;
+                            }
+                            else{
+                                thisPass.add(line);
+                                breakpoint(line);
+                            }
+                        }
+                    }
+                    else{
+                        //if the current line in global arraylist of breakpoints, wait for user input
+                        if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && !linesVisitedInIf.contains(i)){
+                            linesStoppedOnSoFar.add(line);
+                            breakpoint(line);
+                        }
                     }
                 }
+                loopCheck = false;
                 if (valToReturn != null){
                     return valToReturn;
                 }
@@ -1798,6 +1904,18 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     //override the visit function for elif_block
     @Override
     public Object visitElif_block(startParser.Elif_blockContext ctx) {
+        //check if any of the parents are a loop
+        var parent = ctx.getParent();
+        boolean loopCheck = false;
+        while (parent != null){
+            if (parent instanceof startParser.For_statementContext || parent instanceof startParser.While_statementContext){
+                loopCheck = true;
+                break;
+            }
+            else{
+                parent = parent.getParent();
+            }
+        }
         //if its a block, visit the block
         if (ctx.block() != null) {
             //get the line this elif statement starts on
@@ -1807,8 +1925,14 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             //check if the line before start line has a breakpoint and has not been stopped on
             if (breakPointArr.contains(startElif - 1) && !linesStoppedOnSoFar.contains(startElif - 1)){
                 int line = startElif - 1;
-                linesStoppedOnSoFar.add(line);
-                breakpoint(line);
+                //if we are in a loop, dont add to array but still stop, else do both
+                if (loopCheck){
+                    breakpoint(line);
+                }
+                else{
+                    linesStoppedOnSoFar.add(line);
+                    breakpoint(line);
+                }
             }
             //visit the block
             Object obj = visit(ctx.block());

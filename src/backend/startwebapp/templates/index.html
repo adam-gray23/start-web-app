@@ -5,49 +5,60 @@
     <head>
         <title>Home Page</title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
     </head>
     <body onload="genUUID()">
+        {% include 'header.html' %}
 
-        <div id="editor">write ("hello") nl
-write ("hello") nl
-write ("hello") nl
-        </div>
-
-        <div id="memory">
-            <h2>Memory</h2>
-            <div id="memoryContent"></div>
-        </div>
-
-        <div>
-            <button id="debugSetting">Normal</button>
-        </div>
-
-        <div id="result"></div>
-
-        <div>
-            {% csrf_token %}
-            <button id="getCode">Run Code</button>
-        </div>
-
-        {% if user.is_authenticated %}
-            <div id="util">
-                {% csrf_token %}
-                <button id="save">Save Session</button>
-                {% csrf_token %}
-                <button id="load">Load Session</button>
-                {% csrf_token %}
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="editor"></div>
+                            <div>
+                                <button id="debugSetting">Normal</button>
+                            </div>
+                            <div>
+                                {% csrf_token %}
+                                <button id="getCode">Run Code</button>
+                            </div>
+                            <div>
+                                {% csrf_token %}
+                                <button id="step">|></button>
+                            </div>
+    
+                            <div>
+                                {% csrf_token %}
+                                <button id="cancel">X</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="memory">
+                                <h2>Memory</h2>
+                                <div id="memoryContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="result"></div>
+                        </div>
+                        <div class="col-md-6">
+                            {% if user.is_authenticated %}
+                                <div id="util">
+                                    {% csrf_token %}
+                                    <button id="save">Save Session</button>
+                                    {% csrf_token %}
+                                    <button id="load">Load Session</button>
+                                    {% csrf_token %}
+                                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-
-        <div>
-            {% csrf_token %}
-            <button id="step">|></button>
-        </div>
-
-        <div>
-            {% csrf_token %}
-            <button id="cancel">X</button>
         </div>
     
         <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>

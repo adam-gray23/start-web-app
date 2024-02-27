@@ -1,37 +1,7 @@
 body {
     background-color: grey;
 }
-#editor { 
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 50%;
-}
-#result {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    width: 50%;
-}
-#getCode {
-    position: absolute;
-    top: 90%;
-}
-#debugSetting {
-    position: absolute;
-    top: 80%;
-}
-#step {
-    position: absolute;
-    top: 85%;
-}
-#cancel {
-    position: absolute;
-    top: 85%;
-    left: 10%;
-}
+
 .breakpoint {
     position: relative;
     top: -12.5px;
@@ -53,20 +23,8 @@ body {
     z-index:20
 }
 
-#memory {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 60%;
-    overflow: auto;
-}
-
-#util {
-    position: absolute;
-    top: 90%;
-    left: 50%;
-    width: 50%;
-    height: 40%;
-    overflow: auto;
+footer {
+    width: 100%;
+    background-color: #f5f5f5;
+    text-align: center;
 }

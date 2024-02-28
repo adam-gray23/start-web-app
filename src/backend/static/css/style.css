@@ -28,3 +28,16 @@ footer {
     background-color: #f5f5f5;
     text-align: center;
 }
+
+#editor, #result {
+    border-radius: 0.35rem;
+}
+
+.card-main {
+    height: 600px;
+}
+
+#memoryContent {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}

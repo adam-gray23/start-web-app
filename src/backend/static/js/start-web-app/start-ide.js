@@ -17,8 +17,8 @@ var editor = ace.edit("editor", {
 var result = ace.edit("result", {
     theme: "ace/theme/tomorrow_night_eighties",
     mode: "ace/mode/text",
-    minLines: 5,
-    maxLines: 15,
+    minLines: 10,
+    maxLines: 10,
     wrap: false,
     autoScrollEditorIntoView: true,
     readOnly: true

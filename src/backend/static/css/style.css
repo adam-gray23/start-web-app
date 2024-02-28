@@ -27,6 +27,11 @@ body {
     position: absolute;
     top: 85%;
 }
+#cancel {
+    position: absolute;
+    top: 85%;
+    left: 10%;
+}
 .breakpoint {
     position: relative;
     top: -12.5px;

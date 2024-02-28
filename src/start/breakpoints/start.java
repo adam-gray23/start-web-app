@@ -73,7 +73,7 @@ public class start {
             startParser parser = new startParser(tokens);
             //remove the default error listener
             parser.removeErrorListeners();
-            parser.addErrorListener(new startErrorListener());
+            parser.addErrorListener(new startErrorListener(args[1], args[2]));
             //create a parse tree for the program
             ParseTree tree = parser.program();
 
@@ -84,8 +84,8 @@ public class start {
             }
             //if no errors, run the program
             else{
-                if(args.length > 1){
-                    startMainVisitor eval = new startMainVisitor(args[1]);
+                if(args.length > 2){
+                    startMainVisitor eval = new startMainVisitor(args[1], args[2]);
                     eval.visit(tree);
                     // Restore standard output
                     System.setOut(originalOut);

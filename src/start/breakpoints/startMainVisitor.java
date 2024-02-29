@@ -53,7 +53,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
 
     }
 
-    public ArrayList<Integer> breakPointArr = new ArrayList<>();
+    public Set<Integer> breakPointArr = new HashSet<>();
     public ArrayList<Integer> linesStoppedOnSoFar = new ArrayList<>();
     //function to read in a text file
     public void readFile(){
@@ -1287,10 +1287,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         return null;
     }
 
-    //stack to store an ArrayList of ints
-    public Stack<ArrayList<Integer>> stackOfLines = new Stack<ArrayList<Integer>>();
+
     public boolean openBraceInLoop = false;
     public boolean closeBraceInLoop = false;
+    ArrayList<Integer> tmpArr = new ArrayList<Integer>();
     //visit the override function for block
     @Override
     public Object visitBlock(startParser.BlockContext ctx) {
@@ -1555,25 +1555,20 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 return null;
 
             case "If_statementContext":
-                printLine("If statement\n");
                 int startIf;
                 int endIf;
                 int firstlineIf;
                 int lastlineIf;
                 ArrayList<Integer> linesIf = new ArrayList<Integer>();
                 ArrayList<Integer> thisPass = new ArrayList<Integer>();
-                printLine("thisPass: " + thisPass + "\n");
                 boolean loopCheck = false;
                 //check if we are in an elif block by checking if currentStartElif and currentEndElif are not 0
                 if (currentStartElif != 0 && currentEndElif != 0){
-                    printLine("currentStartElif: " + currentStartElif + " currentEndElif: " + currentEndElif + "\n");
                     //then the start line is the currentStartElif and the end line is the currentEndElif
                     startIf = currentStartElif;
                     endIf = currentEndElif;
                     firstlineIf = currentLine1;
                     lastlineIf = currentLineMinus1;
-                    printLine("startIf: " + startIf + " endIf: " + endIf + "\n");
-                    printLine("firstlineIf: " + firstlineIf + " lastlineIf: " + lastlineIf + "\n");
                     for (int i = startIf; i <= endIf; i++){
                         linesIf.add(i);
                     }
@@ -1606,7 +1601,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                 else{
                                     int line = i;
                                     thisPass.add(line);
-                                    printLine("thisPass: " + thisPass + "\n");
                                     breakpoint(line);
                                 }
                             }
@@ -1625,12 +1619,10 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     //get all lines the block covers
                     startIf = ctx.start.getLine();
                     endIf = ctx.stop.getLine();
-                    printLine("startIf: " + startIf + " endIf: " + endIf + "\n");
                     //find what line the first .line() is on
                     firstlineIf = ctx.line(0).start.getLine();
                     //find what line the last .line() is on
                     lastlineIf = ctx.line(ctx.line().size() - 1).start.getLine();
-                    printLine("firstlineIf: " + firstlineIf + " lastlineIf: " + lastlineIf + "\n");
                     for (int i = startIf; i <= endIf; i++){
                         linesIf.add(i);
                     }
@@ -1665,7 +1657,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                                     int line = i;
                                     linesVisitedInIf.add(line);
                                     thisPass.add(line);
-                                    printLine("thisPass: " + thisPass + "\n");
                                     breakpoint(line);
                                 }
                             }
@@ -1683,10 +1674,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
 
 
                 Object valToReturn = null;
-
                 for (int i = 0; i < ctx.line().size(); i++) {
-                    //visit the line
-                    Object val = visit(ctx.line(i));
+                    Object val = null;
+                    //if line is not nl or starts with if, visit it
+                    if (!ctx.line(i).getText().equals("nl") && !ctx.line(i).getText().startsWith("if")){
+                        val = visit(ctx.line(i));
+                    }	
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
                         //visit(ctx.line(i));
@@ -1694,25 +1687,18 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     }
                     //if line is an if statement dont wait, we have already waited
                     else if (ctx.line(i).getText().startsWith("if")){
-                        //get the line of the program this .line() is on
-                        int line = ctx.line(i).start.getLine();
-                        int line2 = ctx.line(ctx.line().size() - 1).start.getLine();
-                        //add all lines between to a tmpArr
-                        ArrayList<Integer> tmpArr = new ArrayList<Integer>();
-                        for (int j = line; j < line2; j++){
-                            tmpArr.add(j);
-                        }
-                        //push tmpArr onto the stack
-                        stackOfLines.push(tmpArr);
-                        //remove all lines in breakPointArr that are in tmpArr
-                        breakPointArr.removeAll(tmpArr);
-                        //print breakPointArr
-                        //visit the if statement
-                        visit(ctx.line(i));
-                        //pop tmpArr off the stack
-                        //check if stack is empty
-                        if (!stackOfLines.isEmpty()){
-                            stackOfLines.pop();
+                        try {
+                            //get the line of the program this .line() is on
+                            int line = ctx.line(i).start.getLine();
+                            int line2 = ctx.line(i).stop.getLine();
+                            
+                            for (int j = line; j <= line2; j++){
+                                tmpArr.add(j);
+                            }
+                            visit(ctx.line(i));
+                            breakPointArr.removeAll(tmpArr);
+                        } catch (Exception e) {
+                            printLine("Error: " + e.toString() + "\n");
                         }
                     }
                     else {
@@ -1850,6 +1836,36 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     }
                 }
                 loopCheck = false;
+                //check if tmpArr is not empty
+                if (tmpArr.size() > 0){
+                    boolean isIF = false;
+                    //when none of the parents are if statements, we can readd all the lines in tmpArr to breakPointArr, in case we are in a loop
+                    var checkParent = ctx.getParent().getParent();
+                    while (checkParent != null){
+                        //first check that no parents are not if statements
+                        if (checkParent.getClass().getSimpleName().equals("If_statementContext")){
+                            isIF = true;
+                            break;
+                        }
+                        //try to get the next parent
+                        try{
+                            checkParent = checkParent.getParent();
+                        }
+                        //if there is an error, break
+                        catch (Exception e){
+                            checkParent = null;
+                            break;
+                        }
+                    }
+                    //now if we have no parents that are if statements, we can readd all the lines in tmpArr to breakPointArr
+                    if (isIF == false){
+                        for (int i = 0; i < tmpArr.size(); i++){
+                            breakPointArr.add(tmpArr.get(i));
+                        }
+                        //clear tmpArr
+                        tmpArr.clear();
+                    }
+                }
                 if (valToReturn != null){
                     return valToReturn;
                 }

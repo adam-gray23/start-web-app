@@ -1,37 +1,7 @@
 body {
     background-color: grey;
 }
-#editor { 
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 50%;
-}
-#result {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    width: 50%;
-}
-#getCode {
-    position: absolute;
-    top: 90%;
-}
-#debugSetting {
-    position: absolute;
-    top: 80%;
-}
-#step {
-    position: absolute;
-    top: 85%;
-}
-#cancel {
-    position: absolute;
-    top: 85%;
-    left: 10%;
-}
+
 .breakpoint {
     position: relative;
     top: -12.5px;
@@ -53,20 +23,92 @@ body {
     z-index:20
 }
 
-#memory {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 60%;
-    overflow: auto;
+footer {
+    width: 100%;
+    background-color: #f5f5f5;
+    text-align: center;
 }
 
-#util {
+#editor, #result {
+    border-radius: 0.35rem;
+}
+
+/* .card-main {
+    height: 600px;
+} */
+
+#memoryContent {
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+.tw-toggle {
+    /* background: #95A5A6; */
+    display: inline-block;
+    padding: 2px 3px;
+    border-radius: 20px;
+    position:relative;
+    border: 2px solid #95A5A6;
+}
+  
+.tw-toggle label {
+    text-align: center;
+    font-family: sans-serif;
+    display: inline-block;
+    color: #95A5A6;
+    position:relative;
+    z-index:2;
+    margin: 0;
+    text-align: center;
+    padding: 3px 8px;
+    font-size: 15px;
+    /* cursor: pointer; */
+}
+  
+.tw-toggle input {
+    /* display: none; */
     position: absolute;
-    top: 90%;
-    left: 50%;
-    width: 50%;
-    height: 40%;
-    overflow: auto;
+    height: 25px;
+    width: 25px;
+    top: 3px;
+    z-index: 3;
+    opacity: 0;
+    cursor: pointer;
+}
+  
+.tw-toggle span {
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    border-radius: 50%;
+    background:#fff;
+    display:block;
+    position:absolute;
+    top: 3px;
+    left: 3px; /* Default position */
+    transition: all 0.3s ease-in-out; /* Transition for all properties */
+}
+  
+.tw-toggle input[value="false"]:checked ~ span {
+    background:#95A5A6;
+    color:#fff;
+    left: 3px; /* Position for value "false" */
+}
+  
+.tw-toggle input[value="true"]:checked ~ span {
+    background:#95A5A6;
+    color:#fff;
+    left: 57px; /* Position for value "true" */
+}
+  
+.tw-toggle input[value="-1"]:checked ~ span {
+    background:#95A5A6;
+    color:#fff;
+    left: 30px; /* Position for value "-1" */
+}
+  
+.tw-toggle input[value="false"]:checked + label,
+.tw-toggle input[value="true"]:checked + label,
+.tw-toggle input[value="-1"]:checked + label {
+    color:#fff;
 }

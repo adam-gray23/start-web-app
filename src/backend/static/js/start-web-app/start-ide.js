@@ -17,8 +17,8 @@ var editor = ace.edit("editor", {
 var result = ace.edit("result", {
     theme: "ace/theme/tomorrow_night_eighties",
     mode: "ace/mode/text",
-    minLines: 5,
-    maxLines: 15,
+    minLines: 10,
+    maxLines: 10,
     wrap: false,
     autoScrollEditorIntoView: true,
     readOnly: true
@@ -66,18 +66,18 @@ function changeDebugMode() {
         return;
     }
 
-    if (debugMode == 2){
-        debugMode = 0
-    }
-    else{
-        debugMode++;
+    // Check which radio input is selected
+    if (this.checked) {
+        // Get the corresponding label's text
+        const selectedLabel = document.querySelector('label[for="' + this.id + '"]').textContent;
+
+        debugMode = selectedLabel - 1;
+
     }
 
-    console.log(debugMode)
-
-    var button = document.getElementById("debugSetting");
+    var text = document.getElementById("debugSetting");
     if (debugMode == 1){
-        button.innerHTML = 'Line-by-Line'
+        text.innerHTML = 'Line-by-Line'
         for (let i = 0; i < editor.session.getLength(); i++){
             if (editor.session.getLine(i).trim() != ""){
                 editor.session.setBreakpoint(i);
@@ -85,12 +85,12 @@ function changeDebugMode() {
         }
     }
     else if (debugMode == 2){
-        button.innerHTML = 'Dynamic'
+        text.innerHTML = 'Dynamic'
         editor.session.clearBreakpoints();
 
     }
     else{
-        button.innerHTML = 'Normal'
+        text.innerHTML = 'Normal'
         editor.session.clearBreakpoints();
     }
 }

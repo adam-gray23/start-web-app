@@ -1,34 +1,80 @@
-{% block content %}
+<!-- src="https://colorlib.com/wp/template/login-form-15/" -->
 
-{% if form.errors %}
-	<div class="alert alert-warning alert-dismissible fade show" role="alert">
-        There was an error with your form...
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+{% load static %}
 
 
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-{% endif %}	
+		<link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
 
-	<div class="shadow p-4 mb-5 bg-body rounded">
-	<h1>Register</h1>
-<br/>
-
-
-		<form action="{% url 'register' %}" method=POST>
-			{% csrf_token %}
-
-			{{ form.as_p }}
-
-  
-
-
-			
-<br/><br/>
-			<input type="submit" value="Submit" class="btn btn-secondary">
-
-		</form>
-		
-</div>
-<br/><br/>	
-{% endblock %}
+	</head>
+	<body>
+		<section class="ftco-section">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-md-6 text-center">
+						<h2 class="heading-section">START</h2>
+						<br><br>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-md-7 col-lg-5">
+						<div class="wrap">
+							<div class="card card-main shadow">
+								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">Register</h6>
+								</div>
+								<div class="card-body p-5">
+									<form action="{% url 'register' %}" method=POST class="signin-form">
+										{% csrf_token %}
+									<form>
+										{% if form.errors %}
+											<div class="alert alert-warning alert-dismissible fade show" role="alert">
+												Error while attempting to register:
+												{{ form.errors }}
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismiss()"></button>
+											</div>
+										{% endif %}
+										<div class="form-group">
+											<input id="username-field" type="text" class="form-control" required="" name="username">
+											<label class="form-control-placeholder h-t" for="username" onclick="activateInput('username-field')">Username</label>
+										</div>
+										<div class="form-group mt-5">
+											<input id="email-field" type="email" class="form-control" required="" name="email">
+											<label class="form-control-placeholder h-t" for="email" onclick="activateInput('email-field')">Email</label>
+										</div>
+										<div class="form-group mt-5">
+											<input id="password-field" type="password" class="form-control" required="" name="password1">
+											<label class="form-control-placeholder h-t" for="password" onclick="activateInput('password-field')">Password</label>
+											<span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye" onclick="togglePasswordField('password-field')"></span>
+										</div>
+										<div class="form-group mt-5">
+											<input id="conf-password-field" type="password" class="form-control" required="" name="password2">
+											<label class="form-control-placeholder h-t" for="password" onclick="activateInput('conf-password-field')">Confirm Password</label>
+											<span toggle="#conf-password-field" class="fa fa-fw field-icon toggle-password fa-eye" onclick="togglePasswordField('conf-password-field')"></span>
+										</div>
+										<div class="form-group mt-5">
+											<button type="submit" class="form-control btn btn-primary rounded submit px-3">Register</button>
+										</div>
+									</form>
+									<p class="text-center"><a data-toggle="tab" href="/login">< Back to login</a></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		{% include 'footer.html' %}
+	</body>
+	<script src="{% static 'js/start-web-app/login.js' %}" type="text/javascript" charset="utf-8"></script>
+</html>

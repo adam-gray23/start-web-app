@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{% static 'css/login.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
 	</head>
 	<body>
 		<section class="ftco-section">
@@ -21,43 +22,44 @@
 				<div class="row justify-content-center">
 					<div class="col-md-6 text-center">
 						<h2 class="heading-section">START</h2>
+						<br><br>
 					</div>
 				</div>
 				<div class="row justify-content-center">
 					<div class="col-md-7 col-lg-5">
 						<div class="wrap">
-							<div class="login-wrap p-4 p-md-5">
-								<div class="d-flex">
-									<div class="w-100">
-										<h3 class="mb-4">Sign In</h3>
-									</div>
+							<div class="card card-main shadow">
+								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">Sign In</h6>
 								</div>
-								<form action="" method=POST class="signin-form">
-									{% csrf_token %}
-								<form>
-									{% if form.errors %}
-										<div class="alert alert-warning alert-dismissible fade show" role="alert">
-											Error while attempting to sign in:
-											{{ form.errors }}
-											<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismiss()"></button>
+								<div class="card-body p-5">
+									<form action="" method=POST class="signin-form">
+										{% csrf_token %}
+									<form>
+										{% if form.errors %}
+											<div class="alert alert-warning alert-dismissible fade show" role="alert">
+												Error while attempting to sign in:
+												{{ form.errors }}
+												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismiss()"></button>
+											</div>
+										{% endif %}
+										<div class="form-group">
+											<input id="username-field" type="text" class="form-control" required="" name="username">
+											<label class="form-control-placeholder h-t" for="username" onclick="activateInput('username-field')">Username</label>
 										</div>
-									{% endif %}
-									<div class="form-group mt-2">
-										<input id="username-field" type="text" class="form-control" required="" name="username">
-										<label class="form-control-placeholder h-t" for="username" onclick="activateInput('username-field')">Username</label>
-									</div>
-									<div class="form-group mt-4">
-										<input id="password-field" type="password" class="form-control" required="" name="password">
-										<label class="form-control-placeholder h-t" for="password" onclick="activateInput('password-field')">Password</label>
-										<span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye" onclick="togglePasswordField('password-field')"></span>
-									</div>
-									<div class="form-group mt-4">
-										<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
-									</div>
-								</form>
-								<p class="text-center">Not a member? <a data-toggle="tab" href="/register">Register here</a></p>
-								<p class="text-center">Or</p>
-								<p class="text-center"><a data-toggle="tab" href="/">Continue as guest</a></p>
+										<div class="form-group mt-5">
+											<input id="password-field" type="password" class="form-control" required="" name="password">
+											<label class="form-control-placeholder h-t" for="password" onclick="activateInput('password-field')">Password</label>
+											<span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye" onclick="togglePasswordField('password-field')"></span>
+										</div>
+										<div class="form-group mt-5">
+											<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+										</div>
+									</form>
+									<p class="text-center">Not a member? <a data-toggle="tab" href="/register">Register here</a></p>
+									<p class="text-center">Or</p>
+									<p class="text-center"><a data-toggle="tab" href="/">Continue as guest</a></p>
+								</div>
 							</div>
 						</div>
 					</div>

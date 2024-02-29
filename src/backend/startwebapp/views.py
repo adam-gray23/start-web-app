@@ -20,6 +20,9 @@ import uuid
 def home_view(request):
     return render(request, 'index.html')
 
+def test_view(request):
+    return render(request, 'test.html')
+
 # Requests
 
 def login_user(request):

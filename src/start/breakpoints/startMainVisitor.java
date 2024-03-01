@@ -237,19 +237,32 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     //override the visit function for assignment
     @Override
     public Object visitAssignment(startParser.AssignmentContext ctx) {
-        //get the variable name
-        String var = ctx.NAME().getText();
-        //get the value
-        Object val = visit(ctx.expression());
-        //put the variable and value into the hashmap
-        HashMap<String, Object> map = mappy.peek();
-        map.put(var, val);
-        memoryMap.put(var, new nameTextLine(val.toString(), ctx.start.getLine()));
-        //output all of the current values of each variable in the map to a txt file
-        //one k,v per line
-        writeHashMapToFile(map, "user-files/memory" + id + ".csv");
-        //return null
-        return null;
+        try{
+            //get the variable name
+            String var = ctx.NAME().getText();
+            //get the value
+            Object val = visit(ctx.expression());
+            //check if value was null
+            if (val == null){
+                //nulls are allowed, but we end up turning it to a string
+                val = "null";
+            }
+            //put the variable and value into the hashmap
+            HashMap<String, Object> map = mappy.peek();
+            map.put(var, val);
+            memoryMap.put(var, new nameTextLine(val.toString(), ctx.start.getLine()));
+            //output all of the current values of each variable in the map to a txt file
+            //one k,v per line
+            writeHashMapToFile(map, "user-files/memory" + id + ".csv");
+            //return null
+            return null;
+        }
+        catch(Exception e){
+            printLine("Error: Invalid assignment!\nLine " + ctx.start.getLine() + "\n");
+            callDjango.endCode(sessionToken, id);
+            System.exit(0);
+            return null;
+        }
     }
 
     private void writeHashMapToFile(HashMap<String, Object> map, String fileName) {
@@ -1107,11 +1120,12 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     public String loopedOver;
     public Object currentCharInArray;
     public String lastNonSpecialChar;
-
+    public boolean lastLoop = false;
     //override the visit function for for loops
     @Override
     @SuppressWarnings("unchecked")
     public Object visitFor_statement(startParser.For_statementContext ctx) {
+        lastLoop = false;
         HashMap<String, Object> map = mappy.peek();
         HashMap<String, Object> map2 = new HashMap<String, Object>(mappy.peek());
         //visit the expression within the for loop and assign it to a variable
@@ -1138,6 +1152,11 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
             ArrayList<Object> arr = (ArrayList<Object>) val;
             //visit the block for each element in the arraylist
             for(int i = 0; i < arr.size(); i++){
+                //check if this is the last loop
+                if (i == arr.size() - 1){
+                    lastLoop = true;
+                    printLine("Last loop");
+                }
                 //set current char
                 currentCharInArray = arr.get(i);
                 //create a new variable for the element in the arraylist
@@ -1147,12 +1166,23 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //visit the block
                 //check if theres a return statement
                 //wait here if the current line is in the global arraylist of breakpoints
+                int line = ctx.start.getLine();
+                boolean lineAdded = false;
                 if (breakPointArr.contains(ctx.start.getLine())){
-                    int line = ctx.start.getLine();
                     linesStoppedOnSoFar.add(line);
+                    lineAdded = true;
                     breakpoint(line);
                 }
                 Object obj = visit(ctx.block());
+                try {
+                    if (lineAdded){
+                        if (linesStoppedOnSoFar.contains(line)){
+                            linesStoppedOnSoFar.remove(linesStoppedOnSoFar.indexOf(line));
+                        }
+                    }
+                } catch (Exception e) {
+                    printLine(e.toString());
+                }
                 if (obj != null){
                     //reet global variables
                     mappy.pop();
@@ -1291,6 +1321,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
     public boolean openBraceInLoop = false;
     public boolean closeBraceInLoop = false;
     ArrayList<Integer> tmpArr = new ArrayList<Integer>();
+    public int lastForLine = 0;
     //visit the override function for block
     @Override
     public Object visitBlock(startParser.BlockContext ctx) {
@@ -1436,7 +1467,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 int lastlineFor = ctx.line(ctx.line().size() - 1).start.getLine();
                 //for all the lines in lines before the first line, check if any need to be stopped on
                 for (int i = startFor; i < firstlineFor; i++){
-                    if (breakPointArr.contains(i)){
+                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
                         int line = i;
                         linesStoppedOnSoFar.add(line);
                         breakpoint(line);
@@ -1492,11 +1523,31 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 }
                 // for all the lines in lines after the last line, check if any need to be stopped on
                 for (int i = endFor; i <= linesFor.get(linesFor.size() - 1); i++){
-                    if (breakPointArr.contains(i)){
+                    if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && lastForLine != i){
+                        printLine("lines after last line: " + i + "\n");
                         int line = i;
                         linesStoppedOnSoFar.add(line);
                         breakpoint(line);
                     }
+                }
+                //remove all linesFor from linesStoppedOnSoFar
+                try {
+                    for (int i = 0; i < linesFor.size(); i++){
+                        //if line in linesFor is in linesStoppedOnSoFar, remove it
+                        if (linesStoppedOnSoFar.contains(linesFor.get(i))){
+                            //check if last line
+                            if (i == linesFor.size() - 1 && lastLoop){
+                                lastForLine = linesFor.get(i);
+                                printLine("lastForLine: " + lastForLine + "\n");
+                                linesStoppedOnSoFar.remove(linesStoppedOnSoFar.indexOf(linesFor.get(i)));
+                            }
+                            else{
+                                linesStoppedOnSoFar.remove(linesStoppedOnSoFar.indexOf(linesFor.get(i)));
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    printLine(e.toString());
                 }
                 return null;
 
@@ -1682,7 +1733,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     }	
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
-                        //visit(ctx.line(i));
+                        visit(ctx.line(i));
                         continue;
                     }
                     //if line is an if statement dont wait, we have already waited

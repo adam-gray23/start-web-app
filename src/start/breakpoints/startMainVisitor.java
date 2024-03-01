@@ -1155,7 +1155,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //check if this is the last loop
                 if (i == arr.size() - 1){
                     lastLoop = true;
-                    printLine("Last loop");
                 }
                 //set current char
                 currentCharInArray = arr.get(i);
@@ -1524,7 +1523,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 // for all the lines in lines after the last line, check if any need to be stopped on
                 for (int i = endFor; i <= linesFor.get(linesFor.size() - 1); i++){
                     if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i) && lastForLine != i){
-                        printLine("lines after last line: " + i + "\n");
                         int line = i;
                         linesStoppedOnSoFar.add(line);
                         breakpoint(line);
@@ -1538,7 +1536,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                             //check if last line
                             if (i == linesFor.size() - 1 && lastLoop){
                                 lastForLine = linesFor.get(i);
-                                printLine("lastForLine: " + lastForLine + "\n");
                                 linesStoppedOnSoFar.remove(linesStoppedOnSoFar.indexOf(linesFor.get(i)));
                             }
                             else{

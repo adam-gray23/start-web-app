@@ -5638,6 +5638,7 @@ a.close.disabled {
 
 .modal-open {
   overflow: hidden;
+  filter: blur(0.5rem);
 }
 
 .modal-open .modal {

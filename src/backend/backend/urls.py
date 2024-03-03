@@ -33,5 +33,5 @@ urlpatterns = [
     path('end-code/', views.end_code, name='end-code'),
     path('print-line/', views.print_line, name='print-line'),
     path('save-session/', views.save_session, name='save-session'),
-    path('load-session/', views.load_session, name='load-session'),
+    path('get-sessions/', views.get_sessions, name='load-session'),
 ]

@@ -73,8 +73,8 @@ pmSocket.onmessage = function(e) {
     
     var memory = data["message"]
 
-    document.getElementById("memoryContent").innerHTML = ""
-    document.getElementById("memoryContent").innerHTML = memory
+    document.getElementById("memoryBody").innerHTML = ""
+    displayMemory(memory)
 }
 
 pmSocket.onclose = function(e) {

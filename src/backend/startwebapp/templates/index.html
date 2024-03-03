@@ -8,6 +8,7 @@
         <title>Home Page</title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     </head>
     <body onload="genUUID()">
@@ -96,7 +97,14 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div id="memoryContent"></div>
+                                    <div id="memoryTable">
+                                        <table class="table-bordered" id="memoryContent">
+                                            <thead id="memoryHeader">
+                                                <tr><th>Variable</th><th>Value</th></tr>
+                                            <tbody id="memoryBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div> 
                         </div>
@@ -111,6 +119,7 @@
         <script src="{% static 'js/start-web-app/users.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/start-ide.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/sockets.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'js/start-web-app/modal.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
 
         <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>

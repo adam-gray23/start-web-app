@@ -216,16 +216,30 @@ function cancelFunc() {
 }
 
 
-function saveSession () {
+async function saveSession () {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
         console.log("Code is running, please wait for it to finish")
         return;
     }
 
+    sessions = await getSessions();
 
+    displayModal("Save Session", sessions);
+
+}
+
+function saveFunc(num, mode) {
     var formData = new FormData();
+    formData.append("num", num);
+    formData.append("title", document.getElementById("saveTitle").value);
     formData.append("text_content", editor.session.getValue());
+    if(mode == 1){
+        formData.append("mode", "save");
+    }
+    else{
+        formData.append("mode", "overwrite");
+    }
 
     var xhr = new XMLHttpRequest();
 
@@ -240,6 +254,7 @@ function saveSession () {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
+            closeModal();
         } else {
             console.error("Error sending text content to the server");
         }
@@ -249,36 +264,46 @@ function saveSession () {
     xhr.send(formData);
 }
 
-function loadSession () {
+async function loadSession () {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
         console.log("Code is running, please wait for it to finish")
         return;
     }
 
-    var xhr = new XMLHttpRequest();
+    sessions =  await getSessions();
 
-    var url = "/load-session/";
 
-    xhr.open("GET", url, true);
-
-    // Set the appropriate headers if needed
-    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-
-    // Define a callback function to handle the response from the server
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            editor.session.setValue(response.session);
-        } else {
-            console.error("Error sending text content to the server");
-        }
-    };
-
-    // Send the FormData with the text content to the server
-    xhr.send();
+    displayModal("Load Session", sessions);
 }
 
+async function getSessions () {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        var url = "/get-sessions/";
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                resolve(response);
+            } else {
+                reject("Error sending text content to the server");
+            }
+        };
+        xhr.onerror = function() {
+            reject("Network error occurred");
+        };
+        xhr.send();
+    });
+}
+
+function showSession(num){
+    session = document.getElementsByClassName("session")[num]
+    editor.session.setValue("");
+    editor.session.setValue(session.innerHTML.substring(43));
+    closeModal();
+}
 
 function clearHighlightedLines() {
     const prevMarkers = editor.session.getMarkers();
@@ -287,5 +312,24 @@ function clearHighlightedLines() {
         for (let item of prevMarkersArr) {
             editor.session.removeMarker(prevMarkers[item].id);
         }
+    }
+}
+
+function displayMemory(memory){
+    memory = memory.split("\n");
+
+    for (let i = 0; i < memory.length - 1; i++){
+        let line = memory[i].split(",");
+        let variable = line[0];
+        let value = line[1];
+
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        td1.innerHTML = variable;
+        td2.innerHTML = value;
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        document.getElementById("memoryBody").appendChild(tr);
     }
 }

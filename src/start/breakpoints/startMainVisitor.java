@@ -1561,7 +1561,7 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                 //find what line the last .line() is on
                 int lastlineFunc = ctx.line(ctx.line().size() - 1).start.getLine();
                 //for all the lines in lines before the first line, check if any need to be stopped on
-                for (int i = 0; i < firstlineFunc; i++){
+                for (int i = startFunc; i < firstlineFunc; i++){
                     if (breakPointArr.contains(i) && !linesStoppedOnSoFar.contains(i)){
                         int line = i;
                         linesStoppedOnSoFar.add(line);

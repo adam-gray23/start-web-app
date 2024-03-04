@@ -34,8 +34,4 @@ urlpatterns = [
     path('print-line/', views.print_line, name='print-line'),
     path('save-session/', views.save_session, name='save-session'),
     path('load-session/', views.load_session, name='load-session'),
-    path('reset-password/', auth_views.PasswordResetView.as_view(), name='reset_password'),
-    path('reset-password-sent/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset-password-complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

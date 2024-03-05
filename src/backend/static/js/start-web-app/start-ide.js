@@ -48,7 +48,6 @@ editor.on("guttermousedown", function(e) {
 
     // If there's a breakpoint already defined, it should be removed, offering the toggle feature
     if(typeof breakpoints[row] === typeof undefined){
-        console.log(editor.session.getLine(row))
         if (editor.session.getLine(row).trim() != ""){
             e.editor.session.setBreakpoint(row);
         }
@@ -57,6 +56,12 @@ editor.on("guttermousedown", function(e) {
     }
 
     e.stop();
+});
+
+window.addEventListener('beforeunload', async function(event) {
+    const result = await cancelFunc();
+
+    event.returnValue = '';
 });
 
 function changeDebugMode() {

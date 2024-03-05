@@ -3,6 +3,7 @@ import os
 import psutil
 import requests
 import subprocess
+import time
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
@@ -98,6 +99,7 @@ def upload_code(request):
                 try:
                     # Run the command
                     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                    
 
                     return JsonResponse({'process': process.pid}, status=200)
 
@@ -150,8 +152,8 @@ def pause_code(request):
 
 
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': line_number})
-    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
+    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': line_number, 'id': i})
+    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory, 'id': i})
     # send line number to frontend
     return JsonResponse({'result': line_number})
 
@@ -193,6 +195,24 @@ def cancel_code(request):
             return JsonResponse({'error': f'Process with PID {pid} does not exist.'}, status=400)
     except (ValueError, TypeError):
         return JsonResponse({'error': f'Invalid PID. {pid}'}, status=400)
+    
+def checkProcess(pid):
+    try:
+        if psutil.pid_exists(pid):
+            process = psutil.Process(pid)
+            if process.is_running():
+                # Check if the process is a JAR execution
+                cmdline = process.cmdline()
+                if any("java" in arg for arg in cmdline) and any(".jar" in arg for arg in cmdline):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+    except:
+        return False
 
     
 def end_code(request): 
@@ -213,10 +233,9 @@ def end_code(request):
         memory = ''
 
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory})
-    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': 'end'})
+    async_to_sync(layer.group_send)('memory', {'type': 'send_message', 'message': memory, 'id': i})
+    async_to_sync(layer.group_send)('breakpoint', {'type': 'send_message', 'message': 'end', 'id': i})
 
-    # You can return the output to the client or perform further processing
     os.remove(file_path)
     os.remove(breakpoint_path)
     try:
@@ -235,9 +254,10 @@ def print_line(request):
     
     data = request.body.decode('utf-8')
     data = data.split(' ')
-    line = " ".join(data[:len(data)-2])
-    line_number = data[len(data)-2]
-    column = data[len(data)-1]
+    line = " ".join(data[:len(data)-3])
+    line_number = data[len(data)-3]
+    column = data[len(data)-2]
+    id = data[len(data)-1]
     
 
     layer = get_channel_layer()
@@ -247,7 +267,8 @@ def print_line(request):
             'type': 'send_message',
             'line': line,
             'line_number': line_number,
-            'column': column
+            'column': column,
+            'id': id
         }
     )
     # send line number to frontend

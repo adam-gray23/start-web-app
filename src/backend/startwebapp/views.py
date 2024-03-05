@@ -196,25 +196,6 @@ def cancel_code(request):
     except (ValueError, TypeError):
         return JsonResponse({'error': f'Invalid PID. {pid}'}, status=400)
     
-def checkProcess(pid):
-    try:
-        if psutil.pid_exists(pid):
-            process = psutil.Process(pid)
-            if process.is_running():
-                # Check if the process is a JAR execution
-                cmdline = process.cmdline()
-                if any("java" in arg for arg in cmdline) and any(".jar" in arg for arg in cmdline):
-                    return True
-                else:
-                    return False
-            else:
-                return False
-        else:
-            return False
-    except:
-        return False
-
-    
 def end_code(request): 
 
     i = request.body.decode('utf-8')

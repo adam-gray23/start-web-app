@@ -59,21 +59,23 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     public void readFile(){
         //read a text file, only 1 line in the file, will contain numbers separated by commas
         //split on the commas and store in breakPointArr
-        try {
+        try{
             Scanner sc = new Scanner(new File("user-files/breakpoints" + id + ".txt"));
-            String line = sc.nextLine();
-            //split on comma, if not "" add the position in the array + 1 to the arraylist
-            String[] arr = line.split(",");
-            for (int i = 0; i < arr.length; i++){
-                if (!arr[i].equals("")){
-                    breakPointArr.add(i + 1);
+            try {
+                String line = sc.nextLine();
+                //split on comma, if not "" add the position in the array + 1 to the arraylist
+                String[] arr = line.split(",");
+                for (int i = 0; i < arr.length; i++){
+                    if (!arr[i].equals("")){
+                        breakPointArr.add(i + 1);
+                    }
                 }
+                sc.close();
+            }  catch(NoSuchElementException e){
+                sc.close();
             }
-            sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch(NoSuchElementException e){
-            //do nothing
         }
     }
 
@@ -93,7 +95,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     }
 
     public void printLine(String line){
-        callDjango.printLine(line, currentPrintLine, currentLineLength, sessionToken);
+        callDjango.printLine(line, currentPrintLine, currentLineLength, sessionToken, id);
         // increase currentPrintLine by number of \n characters in line
         for (int i = 0; i < line.length(); i++){
             currentLineLength++;

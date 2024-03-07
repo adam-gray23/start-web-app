@@ -35,9 +35,11 @@ class BreakpointConsumer(AsyncWebsocketConsumer):
 
     async def send_message(self, event):
         message = event['message']
+        id = event['id']
 
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'id': id
         }))
 
 class PrintConsumer(AsyncWebsocketConsumer):
@@ -74,11 +76,13 @@ class PrintConsumer(AsyncWebsocketConsumer):
             line = event['line']
             line_number = event['line_number']
             column = event['column']
+            id = event['id']
     
             await self.send(text_data=json.dumps({
                 'line': line,
                 'line_number': line_number,
-                'column': column
+                'column': column,
+                'id': id
             }))
 
 class MemoryConsumer(AsyncWebsocketConsumer):
@@ -113,7 +117,9 @@ class MemoryConsumer(AsyncWebsocketConsumer):
 
     async def send_message(self, event):
         message = event['message']
+        id = event['id']
 
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'id': id
         }))

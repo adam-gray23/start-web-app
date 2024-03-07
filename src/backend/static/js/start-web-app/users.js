@@ -14,9 +14,6 @@ function getCookie(name) {
 }
 
 function genUUID(){
-    if (sessionStorage.getItem("uuid") != null){
-        return;
-    }
 
     var xhr = new XMLHttpRequest();
 

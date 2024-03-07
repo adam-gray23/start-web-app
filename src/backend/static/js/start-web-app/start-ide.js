@@ -319,9 +319,16 @@ function displayMemory(memory){
     memory = memory.split("\n");
 
     for (let i = 0; i < memory.length - 1; i++){
+        console.log(memory[i]);
         let line = memory[i].split(",");
         let variable = line[0];
-        let value = line[1];
+        let value = line.slice(1).join(","); // Join the remaining parts after the first comma
+
+        // Check if the value is a string
+        if (value.startsWith('"') && value.endsWith('"')) {
+            // Remove quotes
+            value = value.slice(1, -1);
+        }
 
         var tr = document.createElement("tr");
         var td1 = document.createElement("td");
@@ -333,3 +340,4 @@ function displayMemory(memory){
         document.getElementById("memoryBody").appendChild(tr);
     }
 }
+

@@ -280,6 +280,11 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             if (entry.getValue().getString().contains("$Function@")){
                 entry.getValue().setString("function at line " + entry.getValue().getIntValue());
             }
+            //check for string
+            if (entry.getValue().getString().contains(",")){
+                //set the vlaue to be the same, but with quotes around it, in the original map
+                map.put(entry.getKey(), "\"" + entry.getValue().getString() + "\"");
+            }
         }
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {

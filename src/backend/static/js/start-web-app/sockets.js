@@ -8,7 +8,10 @@ const bpSocket = new WebSocket(
 
 bpSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    console.log(data)
+
+    if (data["id"] != sessionStorage.getItem("uuid")){
+        return;
+    }
 
     if (data["message"] == "end"){
         sessionStorage.setItem("running", "false");
@@ -41,12 +44,15 @@ plSocket = new WebSocket(
 
 plSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-
-    console.log(data)
     
     var line = data["line"]
     var line_number = parseInt(data["line_number"], 10)
     var column = parseInt(data["column"], 10)
+    var id = data["id"]
+
+    if (id != sessionStorage.getItem("uuid")){
+        return;
+    }
 
     result.session.insert({
         row: line_number,
@@ -68,10 +74,13 @@ pmSocket = new WebSocket(
 
 pmSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-
-    console.log(data)
     
     var memory = data["message"]
+    var id = data["id"]
+
+    if (id != sessionStorage.getItem("uuid")){
+        return;
+    }
 
     document.getElementById("memoryBody").innerHTML = ""
     displayMemory(memory)

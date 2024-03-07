@@ -20,13 +20,12 @@ public class startErrorListener extends BaseErrorListener{
     //override the syntaxError method in antlr
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charpos, String msg, RecognitionException e){
-        callDjango cd = new callDjango();
         hasError = true;
         msg = errorChecker(msg, offendingSymbol);
         System.out.println(msg);
         //System.err.println("Syntax Error!");
         String final_msg = "Syntax Error!" + "\n" + "Offending Symbol/Token: " + ((Token) offendingSymbol).getText() + "\n" + "line " + line + ", column " + (charpos) + ": " + msg; 
-        cd.printLine(final_msg, token);
+        callDjango.printLine(final_msg, 0, 0, token, id);
         callDjango.endCode(token, id);
         System.exit(0);
     }

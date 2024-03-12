@@ -11,7 +11,7 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     int currentPrintLine = 0;
     int currentLineLength = 0;
     Stack<HashMap<String, Object>> mappy = new Stack<HashMap<String, Object>>();
-    HashMap<String, nameTextLine> memoryMap = new HashMap<String, nameTextLine>();
+    LinkedHashMap<String, nameTextLine> memoryMap = new LinkedHashMap<>();
 
     public class nameTextLine{
         public String text;
@@ -282,6 +282,11 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             if (entry.getValue().getString().contains("$Function@")){
                 entry.getValue().setString("function at line " + entry.getValue().getIntValue());
             }
+            //check for string
+            if (entry.getValue().getString().contains(",")){
+                //set the vlaue to be the same, but with quotes around it, in the original map
+                map.put(entry.getKey(), "\"" + entry.getValue().getString() + "\"");
+            }
         }
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
@@ -304,9 +309,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     public Object visitTerm(startParser.TermContext ctx) {
         //check if the term is an INT
         if(ctx.INT() != null){
-            //convert Object to Int
-            int val = Integer.parseInt(ctx.INT().getText());
-            //return the value
+            //convert Object to long
+            long val = Long.parseLong(ctx.INT().getText());
             return val;
         }
         //check if the term is a BOOLEAN

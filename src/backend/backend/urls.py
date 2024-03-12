@@ -17,12 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from startwebapp import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.home_view, name='home'),
+    path('register/', views.register_user, name='register'),
+    path('test/', views.test_view, name='test'),
+    path('login/', views.login_user, name='login'),
+    path('logout/', views.logout_user, name='logout'),
+    path('add-uuid/', views.add_uuid, name='add-uuid'),
     path('admin/', admin.site.urls),
     path('upload-code/', views.upload_code, name='upload-code'),
     path('step-code/', views.step_code, name='step-code'),
     path('pause-code/', views.pause_code, name='pause-code'),
-    path('print-line/', views.print_line, name='print-line')
+    path('cancel-code/', views.cancel_code, name='cancel-code'),
+    path('end-code/', views.end_code, name='end-code'),
+    path('print-line/', views.print_line, name='print-line'),
+    path('save-session/', views.save_session, name='save-session'),
+    path('get-sessions/', views.get_sessions, name='load-session'),
 ]

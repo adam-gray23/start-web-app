@@ -2,7 +2,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 public class callDjango {
-    public static void pauseCode(int line, String token) {
+    public static void pauseCode(int line, String token, String id) {
         try {
             // Set the URL of your Django server endpoint
             String url = "http://localhost:8000/pause-code/";
@@ -22,7 +22,7 @@ public class callDjango {
             // set cookies value to the token value
             connection.setRequestProperty("Cookie", "csrftoken=" + token);
             OutputStream os = connection.getOutputStream();
-            byte[] bArr = String.valueOf(line).getBytes();
+            byte[] bArr = String.valueOf(line + " " + id).getBytes();
             os.write(bArr);
             os.flush();
             os.close();
@@ -39,7 +39,7 @@ public class callDjango {
         }
     }
 
-    public static void printLine(String line, int currentLineNum, int currentLineLen, String token){
+    public static void printLine(String line, int currentLineNum, int currentLineLen, String token, String id) {
         try {
             // Set the URL of your Django server endpoint
             String url = "http://localhost:8000/print-line/";
@@ -59,7 +59,7 @@ public class callDjango {
             // set cookies value to the token value
             connection.setRequestProperty("Cookie", "csrftoken=" + token);
             OutputStream os = connection.getOutputStream();
-            String output = line + " " + currentLineNum + " " + currentLineLen;
+            String output = line + " " + currentLineNum + " " + currentLineLen + " " + id;
             System.out.println(output);
             byte[] bArr = String.valueOf(output).getBytes();
             os.write(bArr);
@@ -78,11 +78,10 @@ public class callDjango {
         }
     }
 
-    //overload type with no args
-    public void printLine(String line, String token){
+    public static void endCode(String token, String id){
         try {
             // Set the URL of your Django server endpoint
-            String url = "http://localhost:8000/print-line/";
+            String url = "http://localhost:8000/end-code/";
 
             // Create the HttpURLConnection
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -98,13 +97,11 @@ public class callDjango {
             connection.setRequestProperty("X-CSRFToken", token);
             // set cookies value to the token value
             connection.setRequestProperty("Cookie", "csrftoken=" + token);
+
             OutputStream os = connection.getOutputStream();
-            String output = line;
-            System.out.println(output);
-            byte[] bArr = String.valueOf(output).getBytes();
+            byte[] bArr = String.valueOf(id).getBytes();
             os.write(bArr);
             os.flush();
-            os.close();
 
             // Check the response code
             int responseCode = connection.getResponseCode();
@@ -116,5 +113,5 @@ public class callDjango {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        }
+    }
 }

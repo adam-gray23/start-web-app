@@ -8,10 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class start {
     public static void main(String[] args) throws Exception {
+        Logger antlrLogger = Logger.getLogger("org.antlr.v4");
+        antlrLogger.setLevel(Level.SEVERE);
         try{
-
             // Get input file from command line
             String inputFile = null;
             //make sure there is a file
@@ -38,9 +44,7 @@ public class start {
 
             //output arg[1] to token.txt
             if (args.length >= 2) {
-                System.out.println("args[1]: " + args[1]);
                 String numberAsString = args[1];
-                System.out.println("Writing number to token.txt: " + numberAsString);
                 try {
                     // Create a BufferedWriter object to write to file
                     BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
@@ -48,7 +52,6 @@ public class start {
                     writer.write(numberAsString);
                     // Close the writer
                     writer.flush();
-                    System.out.println("Number has been written to token.txt successfully.");
                 } catch (IOException e) {
                     System.out.println("An error occurred while writing to the file: " + e.getMessage());
                 }
@@ -56,15 +59,22 @@ public class start {
                 System.out.println("Please provide a number as arg[1].");
             }
 
+            // Redirect standard output to suppress messages
+            PrintStream originalOut = System.out;
+            System.setOut(new PrintStream(new OutputStream() {
+                public void write(int b) {
+                    // Do nothing to suppress output
+                }
+            }));
+
             // Create lexer and parser
             startLexer lexer = new startLexer(CharStreams.fromStream(is));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             startParser parser = new startParser(tokens);
             //remove the default error listener
             parser.removeErrorListeners();
-            parser.addErrorListener(new startErrorListener());
+            parser.addErrorListener(new startErrorListener(args[1], args[2]));
             //create a parse tree for the program
-            System.out.println("Parsing the program...");
             ParseTree tree = parser.program();
 
 
@@ -74,13 +84,17 @@ public class start {
             }
             //if no errors, run the program
             else{
-                if(args.length > 1){
-                    startMainVisitor eval = new startMainVisitor(args[1]);
+                if(args.length > 2){
+                    startMainVisitor eval = new startMainVisitor(args[1], args[2]);
                     eval.visit(tree);
+                    // Restore standard output
+                    System.setOut(originalOut);
                 }
                 else{
                     startMainVisitor eval = new startMainVisitor();
                     eval.visit(tree);
+                    // Restore standard output
+                    System.setOut(originalOut);
                 }
             }
         //catch file not found error

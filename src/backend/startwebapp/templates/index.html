@@ -3,49 +3,154 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home Page</title>
+        <link rel="shortcut icon" href="#" />
+
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     </head>
-    <body>
+    <body onload="genUUID()">
+        {% include 'header.html' %}
 
-        <div id="editor">write ("hello") nl
-write ("hello") nl
-write ("hello") nl
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-3">
+                            <div id="ideContainer" class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">IDE</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            ?
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
+                                            <div class="dropdown-header">IDE:</div>
+                                            <p>Info about IDE</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="editor"></div>
+                                    <div class="row my-3">
+                                        <div class="col-6">
+                                            {% csrf_token %}
+                                            <button id="getCode">Run</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            {% csrf_token %}
+                                            <button id="step">|></button>
+                                            {% csrf_token %}
+                                            <button id="cancel">X</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-4 col-md-5 col-lg-4 col-xl-2">
+                                            <div class="tw-toggle">
+                                                <input id="toggle1" checked type="radio" name="toggle" value="false">
+                                                <label for="toggle1" class="toggle toggle-yes">1</label>
+                                                <input id="toggle2" type="radio" name="toggle" value="-1">
+                                                <label for="toggle2" class="toggle toggle-yes">2</label>
+                                                <input id="toggle3" type="radio" name="toggle" value="true">
+                                                <label for="toggle3" class="toggle toggle-yes">3</label>
+                                                <span></span>  
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-8 col-md-7 col-lg-8 col-xl-10 my-auto">
+                                            <div>Debug mode: <div id="debugSetting" class="d-inline">Normal</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">result</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            ?
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
+                                            <div class="dropdown-header">Result</div>
+                                            <p>Info about result</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="result"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <div id="memoryContainer" class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Memory</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            ?
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
+                                            <div class="dropdown-header">Memory</div>
+                                            <p>Info about Memory</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="memoryTable">
+                                        <table class="table-bordered" id="memoryContent">
+                                            <thead id="memoryHeader">
+                                                <tr><th>Variable</th><th>Value</th></tr>
+                                            <tbody id="memoryBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="memory">
-            <h2>Memory</h2>
-            <div id="memoryContent"></div>
-        </div>
-
-        <div>
-            <button id="debugSetting">Normal</button>
-        </div>
-
-        <div id="result"></div>
-
-        <div>
-            {% csrf_token %}
-            <button id="getCode">Run Code</button>
-        </div>
-
-        <div>
-            {% csrf_token %}
-            <button id="step">|></button>
-        </div>
-    
+        {% include 'footer.html' %}
+        
         <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-        <script src="{% static 'js/start-web-app/cookie.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'js/start-web-app/users.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/start-ide.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/sockets.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'js/start-web-app/modal.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+
+        <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
         <script>
 
             (function () {
                 getCode.addEventListener('click', uploadCode);
-                debugSetting.addEventListener('click', changeDebugMode)
                 step.addEventListener('click', stepFunc)
+                cancel.addEventListener('click', cancelFunc)
+                document.querySelectorAll('input[type="radio"]').forEach(function(input) {
+                    input.addEventListener('change', changeDebugMode)
+                });
             })();
 
+            $(document).ready(function() {
+                var f = $('#ideContainer').height();
+                $('#memoryContainer').height(f);
+            });
+
         </script>
+        {% if user.is_authenticated %}
+            <script>
+                (function () {
+                    save.addEventListener('click', saveSession)
+                    load.addEventListener('click', loadSession)
+                })();
+            </script>
+        {% endif %}
     </body>
 </html>

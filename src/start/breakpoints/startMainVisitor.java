@@ -282,11 +282,6 @@ public class startMainVisitor extends startBaseVisitor<Object>{
             if (entry.getValue().getString().contains("$Function@")){
                 entry.getValue().setString("function at line " + entry.getValue().getIntValue());
             }
-            //check for string
-            if (entry.getValue().getString().contains(",")){
-                //set the vlaue to be the same, but with quotes around it, in the original map
-                map.put(entry.getKey(), "\"" + entry.getValue().getString() + "\"");
-            }
         }
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
@@ -294,6 +289,12 @@ public class startMainVisitor extends startBaseVisitor<Object>{
                 //if the current entry value contains $Function@, we want to output the value of same function in memoryMap, else output the value
                 if (entry.getValue().toString().contains("$Function@")){
                     writer.println(entry.getKey() + "," + memoryMap.get(entry.getKey()).getString());
+                }
+                else if (entry.getValue().toString().contains(",")){
+                    String outputToWrite = entry.getValue().toString();
+                    outputToWrite = "\"" + outputToWrite + "\"";
+                    writer.println(entry.getKey() + "," + outputToWrite);
+
                 }
                 else{
                     writer.println(entry.getKey() + "," + entry.getValue());

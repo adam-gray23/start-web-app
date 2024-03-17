@@ -37,35 +37,53 @@
                                 <div class="card-body">
                                     <div id="editor"></div>
                                     <div class="row my-3">
-                                        <div class="col-6">
+                                        <div class="col-3">
                                             {% csrf_token %}
-                                            <button id="getCode">Run</button>
+                                            <button class="ide-btn" id="getCode">Run</button>
                                         </div>
-                                        <div class="col-6 text-right">
+                                        <div class="col-9 text-right">
                                             {% csrf_token %}
-                                            <button id="step">|></button>
+                                            <button class="ide-btn btn-primary" id="step">Continue</button>
                                             {% csrf_token %}
-                                            <button id="cancel">X</button>
+                                            <button class="ide-btn btn-danger" id="cancel">Cancel</button>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12 col-sm-4 col-md-5 col-lg-4 col-xl-2">
-                                            <div class="tw-toggle">
-                                                <input id="toggle1" checked type="radio" name="toggle" value="false">
-                                                <label for="toggle1" class="toggle toggle-yes">1</label>
-                                                <input id="toggle2" type="radio" name="toggle" value="-1">
-                                                <label for="toggle2" class="toggle toggle-yes">2</label>
-                                                <input id="toggle3" type="radio" name="toggle" value="true">
-                                                <label for="toggle3" class="toggle toggle-yes">3</label>
-                                                <span></span>  
-                                            </div>
+                                    <div class="row my-auto">
+                                        <div class="col-12">
+                                            Debug Mode:
                                         </div>
-                                        <div class="col-12 col-sm-8 col-md-7 col-lg-8 col-xl-10 my-auto">
-                                            <div>Debug mode: <div id="debugSetting" class="d-inline">Normal</div></div>
+                                    </div>
+                                    <div class="row tw-toggle my-1">
+                                        <div class="col-12 col-sm-4">
+                                            <input id="toggle1" checked type="radio" name="toggle" value="false">
+                                            <label for="toggle1" class="toggle toggle-yes">
+                                                Normal
+                                            </label>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <input id="toggle2" type="radio" name="toggle" value="-1">
+                                            <label for="toggle2" class="toggle toggle-yes">
+                                                Line-By-Line
+                                            </label>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <input id="toggle3" type="radio" name="toggle" value="true">
+                                            <label for="toggle3" class="toggle toggle-yes">
+                                                Dynamic
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row my-1">
+                                        <div class="col-12" id="debugInfo">
+                                            <p class="d-inline">Debug Mode is currently set to</p>
+                                            <p class="d-inline text-primary">Normal</p>
+                                            <p class="d-inline">. Code will run from start to finish without pausing.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">result</h6>
@@ -83,8 +101,6 @@
                                     <div id="result"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-md-6 mb-3">
                             <div id="memoryContainer" class="card card-main shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Memory</h6>

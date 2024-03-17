@@ -310,8 +310,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     public Object visitTerm(startParser.TermContext ctx) {
         //check if the term is an INT
         if(ctx.INT() != null){
-            //convert Object to long
-            long val = Long.parseLong(ctx.INT().getText());
+            //convert Object to int
+            int val = Integer.parseInt(ctx.INT().getText());
             return val;
         }
         //check if the term is a BOOLEAN

@@ -35,10 +35,6 @@ editor.on("guttermousedown", function(e) {
         return;
     }
 
-    if (!editor.isFocused()){
-        return; 
-    }
-
     if (e.clientX > 25 + target.getBoundingClientRect().left){
         return;
     }
@@ -76,27 +72,39 @@ function changeDebugMode() {
         // Get the corresponding label's text
         const selectedLabel = document.querySelector('label[for="' + this.id + '"]').textContent;
 
-        debugMode = selectedLabel - 1;
+        debugMode = Number(this.id.substring(6, 7)) - 1;
 
     }
 
-    var text = document.getElementById("debugSetting");
+    var debugInfo = document.getElementById("debugInfo");
     if (debugMode == 1){
-        text.innerHTML = 'Line-by-Line'
         for (let i = 0; i < editor.session.getLength(); i++){
             if (editor.session.getLine(i).trim() != ""){
                 editor.session.setBreakpoint(i);
             }
         }
+        debugInfo.innerHTML = `
+            <p class="d-inline">Debug Mode is currently set to</p>
+            <p class="d-inline text-primary">Line-By-Line</p>
+            <p class="d-inline">. Code will run, pausing after executing each line.</p>
+        `;
     }
     else if (debugMode == 2){
-        text.innerHTML = 'Dynamic'
         editor.session.clearBreakpoints();
+        debugInfo.innerHTML = `
+            <p class="d-inline">Debug Mode is currently set to</p>
+            <p class="d-inline text-primary">Dynamic</p>
+            <p class="d-inline">. Code will run, pausing after executing each line with a breakpoint. You can set a breakpoint by clicking the line number of the line you wish to set a breakpoint on.</p>
+        `;
 
     }
     else{
-        text.innerHTML = 'Normal'
         editor.session.clearBreakpoints();
+        debugInfo.innerHTML = `
+            <p class="d-inline">Debug Mode is currently set to</p>
+            <p class="d-inline text-primary">Normal</p>
+            <p class="d-inline">. Code will run from start to finish without pausing.</p>
+        `;
     }
 }
 
@@ -276,7 +284,7 @@ async function loadSession () {
         return;
     }
 
-    sessions =  await getSessions();
+    sessions = await getSessions();
 
 
     displayModal("Load Session", sessions);

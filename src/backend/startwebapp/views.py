@@ -92,9 +92,11 @@ def upload_code(request):
                 with open(breakpoint_path, 'w') as f:
                     f.write(breakpoints)
 
+                java_path = os.path.join(os.environ['JAVA_HOME'], 'bin', 'java.exe')
+
                 jar_path = os.path.join(working_dir, 'start-breakpoints.jar')
 
-                command = ['java', '-jar', jar_path, file_path, token, u]
+                command = [java_path, '-jar', jar_path, file_path, token, u]
 
                 try:
                     # Run the command
@@ -284,7 +286,7 @@ def get_sessions(request):
         sessions = Session.objects.filter(username=user.username)
 
         if len(sessions) == 0:
-            return JsonResponse({'session': 'none'})
+            return JsonResponse({'session': []})
         
         sessionsData = []
         for session in sessions:

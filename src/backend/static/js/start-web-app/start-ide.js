@@ -356,5 +356,5 @@ function displayMemory(memory){
 
 //leave confirmation
 window.onbeforeunload = function(){
-    return 'Are you sure you want to leave?';
+    event.returnValue = "Are you sure you want to leave?";
     };

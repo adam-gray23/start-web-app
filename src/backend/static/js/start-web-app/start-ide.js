@@ -353,8 +353,3 @@ function displayMemory(memory){
         document.getElementById("memoryBody").appendChild(tr);
     }
 }
-
-//leave confirmation
-window.onbeforeunload = function(){
-    event.returnValue = "Are you sure you want to leave?";
-    };

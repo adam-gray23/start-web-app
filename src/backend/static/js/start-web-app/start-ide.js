@@ -57,7 +57,7 @@ editor.on("guttermousedown", function(e) {
 window.addEventListener('beforeunload', async function(event) {
     const result = await cancelFunc();
 
-    event.returnValue = '';
+    event.returnValue = 'Are you sure you want to leave?';
 });
 
 function changeDebugMode() {
@@ -353,8 +353,3 @@ function displayMemory(memory){
         document.getElementById("memoryBody").appendChild(tr);
     }
 }
-
-//leave confirmation
-window.onbeforeunload = function(){
-    event.returnValue = "Are you sure you want to leave?";
-    };

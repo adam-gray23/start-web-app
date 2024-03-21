@@ -37,4 +37,6 @@ urlpatterns = [
     path('get-sessions/', views.get_sessions, name='load-session'),
     path('forgot-password/', views.forgot_password, name='forgot-password'),
     path('send-reset-email/', views.send_reset_email, name='send-reset-email'),
+    path('reset-password/', views.reset_password, name='reset-password'),
+    path('update-password/', views.update_password, name='update-password'),
 ]

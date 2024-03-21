@@ -35,4 +35,6 @@ urlpatterns = [
     path('print-line/', views.print_line, name='print-line'),
     path('save-session/', views.save_session, name='save-session'),
     path('get-sessions/', views.get_sessions, name='load-session'),
+    path('forgot-password/', views.forgot_password, name='forgot-password'),
+    path('send-reset-email/', views.send_reset_email, name='send-reset-email'),
 ]

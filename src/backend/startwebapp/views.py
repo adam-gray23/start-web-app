@@ -298,3 +298,10 @@ def get_sessions(request):
             })
 
         return JsonResponse({'session': sessionsData})
+
+def forgot_password(request):
+    print(request)
+    return render(request, 'forgot-password.html')
+
+def send_reset_email(request):
+    print("sending email")

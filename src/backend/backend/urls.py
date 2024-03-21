@@ -39,4 +39,5 @@ urlpatterns = [
     path('send-reset-email/', views.send_reset_email, name='send-reset-email'),
     path('reset-password/', views.reset_password, name='reset-password'),
     path('update-password/', views.update_password, name='update-password'),
+    path('email-sent/', views.email_sent, name='email-sent'),
 ]

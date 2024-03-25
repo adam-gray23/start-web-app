@@ -324,7 +324,7 @@ def send_reset_email(request):
 		subject = 'Password Reset Request'
 		message = f'Hi {user.username},\n\nPlease click the link below to reset your password:\n\nhttp://127.0.0.1:8000/reset-password/?uid={uid}&token={token}\n\nThanks!'
 		send_reset_email_to_user(subject, message, user.email)
-	return HttpResponse('Email sent') #fix later to be a page to say done
+	return redirect('email-sent')
 
 def reset_password(request):
     uid = request.GET.get('uid')
@@ -349,3 +349,6 @@ def update_password(request):
 		user.save()
 
 	return redirect('login')	
+
+def email_sent(request):
+	return render(request, 'email-sent.html')

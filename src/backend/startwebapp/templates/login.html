@@ -43,6 +43,15 @@
 												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismiss()"></button>
 											</div>
 										{% endif %}
+										{% if messages %}
+											{% for message in messages %}
+												{% if "Registration Successful!" not in message %}
+													<div class="alert alert-{{ message.tags }}">
+														{{ message }}
+													</div>
+												{% endif %}
+											{% endfor %}
+										{% endif %}
 										<div class="form-group">
 											<input id="username-field" type="text" class="form-control" required="" name="username">
 											<label class="form-control-placeholder h-t" for="username" onclick="activateInput('username-field')">Username</label>

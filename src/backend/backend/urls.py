@@ -22,7 +22,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('register/', views.register_user, name='register'),
-    path('test/', views.test_view, name='test'),
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('add-uuid/', views.add_uuid, name='add-uuid'),
@@ -40,4 +39,6 @@ urlpatterns = [
     path('reset-password/', views.reset_password, name='reset-password'),
     path('update-password/', views.update_password, name='update-password'),
     path('email-sent/', views.email_sent, name='email-sent'),
+    path('learn/', views.learn_view, name='learn'),
+    path('variables/', views.variables_view, name='variables'),
 ]

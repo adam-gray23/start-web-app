@@ -28,8 +28,11 @@ from django.utils.encoding import force_bytes
 def home_view(request):
 	return render(request, 'index.html')
 
-def test_view(request):
-	return render(request, 'test.html')
+def learn_view(request):
+	return render(request, 'learn.html')
+
+def variables_view(request):
+	return render(request, 'variables.html')
 
 # Requests
 
@@ -56,7 +59,7 @@ def login_user(request):
 def logout_user(request):
 	logout(request)
 	messages.success(request, ("You Were Logged Out!"))
-	return redirect('home')
+	return redirect('login')
 
 def register_user(request):
 	if request.method == "POST":

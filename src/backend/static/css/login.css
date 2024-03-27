@@ -8145,14 +8145,14 @@
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
     transition: .3s all ease;
-    color: #01d28e; }
+    color: #4e73df; }
     a:hover, a:focus {
       text-decoration: none !important;
       outline: none !important;
       -webkit-box-shadow: none;
       box-shadow: none; }
     a:hover, a:active, a:focus {
-      color: #01d28e;
+      color: #4e73df;
       outline: none !important;
       text-decoration: none !important; }
   
@@ -8164,7 +8164,7 @@
     color: #000; }
   
   .bg-primary {
-    background: #01d28e !important; }
+    background: #4e73df !important; }
   
   .ftco-section {
     padding: 7em 0; }
@@ -8232,7 +8232,7 @@
       outline: none !important;
       -webkit-box-shadow: none;
       box-shadow: none;
-      border: 1px solid #01d28e; }
+      border: 1px solid #4e73df; }
   
   .field-icon {
     position: absolute;
@@ -8279,7 +8279,7 @@
       .social-media .social-icon span {
         color: #999999; }
       .social-media .social-icon:hover, .social-media .social-icon:focus {
-        background: #01d28e; }
+        background: #4e73df; }
         .social-media .social-icon:hover span, .social-media .social-icon:focus span {
           color: #fff; }
   
@@ -8336,9 +8336,9 @@
   
   /* Style the checkmark/indicator */
   .checkbox-primary {
-    color: #01d28e; }
+    color: #4e73df; }
     .checkbox-primary input:checked ~ .checkmark:after {
-      color: #01d28e; }
+      color: #4e73df; }
   
   .btn {
     cursor: pointer;

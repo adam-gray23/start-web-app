@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Test</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
+                                </div>
+                                <div class="card-body">
+                                    <h4>Documents</h4>
+                                    <div>
+                                        <a href="{% url 'variables' %}">Beginner's Guide To Variables</a>
+                                        <a href="{% url 'learn' %}">Learn</a>
+                                        <a href="{% url 'learn' %}">Learn</a>
+                                    </div>
+                                    <br><br>
+                                    <h4>Video Tutorials</h4>
+                                    <div>
+                                        <a href="{% url 'learn' %}">Learn</a>
+                                        <a href="{% url 'learn' %}">Learn</a>
+                                        <a href="{% url 'learn' %}">Learn</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% include 'footer.html' %}
+    </body>
+    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+</html>

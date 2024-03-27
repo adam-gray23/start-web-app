@@ -2,8 +2,8 @@ function displayModal(title, content){
 
     document.querySelector("header").classList.add("modal-open");
     document.querySelector("header").classList.add("disabled");
-    document.getElementById("content-wrapper").classList.add("modal-open");
-    document.getElementById("content-wrapper").classList.add("disabled");
+    document.getElementById("wrapper").classList.add("modal-open");
+    document.getElementById("wrapper").classList.add("disabled");
     document.querySelector("footer").classList.add("modal-open");
     document.querySelector("footer").classList.add("disabled");
 
@@ -230,8 +230,8 @@ function confirmSave (x, y) {
 function closeModal(){
     document.querySelector("header").classList.remove("modal-open");
     document.querySelector("header").classList.remove("disabled");
-    document.getElementById("content-wrapper").classList.remove("modal-open");
-    document.getElementById("content-wrapper").classList.remove("disabled");
+    document.getElementById("wrapper").classList.remove("modal-open");
+    document.getElementById("wrapper").classList.remove("disabled");
     document.querySelector("footer").classList.remove("modal-open");
     document.querySelector("footer").classList.remove("disabled");
 

@@ -14,6 +14,10 @@ var editor = ace.edit("editor", {
     autoScrollEditorIntoView: true
 });
 
+editor.setOptions({
+    fontSize: "12pt"
+});
+
 var result = ace.edit("result", {
     theme: "ace/theme/tomorrow_night_eighties",
     mode: "ace/mode/text",
@@ -23,6 +27,10 @@ var result = ace.edit("result", {
     autoScrollEditorIntoView: true,
     readOnly: true
 });
+
+result.setOptions({
+    fontSize: "12pt"
+  });
 
 editor.on("guttermousedown", function(e) {
     var target = e.domEvent.target;

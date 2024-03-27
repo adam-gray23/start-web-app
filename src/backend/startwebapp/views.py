@@ -33,22 +33,26 @@ def test_view(request):
 
 # Requests
 
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
 def login_user(request):
-	if request.method == "POST":
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(request, username=username, password=password)
-		if user is not None:
-			login(request, user)
-			return redirect('home')
-		else:
-			messages.success(request, ("There Was An Error Logging In, Try Again..."))	
-			return redirect('login')	
+    #empty the messages
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
+            return redirect('login')
 
+    else:
+        return render(request, 'login.html')
 
-	else:
-		return render(request, 'login.html')
-	
 def logout_user(request):
 	logout(request)
 	messages.success(request, ("You Were Logged Out!"))

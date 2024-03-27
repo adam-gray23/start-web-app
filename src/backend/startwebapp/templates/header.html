@@ -46,14 +46,6 @@
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        {% if request.get_full_path == "/" %}
-                            {% csrf_token %}
-                            <button class="dropdown-item" id="save">Save Session</button>
-                            {% csrf_token %}
-                            <button class="dropdown-item" id="load">Load Session</button>
-                            
-                            <div class="dropdown-divider"></div>
-                        {% endif %}
                         <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                     </div>
                 </li>

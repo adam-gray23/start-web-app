@@ -16,6 +16,14 @@ bpSocket.onmessage = function(e) {
     if (data["message"] == "end"){
         sessionStorage.setItem("running", "false");
         sessionStorage.setItem("paused", "true");
+
+        if(document.getElementById("targetOutput") != null){
+            if(targetOutput.session.getValue() == result.session.getValue()){
+                console.log("correct");
+                document.getElementById("targetOutput").style.backgroundColor = "#00ff00";
+            }
+        }
+
         return;
     }
     else{

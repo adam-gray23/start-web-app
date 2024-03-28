@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
+        <title>START | Code</title>
         <link rel="shortcut icon" href="#" />
 
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -80,22 +80,43 @@
                                             <p class="d-inline">. Code will run from start to finish without pausing.</p>
                                         </div>
                                     </div>
-                                    <div class="row my-3">
-                                        <div class="col-12">Save or Load session:</div>
-                                    </div>
-                                    <div class="row my-1">
-                                        <div class="col-12">
-                                            <button class="ide-btn" id="save">Save</button>
-                                            <button class="ide-btn" id="load">Load</button>
+                                    {% if user.is_authenticated %}
+                                        <div class="row my-3">
+                                            <div class="col-12">Save or Load session:</div>
                                         </div>
-                                    </div>
+                                        <div class="row my-1">
+                                            <div class="col-12">
+                                                <button class="ide-btn" id="save">Save</button>
+                                                <button class="ide-btn" id="load">Load</button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-3">
+                            {% if problem_id %}
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Target Output</h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                ?
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
+                                                <div class="dropdown-header">Target Output</div>
+                                                <p>Info about target output</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="targetOutput"></div>
+                                    </div>
+                                </div>
+                            {% endif %}
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">result</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Result</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             ?

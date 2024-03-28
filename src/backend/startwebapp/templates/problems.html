@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>START | Learn</title>
+        <title>START | Problems</title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -23,25 +23,15 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
                                 </div>
                                 <div class="card-body">
-                                    <p>Here you can find text and video resources to help you get started with the basics of the START programming language.</p>
-                                    <h4>Documents</h4>
-                                    <div>
-                                        <ul>
-                                            <li><a href="{% url 'variables' %}">Beginner's Guide To Variables in START Programming</a></li>
-                                            <li><a href="{% url 'operators' %}">Beginner's Guide to Operators in START Programming</a></li>
-                                            <li><a href="{% url 'lists' %}">Beginner's Guide to Lists and List Operations in START Programming</a></li>
-                                            <li><a href="{% url 'if-statements' %}">Beginner's Guide to If Statements in START Programming</a></li>
-                                            <li><a href="{% url 'loops' %}">Beginner's Guide to Loops in START Programming</a></li>
-                                            <li><a href="{% url 'functions' %}">Beginner's Guide to Functions in START Programming</a></li>
-                                        </ul>
-                                    </div>
+                                    <p>Here you can find various programming challenges to test what you have learned.</p>
+                                    <h4>Problems</h4>
                                     <br>
-                                    <h4>Video Tutorials</h4>
-                                    <div>
-                                        <ul>
-                                            <li><a href="{% url 'videos' %}">Test</a></li>
-                                        </ul>
-                                    </div>
+                                    <h6>Problem 1: Hello World!</h6>
+                                    <p>Write a program that outputs the message “Hello World” using the built-in write() function.</p>
+                                    <p>Target output:</p>
+                                    <div id="result1">Hello World</div>
+                                    <br>
+                                    <a href="{% url 'code' '1' %}" id="problem1" class="btn btn-primary">Try it yourslef</a>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +42,9 @@
         
         {% include 'footer.html' %}
     </body>
+    <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/start-web-app/problems.js' %}" type="text/javascript" charset="utf-8"></script>
 
     <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

@@ -26,13 +26,40 @@ from django.utils.encoding import force_bytes
 
 # Create your views here.
 def home_view(request):
+	return render(request, 'home.html')
+
+def code_view(request):
 	return render(request, 'index.html')
+
+def code_view_problem(request, id):
+	return render(request, 'index.html', {'problem_id': id})
 
 def learn_view(request):
 	return render(request, 'learn.html')
 
 def variables_view(request):
 	return render(request, 'variables.html')
+
+def operators_view(request):
+	return render(request, 'operators.html')
+
+def lists_view(request):
+	return render(request, 'lists.html')
+
+def if_statements_view(request):
+	return render(request, 'if-statements.html')
+
+def loops_view(request):
+	return render(request, 'loops.html')
+
+def functions_view(request):
+	return render(request, 'functions.html')
+
+def videos_view(request):
+	return render(request, 'videos.html')
+
+def problems_view(request):
+	return render(request, 'problems.html')
 
 # Requests
 

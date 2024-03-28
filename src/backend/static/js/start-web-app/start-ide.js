@@ -30,7 +30,38 @@ var result = ace.edit("result", {
 
 result.setOptions({
     fontSize: "12pt"
-  });
+});
+
+if (document.getElementById("targetOutput") != null){
+
+    var targetOutput = ace.edit("targetOutput", {
+        theme: "ace/theme/tomorrow_night_eighties",
+        mode: "ace/mode/text",
+        minLines: 5,
+        maxLines: 5,
+        wrap: false,
+        autoScrollEditorIntoView: true,
+        readOnly: true
+    });
+
+    targetOutput.setOptions({
+        fontSize: "12pt"
+    });
+
+    // get the id from the url
+    var url = String(new URL(window.location.href));
+    url = url.split("/")
+    id = url[url.length - 2];
+
+    switch(id){
+        case "1":
+            targetOutput.session.setValue("Hello World");
+            break;
+        default:
+            targetOutput.session.setValue("No target output available");
+            break;
+    }
+}
 
 editor.on("guttermousedown", function(e) {
     var target = e.domEvent.target;

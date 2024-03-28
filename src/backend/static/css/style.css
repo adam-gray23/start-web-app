@@ -33,7 +33,9 @@ footer {
     padding: 0.5rem;
 }
 
-#editor, #result {
+#editor,
+#result, 
+#result1 {
     border-radius: 0.35rem;
 }
 

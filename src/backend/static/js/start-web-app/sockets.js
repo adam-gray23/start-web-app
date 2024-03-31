@@ -19,8 +19,10 @@ bpSocket.onmessage = function(e) {
 
         if(document.getElementById("targetOutput") != null){
             if(targetOutput.session.getValue() == result.session.getValue()){
-                console.log("correct");
-                document.getElementById("targetOutput").style.backgroundColor = "#00ff00";
+                message("success", "The output is correct! Problem solved!");
+            }
+            else{
+                message("error", "The output is incorrect! Try again!");
             }
         }
 

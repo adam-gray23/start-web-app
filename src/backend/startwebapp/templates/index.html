@@ -29,8 +29,8 @@
                                             ?
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
-                                            <div class="dropdown-header">IDE:</div>
-                                            <p>Info about IDE</p>
+                                            <div class="dropdown-header" style="font-size: 1.2rem;">IDE:</div>
+                                            <p class="dropdown-item">Info about IDE</p>
                                         </div>
                                     </div>
                                 </div>
@@ -98,18 +98,20 @@
                             {% if problem_id %}
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Target Output</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Problem {{ problem_id }}</h6>
                                         <div class="dropdown no-arrow">
                                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 ?
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
-                                                <div class="dropdown-header">Target Output</div>
-                                                <p>Info about target output</p>
+                                                <div class="dropdown-header" style="font-size: 1.2rem;">Target Output</div>
+                                                <p class="dropdown-item">Info about target output</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-body">
+                                        <p id="problem"></p>
+                                        <p>Target output:</p>
                                         <div id="targetOutput"></div>
                                     </div>
                                 </div>
@@ -122,8 +124,8 @@
                                             ?
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
-                                            <div class="dropdown-header">Result</div>
-                                            <p>Info about result</p>
+                                            <div class="dropdown-header" style="font-size: 1.2rem;">Result</div>
+                                            <p class="dropdown-item">Info about result</p>
                                         </div>
                                     </div>
                                 </div>
@@ -139,8 +141,8 @@
                                             ?
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" style="">
-                                            <div class="dropdown-header">Memory</div>
-                                            <p>Info about Memory</p>
+                                            <div class="dropdown-header" style="font-size: 1.2rem;">Memory</div>
+                                            <p class="dropdown-item">Info about Memory</p>
                                         </div>
                                     </div>
                                 </div>
@@ -168,6 +170,7 @@
         <script src="{% static 'js/start-web-app/start-ide.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/sockets.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/start-web-app/modal.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'js/start-web-app/message.js' %}" type="text/javascript" charset="utf-8"></script>
         <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
 
         <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>

@@ -28,7 +28,6 @@ function genUUID(){
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             sessionStorage.setItem("uuid", response.uuid);
-            console.log(sessionStorage.getItem("uuid"));
         } else {
             console.error("Error sending text content to the server");
         }

@@ -18,6 +18,16 @@ editor.setOptions({
     fontSize: "12pt"
 });
 
+editor.session.on('change', function(delta) {
+    if (debugMode == 1){
+        for (let i = 0; i < editor.session.getLength(); i++){
+            if (editor.session.getLine(i).trim() != ""){
+                editor.session.setBreakpoint(i);
+            }
+        }
+    }
+});
+
 var result = ace.edit("result", {
     theme: "ace/theme/tomorrow_night_eighties",
     mode: "ace/mode/text",
@@ -55,6 +65,7 @@ if (document.getElementById("targetOutput") != null){
 
     switch(id){
         case "1":
+            document.getElementById("problem").innerHTML = "Objective: Write a program that outputs the message “Hello World” using the built-in write() function."
             targetOutput.session.setValue("Hello World");
             break;
         default:
@@ -102,7 +113,7 @@ window.addEventListener('beforeunload', async function(event) {
 function changeDebugMode() {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is currently running. Please wait for it to finish.");
         return;
     }
 
@@ -150,11 +161,16 @@ function changeDebugMode() {
 function uploadCode() {       
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is currently running. Please wait for it to finish.");
         return;
     }
     
     var ideText = editor.session.getValue();
+    if (ideText == "") {
+        message("warn", "No code to run. Please write some code first.");
+        return;
+    }
+
     var formData = new FormData();
     formData.append("text_content", ideText);
     formData.append("debugMode", debugMode)
@@ -192,11 +208,11 @@ function stepFunc() {
     let running = sessionStorage.getItem("running");
     let paused = sessionStorage.getItem("paused");
     if (running == "false"){
-        console.log("Code is not running, please upload code first")
+        message("warn", "Code is not running. Please upload code first.")
         return;
     }
     if (paused == "false"){
-        console.log("Code is not paused, please wait for it to pause")
+        message("warn", "Code is not paused.")
         return;
     }
 
@@ -232,7 +248,7 @@ function stepFunc() {
 function cancelFunc() {
     let running = sessionStorage.getItem("running");
     if (running == "false"){
-        console.log("Code is not running, please upload code first")
+        message("warn", "Code is not running. Please upload code first.")
         return;
     }
 
@@ -271,7 +287,7 @@ function cancelFunc() {
 async function saveSession () {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is running. Please wait for it to finish.");
         return;
     }
 
@@ -307,8 +323,10 @@ function saveFunc(num, mode) {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             closeModal();
+            message("success", "Session saved successfully.");
         } else {
-            console.error("Error sending text content to the server");
+            closeModal();
+            message("error", "Error saving session. Please try again later.");
         }
     };
 
@@ -319,7 +337,7 @@ function saveFunc(num, mode) {
 async function loadSession () {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is running. Please wait for it to finish.");
         return;
     }
 
@@ -340,11 +358,11 @@ async function getSessions () {
                 var response = JSON.parse(xhr.responseText);
                 resolve(response);
             } else {
-                reject("Error sending text content to the server");
+                message("error", "Error getting sessions. Please try again later.");
             }
         };
         xhr.onerror = function() {
-            reject("Network error occurred");
+            message("error", "Error getting sessions. Please try again later.");
         };
         xhr.send();
     });
@@ -371,7 +389,6 @@ function displayMemory(memory){
     memory = memory.split("\n");
 
     for (let i = 0; i < memory.length - 1; i++){
-        console.log(memory[i]);
         let line = memory[i].split(",");
         let variable = line[0];
         let value = line.slice(1).join(","); // Join the remaining parts after the first comma

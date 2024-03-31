@@ -79,8 +79,6 @@ function displayModal(title, content){
     modal = new DOMParser().parseFromString(modalContainer, 'text/html');
     element = modal.body.firstChild;
 
-    console.log(content)
-
     if(title == "Load Session" || title == "Save Session"){
 
         for(var i = 0; i < 10; i++){

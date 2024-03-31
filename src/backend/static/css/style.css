@@ -33,9 +33,7 @@ footer {
     padding: 0.5rem;
 }
 
-#editor,
-#result, 
-#result1 {
+.ace_editor {
     border-radius: 0.35rem;
 }
 
@@ -133,9 +131,52 @@ footer {
     z-index: 1100;
     height: auto;
     width: 100%;
-    background-color: yellow;
+    background-color: #f8f9fc;
+    border-style: solid;
+    border-width: 1px 0 0 0;
+    border-color: #e3e6f0;
+    padding: 10px 0 10px 0;
+    border-radius: 0 0 0.35rem 0.35rem;
 }
 
 .disabled {
     pointer-events: none;
 }
+
+#message {
+    position: fixed;
+    display: flex;
+    width: 98%;
+    margin-left: 1%;
+    top: 10px;
+    border-width: 0 0 0 10px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    z-index: 1000;
+}
+
+#message p {
+    color: black;
+}
+
+#message.message-success {
+    border-color: green;
+    background-color: rgb(118, 205, 118);
+}
+
+#message.message-warn {
+    border-color: orange;
+    background-color: rgb(255, 226, 10);
+}
+
+#message.message-info {
+    border-color: blue;
+    background-color: rgb(118, 205, 205);
+}
+
+#message.message-error {
+    border-color: red;
+    background-color: rgb(255, 88, 88);
+}
+

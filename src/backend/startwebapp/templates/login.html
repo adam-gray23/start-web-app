@@ -49,11 +49,9 @@
 										{% endif %}
 										{% if messages %}
 											{% for message in messages %}
-												{% if "Registration Successful!" not in message %}
-													<div class="alert alert-{{ message.tags }}">
-														{{ message }}
-													</div>
-												{% endif %}
+												<div class="alert alert-error">
+													{{ message }}
+												</div>
 											{% endfor %}
 										{% endif %}
 										<div class="form-group">

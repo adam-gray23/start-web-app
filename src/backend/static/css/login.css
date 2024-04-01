@@ -4220,6 +4220,8 @@
     margin-bottom: 1rem;
     border: 1px solid transparent;
     border-radius: 0.25rem; }
+
+    
   
   .alert-heading {
     color: inherit; }
@@ -4262,6 +4264,15 @@
       border-top-color: #b1dfbb; }
     .alert-success .alert-link {
       color: #0b2e13; }
+  
+  .alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb; }
+    .alert-error hr {
+      border-top-color: #f1b0b7; }
+    .alert-error .alert-link {
+      color: #491217; }
   
   .alert-info {
     color: #0c5460;

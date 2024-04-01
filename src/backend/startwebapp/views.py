@@ -68,7 +68,6 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
 def login_user(request):
-    #empty the messages
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -85,7 +84,6 @@ def login_user(request):
 
 def logout_user(request):
 	logout(request)
-	messages.success(request, ("You Were Logged Out!"))
 	return redirect('login')
 
 def register_user(request):
@@ -97,7 +95,6 @@ def register_user(request):
 			password = form.cleaned_data['password1']
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			messages.success(request, ("Registration Successful!"))
 			return redirect('home')
 	else:
 		form = RegisterUserForm()

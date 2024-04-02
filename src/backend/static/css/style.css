@@ -24,12 +24,16 @@ body {
 }
 
 footer {
+    position: absolute;
+    bottom: 0;
     width: 100%;
-    background-color: #f5f5f5;
     text-align: center;
+    background-color: #fff !important;
+    border: 1px solid #e3e6f0;
+    padding: 0.5rem;
 }
 
-#editor, #result {
+.ace_editor {
     border-radius: 0.35rem;
 }
 
@@ -57,75 +61,53 @@ footer {
     overflow-x: auto;
 }
 
+.ide-btn {
+    border-radius: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
 .tw-toggle {
-    /* background: #95A5A6; */
     display: inline-block;
     padding: 2px 3px;
     border-radius: 20px;
-    position:relative;
+    position: relative;
     border: 2px solid #95A5A6;
 }
-  
+
 .tw-toggle label {
     text-align: center;
     font-family: sans-serif;
     display: inline-block;
     color: #95A5A6;
-    position:relative;
-    z-index:2;
+    position: relative;
+    width: 100%;
+    z-index: 2;
     margin: 0;
     text-align: center;
     padding: 3px 8px;
     font-size: 15px;
-    /* cursor: pointer; */
+    transition: all 0.3s ease-in-out;
 }
-  
+
 .tw-toggle input {
-    /* display: none; */
     position: absolute;
     height: 25px;
     width: 25px;
-    top: 3px;
-    z-index: 3;
+    top: 0;
+    left: 0;
     opacity: 0;
     cursor: pointer;
-}
-  
-.tw-toggle span {
-    height: 25px;
-    width: 25px;
-    line-height: 25px;
-    border-radius: 50%;
-    background:#fff;
-    display:block;
-    position:absolute;
-    top: 3px;
-    left: 3px; /* Default position */
-    transition: all 0.3s ease-in-out; /* Transition for all properties */
-}
-  
-.tw-toggle input[value="false"]:checked ~ span {
-    background:#95A5A6;
-    color:#fff;
-    left: 3px; /* Position for value "false" */
-}
-  
-.tw-toggle input[value="true"]:checked ~ span {
-    background:#95A5A6;
-    color:#fff;
-    left: 57px; /* Position for value "true" */
-}
-  
-.tw-toggle input[value="-1"]:checked ~ span {
-    background:#95A5A6;
-    color:#fff;
-    left: 30px; /* Position for value "-1" */
 }
   
 .tw-toggle input[value="false"]:checked + label,
 .tw-toggle input[value="true"]:checked + label,
 .tw-toggle input[value="-1"]:checked + label {
     color:#fff;
+    background-color: #95A5A6;
+    border-radius: 1rem;
 }
 
 #modal{
@@ -149,9 +131,52 @@ footer {
     z-index: 1100;
     height: auto;
     width: 100%;
-    background-color: yellow;
+    background-color: #f8f9fc;
+    border-style: solid;
+    border-width: 1px 0 0 0;
+    border-color: #e3e6f0;
+    padding: 10px 0 10px 0;
+    border-radius: 0 0 0.35rem 0.35rem;
 }
 
 .disabled {
     pointer-events: none;
 }
+
+#message {
+    position: fixed;
+    display: flex;
+    width: 98%;
+    margin-left: 1%;
+    top: 10px;
+    border-width: 0 0 0 10px;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    z-index: 1000;
+}
+
+#message p {
+    color: black;
+}
+
+#message.message-success {
+    border-color: green;
+    background-color: rgb(118, 205, 118);
+}
+
+#message.message-warn {
+    border-color: orange;
+    background-color: rgb(255, 226, 10);
+}
+
+#message.message-info {
+    border-color: blue;
+    background-color: rgb(118, 205, 205);
+}
+
+#message.message-error {
+    border-color: red;
+    background-color: rgb(255, 88, 88);
+}
+

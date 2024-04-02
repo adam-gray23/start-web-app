@@ -14,6 +14,20 @@ var editor = ace.edit("editor", {
     autoScrollEditorIntoView: true
 });
 
+editor.setOptions({
+    fontSize: "12pt"
+});
+
+editor.session.on('change', function(delta) {
+    if (debugMode == 1){
+        for (let i = 0; i < editor.session.getLength(); i++){
+            if (editor.session.getLine(i).trim() != ""){
+                editor.session.setBreakpoint(i);
+            }
+        }
+    }
+});
+
 var result = ace.edit("result", {
     theme: "ace/theme/tomorrow_night_eighties",
     mode: "ace/mode/text",
@@ -24,6 +38,42 @@ var result = ace.edit("result", {
     readOnly: true
 });
 
+result.setOptions({
+    fontSize: "12pt"
+});
+
+if (document.getElementById("targetOutput") != null){
+
+    var targetOutput = ace.edit("targetOutput", {
+        theme: "ace/theme/tomorrow_night_eighties",
+        mode: "ace/mode/text",
+        minLines: 5,
+        maxLines: 5,
+        wrap: false,
+        autoScrollEditorIntoView: true,
+        readOnly: true
+    });
+
+    targetOutput.setOptions({
+        fontSize: "12pt"
+    });
+
+    // get the id from the url
+    var url = String(new URL(window.location.href));
+    url = url.split("/")
+    id = url[url.length - 2];
+
+    switch(id){
+        case "1":
+            document.getElementById("problem").innerHTML = "Objective: Write a program that outputs the message “Hello World” using the built-in write() function."
+            targetOutput.session.setValue("Hello World");
+            break;
+        default:
+            targetOutput.session.setValue("No target output available");
+            break;
+    }
+}
+
 editor.on("guttermousedown", function(e) {
     var target = e.domEvent.target;
 
@@ -33,10 +83,6 @@ editor.on("guttermousedown", function(e) {
 
     if (target.className.indexOf("ace_gutter-cell") == -1){
         return;
-    }
-
-    if (!editor.isFocused()){
-        return; 
     }
 
     if (e.clientX > 25 + target.getBoundingClientRect().left){
@@ -61,13 +107,13 @@ editor.on("guttermousedown", function(e) {
 window.addEventListener('beforeunload', async function(event) {
     const result = await cancelFunc();
 
-    event.returnValue = '';
+    event.returnValue = 'Are you sure you want to leave?';
 });
 
 function changeDebugMode() {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is currently running. Please wait for it to finish.");
         return;
     }
 
@@ -76,38 +122,55 @@ function changeDebugMode() {
         // Get the corresponding label's text
         const selectedLabel = document.querySelector('label[for="' + this.id + '"]').textContent;
 
-        debugMode = selectedLabel - 1;
+        debugMode = Number(this.id.substring(6, 7)) - 1;
 
     }
 
-    var text = document.getElementById("debugSetting");
+    var debugInfo = document.getElementById("debugInfo");
     if (debugMode == 1){
-        text.innerHTML = 'Line-by-Line'
         for (let i = 0; i < editor.session.getLength(); i++){
             if (editor.session.getLine(i).trim() != ""){
                 editor.session.setBreakpoint(i);
             }
         }
+        debugInfo.innerHTML = `
+            <p class="d-inline">Debug Mode is currently set to</p>
+            <p class="d-inline text-primary">Line-By-Line</p>
+            <p class="d-inline">. Code will run, pausing after executing each line.</p>
+        `;
     }
     else if (debugMode == 2){
-        text.innerHTML = 'Dynamic'
         editor.session.clearBreakpoints();
+        debugInfo.innerHTML = `
+            <p class="d-inline">Debug Mode is currently set to</p>
+            <p class="d-inline text-primary">Dynamic</p>
+            <p class="d-inline">. Code will run, pausing after executing each line with a breakpoint. You can set a breakpoint by clicking the line number of the line you wish to set a breakpoint on.</p>
+        `;
 
     }
     else{
-        text.innerHTML = 'Normal'
         editor.session.clearBreakpoints();
+        debugInfo.innerHTML = `
+            <p class="d-inline">Debug Mode is currently set to</p>
+            <p class="d-inline text-primary">Normal</p>
+            <p class="d-inline">. Code will run from start to finish without pausing.</p>
+        `;
     }
 }
 
 function uploadCode() {       
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is currently running. Please wait for it to finish.");
         return;
     }
     
     var ideText = editor.session.getValue();
+    if (ideText == "") {
+        message("warn", "No code to run. Please write some code first.");
+        return;
+    }
+
     var formData = new FormData();
     formData.append("text_content", ideText);
     formData.append("debugMode", debugMode)
@@ -145,11 +208,11 @@ function stepFunc() {
     let running = sessionStorage.getItem("running");
     let paused = sessionStorage.getItem("paused");
     if (running == "false"){
-        console.log("Code is not running, please upload code first")
+        message("warn", "Code is not running. Please upload code first.")
         return;
     }
     if (paused == "false"){
-        console.log("Code is not paused, please wait for it to pause")
+        message("warn", "Code is not paused.")
         return;
     }
 
@@ -185,7 +248,7 @@ function stepFunc() {
 function cancelFunc() {
     let running = sessionStorage.getItem("running");
     if (running == "false"){
-        console.log("Code is not running, please upload code first")
+        message("warn", "Code is not running. Please upload code first.")
         return;
     }
 
@@ -224,7 +287,7 @@ function cancelFunc() {
 async function saveSession () {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is running. Please wait for it to finish.");
         return;
     }
 
@@ -260,8 +323,10 @@ function saveFunc(num, mode) {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             closeModal();
+            message("success", "Session saved successfully.");
         } else {
-            console.error("Error sending text content to the server");
+            closeModal();
+            message("error", "Error saving session. Please try again later.");
         }
     };
 
@@ -272,11 +337,11 @@ function saveFunc(num, mode) {
 async function loadSession () {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
-        console.log("Code is running, please wait for it to finish")
+        message("warn", "Code is running. Please wait for it to finish.");
         return;
     }
 
-    sessions =  await getSessions();
+    sessions = await getSessions();
 
 
     displayModal("Load Session", sessions);
@@ -293,11 +358,11 @@ async function getSessions () {
                 var response = JSON.parse(xhr.responseText);
                 resolve(response);
             } else {
-                reject("Error sending text content to the server");
+                message("error", "Error getting sessions. Please try again later.");
             }
         };
         xhr.onerror = function() {
-            reject("Network error occurred");
+            message("error", "Error getting sessions. Please try again later.");
         };
         xhr.send();
     });
@@ -324,7 +389,6 @@ function displayMemory(memory){
     memory = memory.split("\n");
 
     for (let i = 0; i < memory.length - 1; i++){
-        console.log(memory[i]);
         let line = memory[i].split(",");
         let variable = line[0];
         let value = line.slice(1).join(","); // Join the remaining parts after the first comma
@@ -345,4 +409,3 @@ function displayMemory(memory){
         document.getElementById("memoryBody").appendChild(tr);
     }
 }
-

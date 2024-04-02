@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>START | Learn</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/learn-doc.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
+                                </div>
+                                <div id="learn-doc" class="card-body">
+                                    <article id="2a2053f2-ecb9-481a-b8e0-b13a578940af" class="page sans"><header><h1 class="page-title"><strong><strong>Beginner&#x27;s Guide to Loops in START Programming</strong></strong></h1><p class="page-description"></p></header><div class="page-body"><p id="a45e62f8-a743-4109-8f7d-940236308cc0" class="">Loops are essential constructs in programming that allow you to execute a block of code repeatedly. In START, you have two types of loops: while loops for conditional looping and for loops for iterating over arrays. Let&#x27;s explore how to use each type of loop effectively.</p><h3 id="226b911b-bac2-49fb-8b93-d3101bcf9846" class=""><strong><strong>While Loops</strong></strong></h3><p id="40610457-8c33-4afa-a077-dc0213aed8cb" class="">While loops are used for executing a block of code repeatedly as long as a condition is true. Lets look at the syntax of a while loop.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="bd1f8ae3-69c4-4a28-a9d9-08264e5407d4" class="code"><code class="language-Python">loop while condition {
+    // Code block to execute
+}</code></pre><p id="6448a818-2fb0-4ec2-afb9-50361e3291a1" class="">The code inside of the block will also execute as long as the condition is true. They are useful for running until a certain condition in the code has been met. Lets look at an example of a while loop:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="e2e86f3c-5d88-4e43-a4f4-e7c11ee4ca6c" class="code"><code class="language-Python">i is 0
+
+loop while i less than 10 {
+    write(i) nl
+    i is i + 1
+}
+write(&quot;done because i is now&quot;, 10) nl</code></pre><p id="ae5a5b81-86cd-40ea-8a7e-15bb036c3003" class="">This code produces the following output:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0d6ac39d-fd3b-4f52-829e-a8e8bc340c85" class="code"><code class="language-Plain Text">0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+done because i is now 10</code></pre><p id="a5bfd4a4-3eb4-49c9-95e0-ede092b29e53" class="">The block of code executed 10 times, as <code>i</code> started on 0, and once <code>i</code> was incremented from 9 up to 10, and the condition was checked again it failed, so the loop was then finished and could be skipped.</p><h3 id="14646850-b8ad-4a62-a262-68b04969749a" class="">For Loops</h3><p id="272091d7-cbce-410b-b693-a97da3ec2ec4" class="">For loops are used for iterating over arrays. They can be useful for checking elements of an array for a condition, or for accessing matrix (a list of lists) values. Lets look at the syntax of for loops.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2cdef9d2-8f7f-4e05-ab88-4e222e8acc95" class="code"><code class="language-Python">loop for each item in arr {
+    // Code block to execute for each item in the array
+}</code></pre><p id="811529c7-8816-473a-83ab-ccd08b20175d" class="">The code within the block will execute once for each item in the array, hence the code will execute for the length of the array. Lets see an example of this:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="84a1e858-73bb-4233-80ab-68bec5363e6b" class="code"><code class="language-Python">arr is [1,2,3]
+loop for each element in arr{
+    write(element) nl
+}</code></pre><p id="fbb557f7-4e7a-4894-b216-53aa490b5ada" class="">For each run of the block, it outputs the elements of the array, the output of this code is:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="30d100b0-93a9-4699-ba04-7b60946f5706" class="code"><code class="language-Plain Text">1
+2
+3</code></pre><h3 id="3bea82d2-7585-4cd3-a854-fea6acd187fb" class="">Conclusion</h3><p id="6325e6f6-918f-4fb8-a04e-deccf60aea21" class="">Loops are powerful constructs in programming that allow you to automate repetitive tasks and iterate over collections of data. By understanding how to use while and for loops effectively, you&#x27;ll be able to write more efficient and concise code. Practice using loops with different conditions and arrays to become proficient in controlling the flow of your programs.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+                                </div>
+                                <hr class="mb-0">
+                                <div class="row my-3">
+                                    <div class="col-12 text-center">
+                                        <a class="d-inline" href="{% url 'if-statements' %}">< Previous: If Statements</a>
+                                        <p class="text-primary d-inline"> | </p>
+                                        <a class="d-inline" href="{% url 'functions' %}">Next: Functions ></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% include 'footer.html' %}
+    </body>
+    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+</html>

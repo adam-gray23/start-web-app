@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>START | Problems</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>Here you can find various programming challenges to test what you have learned.</p>
+                                    <br>
+                                    <h3>Problems</h3>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 1: Hello World!</h5>
+                                        <p>Write a program that outputs the message “Hello World” using the built-in write() function.<br>Target output:</p>
+                                        <div id="result1">Hello World</div>
+                                        <br>
+                                        <a href="{% url 'code' '1' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 2: Your Name Here</h5>
+                                        <p>Write a program that outputs your own name and age in the message: “My name is <name> and I am <age>. Make use of variables to store this information.<br>Target output:</p>
+                                        <div id="result2">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '2' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 3: Bank Balance</h5>
+                                        <p>
+                                            Write a program to mimic the way in which money enters and leaves your bank account. Define your initial balance to be 100. Then, using variables to define each transaction or deposit, update the balance. At the end output your final balance. Here is a list of 5 transactions to update with:
+                                            <br>
+                                            <ul>
+                                                <li>rent is 50 (payment)</li>
+                                                <li>coffee is 3 (payment)</li>
+                                                <li>payCheck is 100 (income)</li>
+                                                <li>schoolSupplies is 25 (payment)</li>
+                                                <li>moneyTransfer is 30 (income)</li>
+                                            </ul>
+                                            Remember you can update a variable like follows:
+                                            <br><br>
+                                            <code>
+                                                x is x
+                                                <br>
+                                                x is x + 1
+                                            </code>
+                                            <br><br>
+                                            Target output:
+                                        </p>
+                                        <div id="result3">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '3' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 4: Even or Odd</h5>
+                                        <p>
+                                            Write a program to determine if a defined variable x, is even or is odd. Make use of if statements to solve this problem.
+                                            <br>
+                                            Target output:
+                                        </p>
+                                        <div id="result4">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '4' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 5: Temperature Converter</h5>
+                                        <p>
+                                            Write a program that converts temperature from Celsius to Fahrenheit. The steps to convert to Fahrenheit are as follows:
+                                            <br>
+                                            <ul>
+                                                <li>Take your original number and multiply by 1.8</li>
+                                                <li>Then add 32 to the result</li>
+                                            </ul>
+                                            Target output:
+                                        </p>
+                                        <div id="result5">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '5' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 6: List Operations</h5>
+                                        <p>
+                                            Given we start with a list with the following value: [1,2,"x",1,2,3,"x",4,6,"x"]. As we can see, this list has gotten corrupted. We have the list repeating after the first 2 numbers, as well as a 6 instead of 5 at the end of the list. As well as these we have many corrupted x’s throughout. Make a program that removes all of these unwanted characters, and adds 5 correctly to the end of the list. Finally output the corrected list.
+                                            <br>
+                                            Hint: Make use of the remove and remove all function
+                                            <br>
+                                            Target output:
+                                        </p>
+                                        <div id="result6">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '6' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 7: Is List Index Even Or Odd</h5>
+                                        <p>
+                                            Given the following list, [1,3,4,6,7,8,9], check each index and write “Even” if the number is even, and “Odd” if the number is odd.
+                                            <br>
+                                            Target output:
+                                        </p>
+                                        <div id="result7">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '7' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 8: Count Evens</h5>
+                                        <p>
+                                            Define a variable target. Check every number (including 0) up to (and not including) this number and output the total amount of evens up to that number.
+                                            <br>
+                                            Target output:
+                                        </p>
+                                        <div id="result8">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '8' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 9: Reuse Add 2</h5>
+                                        <p>
+                                            Write a program with a reusable piece of code that adds up two numbers and outputs the result.
+                                            <br>
+                                            Hint: Use a Function to solve this problem
+                                            <br>
+                                            Target output:
+                                        </p>
+                                        <div id="result9">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '9' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <h5 class="mb-3">Problem 10: Recursion Challenge - Fibonacci Sequence</h5>
+                                        <p>
+                                            In the Fibonacci sequence, each number is the sum of the two preceding ones, starting from 0 and 1. The task is to write a recursive function that computes the Fibonacci number corresponding to a given input of the function.
+                                            <br>
+                                            Target output:
+                                        </p>
+                                        <div id="result10">test</div>
+                                        <br>
+                                        <a href="{% url 'code' '10' %}" class="btn btn-primary">Try it yourself</a>
+                                        <a class="solved" href="#" class="btn btn-primary"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% include 'footer.html' %}
+    </body>
+    <script src="{% static 'js/ace-src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/start-web-app/problems.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+</html>

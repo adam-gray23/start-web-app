@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>START | Learn</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/learn-doc.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
+                                </div>
+                                <div id="learn-doc" class="card-body">
+                                    <article id="43e4f326-d7ee-4e2f-997d-f6ea566edf8b" class="page sans"><header><h1 class="page-title"><strong>Beginner&#x27;s Guide to If Statements in START Programming</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="13a47bb1-ee90-419a-8061-4bad037b8e86" class="">If statements are fundamental control structures in programming that allow you to make decisions based on certain conditions. In START, you can use <code>if</code>, <code>otherwise if</code>, and <code>otherwise</code> statements to control the flow of your program. Let&#x27;s explore how to use if statements effectively.</p><h3 id="2c199736-2a21-4f8e-b4c0-0d91eb9cd5d8" class=""><strong>Syntax of If Statements in START</strong></h3><p id="4b18f638-c7cc-44bb-a920-fc27c326ca05" class="">The syntax for if statements in START is as follows:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="5a895590-dbe8-45d5-9415-933145ab0f71" class="code"><code class="language-Python">if condition {
+    // execute if condition is true
+} otherwise if condition {
+    // execute if the previous condition was false and this condition is true
+} otherwise {
+    // execute if all previous conditions were false
+}</code></pre><p id="7ff74418-dfed-4a8d-9ea0-e02aebe1499c" class="">In this case, conditions are the same Boolean and Comparison Operators we looked at in earlier lessons. </p><ul id="0823f8c9-baea-4231-bef1-b4dbe0e85642" class="bulleted-list"><li style="list-style-type:disc"><code>if</code>: Checks if a condition is true and executes the associated code block if it is.</li></ul><ul id="a402e231-59bc-4a5f-b32d-d23f5e54476e" class="bulleted-list"><li style="list-style-type:disc"><code>otherwise if</code>: Checks another condition if the previous condition was false and executes the associated code block if it is true.</li></ul><ul id="4d445d6b-fdd3-461f-a32b-a63864234914" class="bulleted-list"><li style="list-style-type:disc"><code>otherwise</code>: Executes the associated code block if all previous conditions were false</li></ul><h3 id="0e485b90-6a24-40ef-9aad-5d81e053c604" class=""><strong>Example Usage</strong></h3><p id="928abfd7-110a-4228-a1b8-fc62b8aba208" class="">Let&#x27;s use an example to illustrate the usage of if statements:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ec3cdd3e-8d61-4767-8696-3ed5276502fd" class="code"><code class="language-Python">a is 15
+
+if a equals 10 {
+    write(&quot;a is 10&quot;) nl
+}
+otherwise if a equals 15 {
+    write(&quot;a is 15&quot;) nl
+}
+otherwise {
+    write(&quot;a is neither 10 nor 15&quot;) nl
+}</code></pre><p id="0cf269a5-282c-4098-9197-0a875144ad49" class="">This code produces the following result:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ae8080b7-88a8-464a-8d9c-b35768205815" class="code"><code class="language-Plain Text">a is 15</code></pre><p id="23d0bc31-ec00-4c6a-954d-c75a9a5db2fb" class="">The output is 15 as the program fails the first check, as <code>a</code> does not equal 10, so the first block is skipped, the second condition is then checked, and as <code>a</code> equals 15, we go into the second block, hence the output. As we went into the second block, we never check the 3rd condition and such never go into the 3rd block of code.</p><p id="61d7c360-8471-4be0-b092-5b02ec1999e3" class="">If <code>a</code> did equal 10, we would have went into the first block, and likewise, if <code>a</code> did not equal either 10 or 15, we would have visited the otherwise block at the end.</p><h3 id="378c0b36-4f58-49b1-92b9-deeda5721e66" class="">Conclusion</h3><p id="f3ede561-ebdd-42b8-8306-646787f3f073" class="">If statements are essential for controlling the flow of your program based on different conditions. By understanding how to use if, otherwise if, and otherwise statements effectively, you&#x27;ll be able to create more dynamic and responsive programs. Practice using if statements with various conditions to become proficient in making decisions within your code.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+                                </div>
+                                <hr class="mb-0">
+                                <div class="row my-3">
+                                    <div class="col-12 text-center">
+                                        <a class="d-inline" href="{% url 'lists' %}">< Previous: Lists</a>
+                                        <p class="text-primary d-inline"> | </p>
+                                        <a class="d-inline" href="{% url 'loops' %}">Next: Loops ></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% include 'footer.html' %}
+    </body>
+    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+</html>

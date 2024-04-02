@@ -20,3 +20,16 @@ class RegisterUserForm(UserCreationForm):
 		self.fields['username'].widget.attrs['class'] = 'form-control'
 		self.fields['password1'].widget.attrs['class'] = 'form-control'
 		self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+
+class PasswordResetForm(forms.Form):
+	email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
+
+	class Meta:
+		model = User
+		fields = ('email',)
+
+	def __init__(self, *args, **kwargs):
+		super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+		self.fields['email'].widget.attrs['class'] = 'form-control'

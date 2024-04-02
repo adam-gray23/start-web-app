@@ -21,12 +21,14 @@
 		<section class="ftco-section">
 			<div class="container">
 				<div class="row justify-content-center">
-					<img src="{% static 'img/cogs-transparent.png' %}" alt="logo" style="height: 5rem; width: 6rem;">
-				</div>
-				<div class="row justify-content-center">
-					<div class="col-md-6 text-center">
-						<h2 class="font-weight-bold text-primary">START</h2>
-						<br><br>
+					<div class="row justify-content-center">
+						<img src="{% static 'img/cogs-transparent.png' %}" alt="logo" style="height: 5rem; width: 6rem;">
+					</div>
+					<div class="row justify-content-center">
+						<div class="col-md-6 text-center">
+							<h2 class="font-weight-bold text-primary">START</h2>
+							<br><br>
+						</div>
 					</div>
 				</div>
 				<div class="row justify-content-center">
@@ -34,10 +36,10 @@
 						<div class="wrap">
 							<div class="card card-main shadow">
 								<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Sign In</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Email Sent</h6>
 								</div>
 								<div class="card-body p-5">
-									<form action="" method=POST class="signin-form">
+									<form action="{% url 'send-reset-email' %}" method=POST class="ResetEmailForm">
 										{% csrf_token %}
 									<form>
 										{% if form.errors %}
@@ -47,32 +49,9 @@
 												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="dismiss()"></button>
 											</div>
 										{% endif %}
-										{% if messages %}
-											{% for message in messages %}
-												<div class="alert alert-error">
-													{{ message }}
-												</div>
-											{% endfor %}
-										{% endif %}
-										<div class="form-group">
-											<input id="username-field" type="text" class="form-control" required="" name="username">
-											<label class="form-control-placeholder h-t" for="username" onclick="activateInput('username-field')">Username</label>
-										</div>
-										<div class="form-group mt-5">
-											<input id="password-field" type="password" class="form-control" required="" name="password">
-											<label class="form-control-placeholder h-t" for="password" onclick="activateInput('password-field')">Password</label>
-											<span toggle="#password-field" class="fa fa-fw field-icon toggle-password fa-eye" onclick="togglePasswordField('password-field')"></span>
-										</div>
-										<div class="form-group mt-5">
-											<button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
-										</div>
+										<p>An email has been sent to the email address you provided. Please check your email and follow the instructions to reset your password.</p>
+                                        <a href="{% url 'login' %}" class="btn btn-primary btn-block">Back to Login</a>
 									</form>
-									<p class="text-center">Not a member? <a data-toggle="tab" href="/register">Register here</a></p>
-									<p class="text-center">Or</p>
-									<p class="text-center"><a data-toggle="tab" href="/">Continue as guest</a></p>
-									<hr>
-									{% comment %} forgot password {% endcomment %}
-									<p class="text-center"><a data-toggle="tab" href="/forgot-password">Forgot password?</a></p>
 								</div>
 							</div>
 						</div>

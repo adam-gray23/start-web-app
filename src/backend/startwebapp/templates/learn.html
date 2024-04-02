@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>START | Learn</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>Here you can find text and video resources to help you get started with the basics of the START programming language.</p>
+                                    <h4>Documents</h4>
+                                    <div>
+                                        <ul>
+                                            <li><a href="{% url 'variables' %}">Beginner's Guide To Variables in START Programming</a></li>
+                                            <li><a href="{% url 'operators' %}">Beginner's Guide to Operators in START Programming</a></li>
+                                            <li><a href="{% url 'lists' %}">Beginner's Guide to Lists and List Operations in START Programming</a></li>
+                                            <li><a href="{% url 'if-statements' %}">Beginner's Guide to If Statements in START Programming</a></li>
+                                            <li><a href="{% url 'loops' %}">Beginner's Guide to Loops in START Programming</a></li>
+                                            <li><a href="{% url 'functions' %}">Beginner's Guide to Functions in START Programming</a></li>
+                                        </ul>
+                                    </div>
+                                    <br>
+                                    <h4>Video Tutorials</h4>
+                                    <div>
+                                        <ul>
+                                            <li><a href="{% url 'videos' %}">Test</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% include 'footer.html' %}
+    </body>
+    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+</html>

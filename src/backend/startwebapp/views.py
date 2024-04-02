@@ -22,6 +22,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from .email import send_reset_email_to_user
 
 
 # Create your views here.
@@ -62,10 +66,6 @@ def problems_view(request):
 	return render(request, 'problems.html')
 
 # Requests
-
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
 
 def login_user(request):
     if request.method == "POST":
@@ -340,14 +340,10 @@ def get_sessions(request):
 def forgot_password(request):
 	return render(request, 'forgot-password.html')
 
-from .email import send_reset_email_to_user
 def send_reset_email(request):
 	EnterUsername = request.POST.get('username')
-	print(EnterUsername)
 	
 	user = User.objects.filter(username=EnterUsername).first()
-	print(user.password)
-	print(user.email)
 
 	if user:
 		token = default_token_generator.make_token(user)

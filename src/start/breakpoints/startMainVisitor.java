@@ -1580,7 +1580,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //check if line is nl
                     if (ctx.line(i).getText().equals("nl")){
-                        visit(ctx.line(i));
                         continue;
                     }
                     else {
@@ -1951,7 +1950,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
-                        visit(ctx.line(i));
                         continue;
                     }
                     else {

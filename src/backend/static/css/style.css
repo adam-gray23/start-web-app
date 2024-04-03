@@ -180,3 +180,58 @@ footer {
     background-color: rgb(255, 88, 88);
 }
 
+[speech-bubble], [speech-bubble] * { box-sizing: border-box }
+
+[speech-bubble]{
+  --bbColor: #4e73df;
+  --bbArrowSize: 1.5rem;
+  --bbBorderRadius: 0.25rem;
+  --bbPadding: 1rem;
+  background: var(--bbColor);
+  border-radius: var(--bbBorderRadius);
+  padding: var(--bbPadding);
+  position: relative;
+}
+
+[speech-bubble]::before{
+  content: ''; 
+  position: absolute;
+  background: var(--bbColor);
+}
+
+[speech-bubble][pbottom]{ margin-bottom: var(--bbArrowSize) }
+[speech-bubble][ptop]   { margin-top: var(--bbArrowSize); }
+[speech-bubble][pleft]  { margin-left: var(--bbArrowSize); }
+[speech-bubble][pright] { margin-right: var(--bbArrowSize); }
+
+
+/* bottom and top  */
+[speech-bubble][pbottom]::before,
+[speech-bubble][ptop]::before{
+  --width: calc(var(--bbArrowSize) / 2 * 3);
+  height: var(--bbArrowSize);
+  width: var(--width);
+}
+
+/* bottom */
+[speech-bubble][pbottom]::before{
+  top: calc(100% - 2px);
+}
+[speech-bubble][pbottom][aleft]::before{
+  left: 1rem;
+  clip-path: polygon(25% 0, 100% 0, 0% 100%)
+}
+[speech-bubble][pbottom][acenter]::before{
+  left: calc(50% - var(--width) / 2);
+  clip-path: polygon(12.5% 0, 87.5% 0, 50% 100%)
+}
+[speech-bubble][pbottom][aright]::before{
+  right: 1rem;
+  clip-path: polygon(0 0, 75% 0, 100% 100%)
+}
+
+[speech-bubble] p {
+    font-size: 1rem;
+    color: white;
+} 
+

@@ -38,8 +38,8 @@
                                     <hr>
                                     <div>
                                         <h5 class="mb-3">Problem 2: Your Name Here</h5>
-                                        <p>Write a program that outputs your own name and age in the message: “My name is <name> and I am <age>. Make use of variables to store this information.<br>Target output:</p>
-                                        <div id="result2">test</div>
+                                        <p>Write a program that outputs your own name and age in the message: "My name is &lt;name&gt; and I am &lt;age&gt;". Make use of the variables "name" and "age" to store this information.<br>Target output:</p>
+                                        <div id="result2">My name is &lt;name&gt; and I am &lt;age&gt;</div>
                                         <br>
                                         <a href="{% url 'code' '2' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -48,7 +48,7 @@
                                     <div>
                                         <h5 class="mb-3">Problem 3: Bank Balance</h5>
                                         <p>
-                                            Write a program to mimic the way in which money enters and leaves your bank account. Define your initial balance to be 100. Then, using variables to define each transaction or deposit, update the balance. At the end output your final balance. Here is a list of 5 transactions to update with:
+                                            Write a program to mimic the way in which money enters and leaves your bank account. Define your initial variable, balance, to be 100. Then, using each of these variables, update the value of the variable balance. At the end output your final balance. Hint: Payments are subtracted to your balance while incomes are added. Here is a list of 5 transactions to update with:
                                             <br>
                                             <ul>
                                                 <li>rent is 50 (payment)</li>
@@ -67,7 +67,7 @@
                                             <br><br>
                                             Target output:
                                         </p>
-                                        <div id="result3">test</div>
+                                        <div id="result3">152</div>
                                         <br>
                                         <a href="{% url 'code' '3' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -76,11 +76,15 @@
                                     <div>
                                         <h5 class="mb-3">Problem 4: Even or Odd</h5>
                                         <p>
-                                            Write a program to determine if a defined variable x, is even or is odd. Make use of if statements to solve this problem.
+                                            Write a program to determine if a defined variable x, is even or is odd. Make use of an if/otherwise statement to solve this problem. Your output can be one of the following:
                                             <br>
                                             Target output:
                                         </p>
-                                        <div id="result4">test</div>
+                                        <div id="result4">x is even
+
+OR
+
+x is odd</div>
                                         <br>
                                         <a href="{% url 'code' '4' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -95,9 +99,11 @@
                                                 <li>Take your original number and multiply by 1.8</li>
                                                 <li>Then add 32 to the result</li>
                                             </ul>
+                                            Make use of a variables named "fahrenheit" and "celsius". Celsius should begin at 20. Your program should make use of the "mult" and "add" operators.
+                                            <br>
                                             Target output:
                                         </p>
-                                        <div id="result5">test</div>
+                                        <div id="result5">68.0</div>
                                         <br>
                                         <a href="{% url 'code' '5' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -112,7 +118,7 @@
                                             <br>
                                             Target output:
                                         </p>
-                                        <div id="result6">test</div>
+                                        <div id="result6">[1, 2, 3, 4, 5]</div>
                                         <br>
                                         <a href="{% url 'code' '6' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -121,11 +127,17 @@
                                     <div>
                                         <h5 class="mb-3">Problem 7: Is List Index Even Or Odd</h5>
                                         <p>
-                                            Given the following list, [1,3,4,6,7,8,9], check each index and write “Even” if the number is even, and “Odd” if the number is odd.
+                                            Given the following variable: list, [1,3,4,6,7,8,9], check each index and write “Even” if the number is even, and “Odd” if the number is odd. Your program should make use of a loop for each and an if/otherwise statement to solve this problem.
                                             <br>
                                             Target output:
                                         </p>
-                                        <div id="result7">test</div>
+                                        <div id="result7">Odd
+Odd                                            
+Even
+Even
+Odd
+Even
+Odd</div>
                                         <br>
                                         <a href="{% url 'code' '7' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -134,11 +146,11 @@
                                     <div>
                                         <h5 class="mb-3">Problem 8: Count Evens</h5>
                                         <p>
-                                            Define a variable target. Check every number (including 0) up to (and not including) this number and output the total amount of evens up to that number.
+                                            Define variables "index" to be 0 and "target" to be 20. Use a loop to check "index" to see if it is even. If it is increment another variable "count" by 1. At the end of the loop increment "index" by 1. Repeat this process until "index" is equal to 20. I.E. do not run the loop if "index" is equal to 20.
                                             <br>
                                             Target output:
                                         </p>
-                                        <div id="result8">test</div>
+                                        <div id="result8">10</div>
                                         <br>
                                         <a href="{% url 'code' '8' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -147,13 +159,18 @@
                                     <div>
                                         <h5 class="mb-3">Problem 9: Reuse Add 2</h5>
                                         <p>
-                                            Write a program with a reusable piece of code that adds up two numbers and outputs the result.
+                                            Write a program which uses a function named "addTwo" to add two numbers together. Your program should contain the code:
                                             <br>
-                                            Hint: Use a Function to solve this problem
+                                            <code>
+                                                addTwo(2, 2)
+                                                <br>
+                                                addTwo(5, 3)
+                                            </code>
                                             <br>
                                             Target output:
                                         </p>
-                                        <div id="result9">test</div>
+                                        <div id="result9">4
+8</div>
                                         <br>
                                         <a href="{% url 'code' '9' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
@@ -162,11 +179,22 @@
                                     <div>
                                         <h5 class="mb-3">Problem 10: Recursion Challenge - Fibonacci Sequence</h5>
                                         <p>
-                                            In the Fibonacci sequence, each number is the sum of the two preceding ones, starting from 0 and 1. The task is to write a recursive function that computes the Fibonacci number corresponding to a given input of the function.
+                                            In the Fibonacci sequence, each number is the sum of the two preceding ones, starting from 0 and 1. The task is to write a recursive function called fibonacci that takes an integer n as an argument and returns the nth Fibonacci number. Your program should calculate the 4th and 10th fibonacci numbers.
+                                            <br>
+                                            E.g.
+                                            <br>
+                                            <code>
+                                                fibonacci(4)
+                                                <br>
+                                                fibonacci(10)
+                                            </code>
+                                            <br>
+                                            More information about the fibonacci sequence can be found <a href="https://www.mathsisfun.com/numbers/fibonacci-sequence.html">here</a>.
                                             <br>
                                             Target output:
                                         </p>
-                                        <div id="result10">test</div>
+                                        <div id="result10">3
+55</div>
                                         <br>
                                         <a href="{% url 'code' '10' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>

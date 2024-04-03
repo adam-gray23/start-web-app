@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>START | Learn</title>
+        <title>START</title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -17,15 +17,95 @@
             <div id="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 col-md-6 mb-3">
                             <div class="card card-main shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Home</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Welcome to START!</h6>
                                 </div>
                                 <div class="card-body">
-                                    <p>Home</p>
+                                    <div class="d-none d-sm-flex row justify-content-end">
+                                        <div class="col-9">
+                                            <div speech-bubble pbottom aleft>
+                                                <p>Hello! My name is Cogs. Welcome to Start!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex d-sm-none row justify-content-end">
+                                        <div class="col-12">
+                                            <div speech-bubble pbottom acenter>
+                                                <p>Hello! My name is Cog. Welcome to Start!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-none d-sm-flex row">
+                                        <div class="col-12">
+                                            <img src="{% static 'img/cogs-transparent.png' %}" class="img-fluid" alt="cogs">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex d-sm-none row justify-content-center">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <img src="{% static 'img/cogs-transparent.png' %}" class="img-fluid" alt="cogs">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="d-sm-none d-md-block card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Github</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>The START web app is free to use and open source! Check out the code on Github!</p>
+                                    <a href="#">Link to GIthub</a>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">What is START?</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>What is START?</p>
+                                </div>
+                            </div>
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Begin Coding</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>START offers...</p>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button class="d-sm-inline btn btn-primary align-text-center" style="width: 100px;" onclick="window.location.href='/learn'">Learn</button>
+                                            <p class="d-sm-inline pl-3">Begin Learning</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button class="d-sm-inline btn btn-primary align-text-center" style="width: 100px;" onclick="window.location.href='/problems'">Problems</button>
+                                            <p class="d-sm-inline pl-3">Begin Learning</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button class="d-sm-inline btn btn-primary align-text-center" style="width: 100px;" href="/code">Code</button>
+                                            <p class="d-sm-inline pl-3">Begin Learning</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="d-sm-block d-md-none card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Github</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>The START web app is free to use and open source! Check out the code on Github!</p>
+                                    <a href="#">Link to GIthub</a>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -34,9 +114,4 @@
         
         {% include 'footer.html' %}
     </body>
-    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
-
-    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 </html>

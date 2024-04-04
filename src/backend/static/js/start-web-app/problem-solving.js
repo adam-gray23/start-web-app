@@ -277,3 +277,11 @@ function getMemory(){
 
     return pairs;
 }
+
+if (typeof module === 'object') {
+    module.exports = {
+        checkTargetOutput: checkTargetOutput,
+        generateProblem: generateProblem,
+        getMemory: getMemory
+    };
+}

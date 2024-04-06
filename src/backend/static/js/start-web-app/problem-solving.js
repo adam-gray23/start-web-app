@@ -5,9 +5,11 @@ function checkTargetOutput(){
     url = url.split("/")
     id = url[url.length - 2];
 
+    console.log(id)
+
     switch(id){
         case "1":
-            if(targetOutput.session.getValue() == result.session.getValue().replace(/\s+$/, '')){
+            if(result.session.getValue().replace(/\s+$/, '') == "Hello World"){
                 message("success", "The output is correct! Problem solved!");
             }
             else{

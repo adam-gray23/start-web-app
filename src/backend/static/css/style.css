@@ -235,3 +235,11 @@ footer {
     color: white;
 } 
 
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    grid-column-gap: 100px;
+  }
+  
+  

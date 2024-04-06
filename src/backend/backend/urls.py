@@ -48,6 +48,7 @@ urlpatterns = [
     path('learn/if-statements/', views.if_statements_view, name='if-statements'),
     path('learn/loops/', views.loops_view, name='loops'),
     path('learn/functions/', views.functions_view, name='functions'),
-    path('learn/videos/', views.videos_view, name='videos'),
+    path('learn/videos/variables', views.video_variables_view, name='videos-variables'),
+    path('learn/videos/operators', views.video_operators_view, name='videos-operators'),
     path('problems/', views.problems_view, name='problems'),
 ]

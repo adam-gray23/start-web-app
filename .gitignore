@@ -19,3 +19,4 @@ src/start/breakpoints/org/
 
 # IDE - VSCode
 .vscode
+node_modules

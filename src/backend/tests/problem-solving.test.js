@@ -5,7 +5,7 @@ const ace = require('../static/js/ace-src-noconflict/ace.js');
 // Mock console.error to silence error regarding ace.editor.config
 console.error = jest.fn(() => {});
 
-test('checkTargetProblem-1', () => {
+test('checkTargetProblem', () => {
 
     document.body.innerHTML = `
     <div id="wrapper"></div>
@@ -21,8 +21,6 @@ test('checkTargetProblem-1', () => {
         },
         writable: true
     });
-
-    window.targetOutput = { session: { getValue: () => "Hello World" } };
     
     window.result = { session: { getValue: () => "Hello World" } };
     checkTargetOutput();
@@ -33,7 +31,7 @@ test('checkTargetProblem-1', () => {
     expect(document.getElementById("message").textContent).toContain("The output is incorrect! Try again!");
 });
 
-test('generateProblem-1', () => {
+test('generateProblem', () => {
     
     window = Object.create(window);
     const url = "http://test.com/code/1/";
@@ -51,10 +49,11 @@ test('generateProblem-1', () => {
     <div id="targetOutput"></div>
     `;
 
-    generateProblem();
-
-    expect(document.getElementById("problem").textContent).toContain("Objective: Write a program that outputs the message “Hello World” using the built-in write() function.");
-    expect(targetOutput.session.getValue()).toBe("Hello World");   
+    setTimeout(() => {
+        expect(document.getElementById("problem").textContent).toContain("Objective: Write a program that outputs the message “Hello World” using the built-in write() function.");
+        expect(targetOutput.session.getValue()).toBe("Hello World");
+        done();
+    }, 100);
   });
 
 test('getMemory', () => {

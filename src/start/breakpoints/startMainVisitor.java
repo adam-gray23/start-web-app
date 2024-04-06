@@ -1313,8 +1313,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
         }
         //if the function is not defined, error
         catch (Exception e){
-            //show the error
-            printLine(e.toString());
             int line = ctx.start.getLine();
             printLine("Error: Function " + ctx.NAME().getText() + " not defined!\nOffending Symbol/Token: " + ctx.NAME().getText() + "\nLine: " + line + "\nRemember to define your functions before you call them!\n");
             callDjango.endCode(sessionToken, id);
@@ -1428,7 +1426,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     //print line text
                     //if the current line equals nl, continue, else wait for input
                     if (ctx.line(i).getText().equals("nl")){
-                        visit(ctx.line(i));
                         continue;
                     }
                     //else if the line starts with loop while
@@ -1484,7 +1481,6 @@ public Object visitCompExpression(startParser.CompExpressionContext ctx){
                     Object val = visit(ctx.line(i));
                     //if next line is not null, wait
                     if (ctx.line(i).getText().equals("nl")){
-                        visit(ctx.line(i));
                         continue;
                     }
                     else {

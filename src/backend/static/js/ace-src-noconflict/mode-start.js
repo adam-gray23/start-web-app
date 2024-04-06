@@ -15,8 +15,8 @@ var StartHighlightRules = function () {
     );
 
     var builtinFunctions = (
-        "add|div|mod|mult|sub|"+
-        "equals|not|than|greater|less|"+
+        "add|div|mod|mult|sub|pow|"+
+        "equals|not|than|greater|less|or|equal|to|remove|all|concat|length|of|each|in|function|"+
         "is|nl"
     );
 

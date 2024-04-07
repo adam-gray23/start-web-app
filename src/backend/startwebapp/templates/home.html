@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>START | Learn</title>
+        <title>START</title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -17,15 +17,114 @@
             <div id="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 col-md-6 mb-3">
                             <div class="card card-main shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Home</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Welcome to START!</h6>
                                 </div>
                                 <div class="card-body">
-                                    <p>Home</p>
+                                    <div class="d-none d-sm-flex row justify-content-end">
+                                        <div class="col-9">
+                                            <div speech-bubble pbottom aleft>
+                                                <p>Hello! My name is Cogs. Welcome to Start!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex d-sm-none row justify-content-end">
+                                        <div class="col-12">
+                                            <div speech-bubble pbottom acenter>
+                                                <p>Hello! My name is Cog. Welcome to Start!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-none d-sm-flex row">
+                                        <div class="col-12">
+                                            <img src="{% static 'img/cogs-transparent.png' %}" class="img-fluid" alt="cogs">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex d-sm-none row justify-content-center">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <img src="{% static 'img/cogs-transparent.png' %}" class="img-fluid" alt="cogs">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="d-sm-none d-md-block card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Github</h6>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Introduction -->
+                                    <p>Excited to dive into the world of programming with START? Well, the good news is that you can have it right at your fingertips on your very own Windows machine! Thanks to the open-source nature of START, you can easily download and install it from GitHub.</p>
+
+                                    <!-- Download Instructions -->
+                                    <p>To get started with START on your Windows machine, simply head over to our GitHub repository. There, you'll find everything you need to download and set up the START programming language. Once installed, you'll have access to a full-featured START IDE, along with an extensive library of learning resources, including videos, documents, and practice problems to sharpen your skills.</p>
+
+                                    <!-- Call to Action -->
+                                    <p>So why wait? Take the first step towards mastering programming with START. Download it onto your Windows machine today and start coding your way to success!</p>
+
+                                    <!-- Button -->
+                                    <button class="btn btn-primary" onclick="window.location.href='https://github.com/adam-gray23/START-BEGINNER-LANGUAGE/tree/main/Manual-Install'">Download START</button>
+
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">What is START?</h6>
+                                </div>
+                                <div class="card-body">
+                                    <section>
+                                        <h2>About START</h2>
+                                        <p>Developed by Niall Kelly and Adam Gray in 2023, START is a programming language designed with simplicity in mind. Its straightforward syntax is perfect for beginners, helping them grasp fundamental programming concepts and prepare them for more advanced languages.</p>
+                                      </section>
+                                  
+                                      <section>
+                                        <h2>Features</h2>
+                                        <ul>
+                                          <li>Full START IDE for seamless coding experience</li>
+                                          <li>Extensive library of learning resources including videos and documents</li>
+                                          <li>Practice problems to reinforce understanding and tackle real-world challenges</li>
+                                        </ul>
+                                      </section>
+                                  
+                                      <section>
+                                        <h2>Get Started</h2>
+                                        <p>Ready to embark on your coding journey with START? Lets start exploring the world of programming with START!</p>
+                                      </section>  
+                                </div>
+                            </div>
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Begin Coding</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>START your programming journey below! Embark on this exciting path by laying a solid foundation through learning essential concepts. Take your time to grasp the fundamentals before delving into practical exercises. Once you feel confident, challenge yourself with our example problems meticulously crafted to test your understanding and facilitate further learning.</p>
+                                    <p>Whether you choose to immerse yourself in understanding core concepts or dive straight into problem-solving, we're here to support you every step of the way. Our goal is to make your learning experience with START enriching and enjoyable. So, let's begin this journey together, armed with curiosity and determination, and explore the fascinating world of programming.</p>
+                                    <br>
+                                    <div class="button-container">
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary align-text-center" style="width: 100px;" onclick="window.location.href='/learn'">Learn</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary align-text-center" style="width: 100px;" onclick="window.location.href='/problems'">Problems</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary align-text-center" style="width: 100px;" onclick="window.location.href='/code'">Code</button>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                            </div> 
+                            <div class="d-sm-block d-md-none card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Github</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>The START web app is free to use and open source! Check out the code on Github!</p>
+                                    <a href="#">Link to Github</a>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -34,9 +133,4 @@
         
         {% include 'footer.html' %}
     </body>
-    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
-
-    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 </html>

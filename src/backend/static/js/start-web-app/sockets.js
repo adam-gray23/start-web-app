@@ -18,12 +18,7 @@ bpSocket.onmessage = function(e) {
         sessionStorage.setItem("paused", "true");
 
         if(document.getElementById("targetOutput") != null){
-            if(targetOutput.session.getValue() == result.session.getValue()){
-                message("success", "The output is correct! Problem solved!");
-            }
-            else{
-                message("error", "The output is incorrect! Try again!");
-            }
+            checkTargetOutput();
         }
 
         return;

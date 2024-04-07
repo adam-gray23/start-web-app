@@ -42,37 +42,11 @@ result.setOptions({
     fontSize: "12pt"
 });
 
-if (document.getElementById("targetOutput") != null){
-
-    var targetOutput = ace.edit("targetOutput", {
-        theme: "ace/theme/tomorrow_night_eighties",
-        mode: "ace/mode/text",
-        minLines: 5,
-        maxLines: 5,
-        wrap: false,
-        autoScrollEditorIntoView: true,
-        readOnly: true
-    });
-
-    targetOutput.setOptions({
-        fontSize: "12pt"
-    });
-
-    // get the id from the url
-    var url = String(new URL(window.location.href));
-    url = url.split("/")
-    id = url[url.length - 2];
-
-    switch(id){
-        case "1":
-            document.getElementById("problem").innerHTML = "Objective: Write a program that outputs the message “Hello World” using the built-in write() function."
-            targetOutput.session.setValue("Hello World");
-            break;
-        default:
-            targetOutput.session.setValue("No target output available");
-            break;
+document.addEventListener("DOMContentLoaded", function() {
+    if (document.getElementById("targetOutput") != null){
+        generateProblem();
     }
-}
+});
 
 editor.on("guttermousedown", function(e) {
     var target = e.domEvent.target;

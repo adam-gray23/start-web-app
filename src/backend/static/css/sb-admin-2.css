@@ -3184,6 +3184,19 @@ input[type="button"].btn-block {
   border-top: 1px solid #eaecf4;
 }
 
+.dropdown-menu p{
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #3a3b45;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
 .dropdown-item {
   display: block;
   width: 100%;
@@ -10309,11 +10322,11 @@ a:focus {
 }
 
 .topbar.navbar-light .navbar-nav .nav-item .nav-link {
-  color: #d1d3e2;
+  color: #4e73df;
 }
 
 .topbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
-  color: #b7b9cc;
+  color: #2e59d9;
 }
 
 .topbar.navbar-light .navbar-nav .nav-item .nav-link:active {

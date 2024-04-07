@@ -23,7 +23,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
                                 </div>
                                 <div class="card-body">
-                                    <p>Here you can find various programming challenges to test what you have learned.</p>
+                                    <p>Here you can find various programming challenges to test what you have learned. Solutions to these problems can be found <a href="{% url 'solutions' %}">here.</a></p>
                                     <br>
                                     <h3>Problems</h3>
                                     <hr>
@@ -198,6 +198,14 @@ Odd</div>
                                         <br>
                                         <a href="{% url 'code' '10' %}" class="btn btn-primary">Try it yourself</a>
                                         <a class="solved" href="#" class="btn btn-primary"></a>
+                                    </div>
+                                    <br>
+                                    <hr class="mb-0">
+                                    <div class="row my-3">
+                                        <div class="col-12 text-center">
+                                            <button class="btn btn-primary" onclick="window.location.href='/problems/solutions'">Solutions</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

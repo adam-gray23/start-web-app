@@ -50,5 +50,10 @@ urlpatterns = [
     path('learn/functions/', views.functions_view, name='functions'),
     path('learn/videos/variables', views.video_variables_view, name='videos-variables'),
     path('learn/videos/operators', views.video_operators_view, name='videos-operators'),
+    path('learn/videos/lists', views.video_lists_view, name='videos-lists'),
+    path('learn/videos/if-statements', views.video_if_statements_view, name='videos-if-statements'),
+    path('learn/videos/loops', views.video_loops_view, name='videos-loops'),
+    path('learn/videos/functions', views.video_functions_view, name='videos-functions'),
     path('problems/', views.problems_view, name='problems'),
+    path('problems/solutions/', views.solutions_view, name='solutions'),
 ]

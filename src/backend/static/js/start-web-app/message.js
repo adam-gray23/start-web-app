@@ -19,3 +19,10 @@ function message(type, text) {
 function closeMessage() {
     document.getElementById("message").remove();
 }
+
+if (typeof module === 'object'){
+    module.exports = {
+        message: message,
+        closeMessage: closeMessage
+    };
+}

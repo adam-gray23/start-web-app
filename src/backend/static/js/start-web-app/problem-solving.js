@@ -5,8 +5,6 @@ function checkTargetOutput(){
     url = url.split("/")
     id = url[url.length - 2];
 
-    console.log(id)
-
     switch(id){
         case "1":
             if(result.session.getValue().replace(/\s+$/, '') == "Hello World"){
@@ -278,4 +276,12 @@ function getMemory(){
     }
 
     return pairs;
+}
+
+if (typeof module === 'object') {
+    module.exports = {
+        checkTargetOutput: checkTargetOutput,
+        generateProblem: generateProblem,
+        getMemory: getMemory
+    };
 }

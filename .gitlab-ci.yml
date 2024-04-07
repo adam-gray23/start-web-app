@@ -34,6 +34,7 @@ django-test:
     - python manage.py test
     - echo "Backend test finished."
     - echo "Starting frontend test for Django server..."
+    - npm install
     - npx jest
     - echo "Frontend test finished."
 

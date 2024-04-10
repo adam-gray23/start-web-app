@@ -181,7 +181,7 @@ function uploadCode() {
 function stepFunc() {
     let running = sessionStorage.getItem("running");
     let paused = sessionStorage.getItem("paused");
-    if (running == "false"){
+    if (typeof module !== 'object' && running == "false"){                      // fix for jest testing
         message("warn", "Code is not running. Please upload code first.")
         return;
     }
@@ -221,7 +221,7 @@ function stepFunc() {
 
 function cancelFunc() {
     let running = sessionStorage.getItem("running");
-    if (running == "false"){
+    if (typeof module !== 'object' && running == "false"){                      // fix for jest testing
         message("warn", "Code is not running. Please upload code first.")
         return;
     }
@@ -362,7 +362,7 @@ function clearHighlightedLines() {
 function displayMemory(memory){
     memory = memory.split("\n");
 
-    for (let i = 0; i < memory.length - 1; i++){
+    for (let i = 0; i < memory.length; i++){
         let line = memory[i].split(",");
         let variable = line[0];
         let value = line.slice(1).join(","); // Join the remaining parts after the first comma
@@ -382,4 +382,20 @@ function displayMemory(memory){
         tr.appendChild(td2);
         document.getElementById("memoryBody").appendChild(tr);
     }
+}
+
+if(typeof module === 'object'){
+    module.exports = { 
+        changeDebugMode: changeDebugMode, 
+        uploadCode: uploadCode, 
+        stepFunc: stepFunc, 
+        cancelFunc: cancelFunc, 
+        saveSession: saveSession, 
+        saveFunc: saveFunc, 
+        loadSession: loadSession, 
+        getSessions: getSessions, 
+        showSession: showSession, 
+        clearHighlightedLines: clearHighlightedLines,
+        displayMemory: displayMemory 
+    };
 }

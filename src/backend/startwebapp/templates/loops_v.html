@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>START | Learn</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-admin-2.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    </head>
+    <body>
+        {% include 'header.html' %}
+
+        <div id="wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-main shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Learn</h6>
+                                </div>
+                                <div id="learn-doc" class="card-body">
+                                    <h2>Loops</h2>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <iframe 
+                                                style="width: 100%;
+                                                    height: 500px;
+                                                    border-style: solid;
+                                                    border-width: 1px;
+                                                    border-color: black;
+                                                    border-radius: 1rem;"
+                                                src="https://www.youtube.com/embed/9Qi0EwFrdYw?si=gUVCvJhR_fSD9SQr"
+                                                title="YouTube video player"
+                                                frameborder="0" 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                                referrerpolicy="strict-origin-when-cross-origin" 
+                                                allowfullscreen
+                                            >
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <hr class="mb-0">
+                                    <div class="row my-3">
+                                        <div class="col-12 text-center">
+                                            <a class="d-inline" href="{% url 'videos-operators' %}">< Previous: Operators</a>
+                                            <p class="text-primary d-inline"> | </p>
+                                            <a class="d-inline" href="{% url 'videos-lists' %}">Next: Lists ></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% include 'footer.html' %}
+    </body>
+    <script src="{% static 'js/sb-admin-2/sb-admin-2.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static 'js/sb-admin-2/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+</html>

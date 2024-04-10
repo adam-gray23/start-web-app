@@ -9,19 +9,34 @@ django-build:
   - dev
   image: python:3.11
   before_script:
-    - python -m pip install Django
+    - pip install Django
     - pip install requests
     - cd src/backend
     - echo "Starting Django server..."
     - Start-Process python -ArgumentList "manage.py runserver 8000" -NoNewWindow
     - sleep 20
   script:
-    - echo "Django server started. Init test..."
-    - python manage.py test
-    - echo "Test finished."
+    - echo "Full server statup process succesful."
+    - echo "Shutting down server."
     - $process = Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess
     - Stop-Process -ID $process.Id -Force
-    - echo "Django server tests successful."
+    - echo "Server shut down."
+
+django-test:
+  stage: test
+  only:
+  - master
+  - dev
+  image: python:3.11
+  script:
+    - echo "Starting backend test for Django server..."
+    - cd src/backend
+    - python manage.py test
+    - echo "Backend test finished."
+    - echo "Starting frontend test for Django server..."
+    - npm install
+    - npx jest
+    - echo "Frontend test finished."
 
 start-complete-test:
   stage: test

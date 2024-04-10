@@ -36,3 +36,10 @@ function genUUID(){
     // Send the FormData with the text content to the server
     xhr.send();
 }
+
+if (typeof module === 'object') {
+    module.exports = {
+        getCookie: getCookie,
+        genUUID: genUUID
+    };
+}

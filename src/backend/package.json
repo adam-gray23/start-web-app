@@ -1,0 +1,23 @@
+{
+  "name": "2024-ca400-kellyn88-graya27",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "type": "module",
+  "jest": {
+    "testEnvironment": "jest-environment-jsdom",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testMatch": [
+      "**/tests/**/*.js"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.0.0",
+    "mock-local-storage": "^1.1.24"
+  }
+}

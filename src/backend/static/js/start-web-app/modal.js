@@ -245,3 +245,12 @@ function displayDateTime(dt){
 
     return dateStr + " " + timeStr;
 }
+
+if (typeof module === 'object') {
+    module.exports = {
+        displayModal: displayModal,
+        confirmSave: confirmSave,
+        closeModal: closeModal,
+        displayDateTime: displayDateTime,
+    };
+}

@@ -59,11 +59,29 @@ def loops_view(request):
 def functions_view(request):
 	return render(request, 'functions.html')
 
-def videos_view(request):
-	return render(request, 'videos.html')
+def video_variables_view(request):
+	return render(request, 'variables_v.html')
+
+def video_operators_view(request):
+	return render(request, 'operators_v.html')
+
+def video_lists_view(request):
+	return render(request, 'lists_v.html')
+
+def video_if_statements_view(request):
+	return render(request, 'if-statements_v.html')
+
+def video_loops_view(request):
+	return render(request, 'loops_v.html')
+
+def video_functions_view(request):
+	return render(request, 'functions_v.html')
 
 def problems_view(request):
 	return render(request, 'problems.html')
+
+def solutions_view(request):
+	return render(request, 'solutions.html')
 
 # Requests
 

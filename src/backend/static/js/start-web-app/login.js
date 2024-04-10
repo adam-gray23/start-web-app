@@ -14,3 +14,11 @@ function togglePasswordField(inputId) {
 function dismiss() {
     document.querySelector('.alert').style.display = 'none';
 }
+
+if (typeof module === 'object'){
+    module.exports = {
+        activateInput: activateInput,
+        togglePasswordField: togglePasswordField,
+        dismiss: dismiss
+    };
+}

@@ -104,4 +104,9 @@ The web app is now shut down.
 
 ## How to Use the Web App
 
-(video here)
+Here's a video demonstrating the project:
+
+<figure class="video_container">
+  <iframe src="res/overview-start-app.mp4/" frameborder="0" allowfullscreen="true"> 
+</iframe>
+</figure>

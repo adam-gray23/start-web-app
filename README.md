@@ -104,6 +104,4 @@ The web app is now shut down.
 
 ## How to Use the Web App
 
-<video width="1600" height="900" controls>
-  <source src="res/learning-vids/overview-start-app.mp4" type="video/mp4">
-</video>
+[Watch the Video here](https://gitlab.computing.dcu.ie/kellyn88/2024-ca400-kellyn88-graya27/-/blob/adam-local-dev/res/learning-vids/overview-start-app.mp4?ref_type=heads)

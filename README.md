@@ -107,6 +107,6 @@ The web app is now shut down.
 Here's a video demonstrating the project:
 
 <figure class="video_container">
-  <iframe src="res/learning-vids/overview-start-app.mp4/" frameborder="0" allowfullscreen="true"> 
+  <iframe src="res/learning-vids/overview-start-app.mp4" frameborder="0" allowfullscreen="true"> 
     </iframe>
 </figure>

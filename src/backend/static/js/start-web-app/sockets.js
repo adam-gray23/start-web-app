@@ -17,6 +17,9 @@ bpSocket.onmessage = function(e) {
         sessionStorage.setItem("running", "false");
         sessionStorage.setItem("paused", "true");
 
+        document.getElementById("cancel").classList.add("disabled");
+        document.getElementById("getCode").classList.remove("disabled");
+
         if(document.getElementById("targetOutput") != null){
             checkTargetOutput();
         }
@@ -32,6 +35,8 @@ bpSocket.onmessage = function(e) {
 
         var Range = ace.require('ace/range').Range;
         editor.session.addMarker(new Range(line, 0, line, 1), "myMarker", "fullLine");
+
+        document.getElementById("step").classList.remove("disabled");
     }
 }
 

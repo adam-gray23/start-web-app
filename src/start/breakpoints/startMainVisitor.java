@@ -87,6 +87,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //clear breakpointArr
+        breakPointArr.clear();
         //call the main function of callDjango.java
         callDjango.pauseCode(line, sessionToken, id);
         //call the main function of fileChecker.java

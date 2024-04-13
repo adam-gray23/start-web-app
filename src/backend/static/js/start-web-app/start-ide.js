@@ -19,10 +19,13 @@ editor.setOptions({
 });
 
 editor.session.on('change', function(delta) {
-    if (debugMode == 1){
+    if (debugMode == 1 || debugMode == 2){
         for (let i = 0; i < editor.session.getLength(); i++){
             if (editor.session.getLine(i).trim() != ""){
                 editor.session.setBreakpoint(i);
+            }
+            if (editor.session.getLine(i).trim() == ""){
+                editor.session.clearBreakpoint(i);
             }
         }
     }
@@ -88,9 +91,11 @@ function changeDebugMode() {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
         message("warn", "Code is currently running. Please wait for it to finish.");
+        // Reset the radio input to the previous value
+        const prevLabel = document.querySelector('label[for="toggle' + (debugMode + 1) + '"]');
+        prevLabel.click();
         return;
     }
-
     // Check which radio input is selected
     if (this.checked) {
         // Get the corresponding label's text
@@ -252,6 +257,10 @@ function cancelFunc() {
             sessionStorage.setItem("running", "false");
             sessionStorage.setItem("paused", "true");
             clearHighlightedLines();
+            result.session.setValue("");
+            document.getElementById("step").classList.add("disabled");
+            document.getElementById("cancel").classList.add("disabled");
+            document.getElementById("getCode").classList.remove("disabled");
         } else {
             console.error("Error sending text content to the server");
         }

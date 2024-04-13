@@ -9,8 +9,8 @@ django-build:
   - dev
   image: python:3.11
   before_script:
-    - pip install Django
-    - pip install requests
+    - python -m pip install Django
+    - python -m pip install requests
     - cd src/backend
     - echo "Starting Django server..."
     - Start-Process python -ArgumentList "manage.py runserver 8000" -NoNewWindow

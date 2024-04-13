@@ -1,6 +1,9 @@
 *.txt
+!requirements.txt
 !src/start/CI-CD-testing/standard/*.txt
 *.pyc
+*.iml
+*.json
 *.pyo
 *.pyd
 __pycache__/
@@ -16,6 +19,9 @@ src/start/breakpoints/.antlr/
 src/start/breakpoints/javax/
 src/start/breakpoints/META-INF/
 src/start/breakpoints/org/
+/node_modules/
+/out/
+/.idea/
 
 # IDE - VSCode
 .vscode

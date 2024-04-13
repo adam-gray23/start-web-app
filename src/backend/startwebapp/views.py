@@ -181,12 +181,11 @@ def step_code(request):
 		file_path = os.path.join(working_dir, 'user-files', 'instruct' + suffix)
 		breakpoint_path = os.path.join(working_dir, 'user-files', 'breakpoints' + suffix)
 		
-		with open(file_path, 'w') as f:
-			f.write("continue")
-
 		with open(breakpoint_path, 'w') as f:
 			f.write(breakpoints)
 
+		with open(file_path, 'w') as f:
+			f.write("continue")
 
 		return JsonResponse({'output': 'success', 'error': ''}, status=200)
 		

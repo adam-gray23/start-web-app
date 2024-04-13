@@ -149,6 +149,10 @@ function uploadCode() {
         message("warn", "No code to run. Please write some code first.");
         return;
     }
+    if (ideText.length > 1000000) {
+        message("error", "Code is too long. Please shorten your code.");
+        return;
+    }
 
     document.getElementById("getCode").classList.add("disabled");
     document.getElementById("cancel").classList.remove("disabled");
@@ -175,7 +179,7 @@ function uploadCode() {
             sessionStorage.setItem("process", response.process);
             sessionStorage.setItem("running", "true");
         } else {
-            console.error("Error sending text content to the server");
+            message("error", "Error uploading code to server. Please try again later.");
         }
     };
 
@@ -291,6 +295,11 @@ function saveFunc(num, mode) {
         title.style.border = "1px solid red";
         return;
     }
+    if(editor.session.getValue().length > 1000000){
+        closeModal();
+        message("error", "Session is too long. Please shorten your session.");
+        return;
+    }
 
     var formData = new FormData();
     formData.append("num", num);
@@ -369,6 +378,7 @@ function showSession(num){
     editor.session.setValue("");
     editor.session.setValue(session.innerHTML.substring(43));
     closeModal();
+    message("success", "Session loaded successfully.");
 }
 
 function clearHighlightedLines() {

@@ -145,6 +145,9 @@ function uploadCode() {
         return;
     }
 
+    document.getElementById("getCode").classList.add("disabled");
+    document.getElementById("cancel").classList.remove("disabled");
+
     var formData = new FormData();
     formData.append("text_content", ideText);
     formData.append("debugMode", debugMode)
@@ -214,6 +217,7 @@ function stepFunc() {
     };
 
     clearHighlightedLines();
+    document.getElementById("step").classList.add("disabled");
 
     // Send the FormData with the text content to the server
     xhr.send(formData);
@@ -272,10 +276,19 @@ async function saveSession () {
 }
 
 function saveFunc(num, mode) {
+    title = document.getElementById("saveTitle");
+
+    if(title.value == ""){
+        title.style.border = "1px solid red";
+        return;
+    }
+
     var formData = new FormData();
     formData.append("num", num);
-    formData.append("title", document.getElementById("saveTitle").value);
+    formData.append("title", title.value);
     formData.append("text_content", editor.session.getValue());
+
+
     if(mode == 1){
         formData.append("mode", "save");
     }

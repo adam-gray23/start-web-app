@@ -312,6 +312,9 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         if(ctx.INT() != null){
             //convert Object to int
             int val = Integer.parseInt(ctx.INT().getText());
+            if (val > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Value exceeds maximum int value");
+            }
             return val;
         }
         //check if the term is a BOOLEAN

@@ -12,7 +12,7 @@ built in debugger, and practice with problems designed to test new programmers a
 solve problems incrementally.
 
 For more information on the development of start, and how it progressed, please see
-the following link: (link here)
+the following [link](https://fragrant-target-ab8.notion.site/START-Web-Application-Blog-0700a84e0c234986b59a68a08ac70a76?pvs=4).
 
 ## Table of Contents
 

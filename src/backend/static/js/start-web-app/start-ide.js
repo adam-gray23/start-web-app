@@ -19,12 +19,19 @@ editor.setOptions({
 });
 
 editor.session.on('change', function(delta) {
-    if (debugMode == 1 || debugMode == 2){
+    if (debugMode == 1){
         for (let i = 0; i < editor.session.getLength(); i++){
             if (editor.session.getLine(i).trim() != ""){
                 editor.session.setBreakpoint(i);
             }
             if (editor.session.getLine(i).trim() == ""){
+                editor.session.clearBreakpoint(i);
+            }
+        }
+    }
+    if (debugMode == 2){
+        for(let i = 0; i < editor.session.getLength(); i++){
+            if (editor.session.getLine(i).trim() == "") {
                 editor.session.clearBreakpoint(i);
             }
         }

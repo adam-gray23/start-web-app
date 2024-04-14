@@ -310,10 +310,12 @@ test('showSession', () => {
     `;
 
     global.closeModal = jest.fn();
+    global.message = jest.fn();
 
     showSession(0);
 
     expect(closeModal).toHaveBeenCalled();
+    expect(message).toHaveBeenCalled();
     
 });
 

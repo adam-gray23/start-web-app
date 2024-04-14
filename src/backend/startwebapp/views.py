@@ -143,6 +143,9 @@ def upload_code(request):
 				file_path = os.path.join(working_dir, 'user-files', 'input' + suffix)
 				breakpoint_path = os.path.join(working_dir, 'user-files', 'breakpoints' + suffix)
 
+				if not os.path.exists(os.path.join(working_dir, 'user-files')):
+					os.makedirs(os.path.join(working_dir, 'user-files'))
+
 				with open(file_path, 'w') as f:
 					f.write(text_content)
 				with open(breakpoint_path, 'w') as f:

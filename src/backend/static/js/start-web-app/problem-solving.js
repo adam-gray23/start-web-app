@@ -246,7 +246,7 @@ function generateProblem(){
             targetOutput.session.setValue("Odd\nOdd\nEven\nEven\nOdd\nEven\nOdd");  
             break;
         case "8":
-            document.getElementById("problem").innerHTML = "Objective: Define variables \"index\" to be 0 and \"target\" to be 20. Use a loop to check \"index\" to see if it is even. If it is increment another variable \"count\" by 1. At the end of the loop increment \"index\" by 1. Repeat this process until \"index\" is equal to 20. I.E. do not run the loop if \"index\" is equal to 20."
+            document.getElementById("problem").innerHTML = "Objective: Define variables \"index\" to be 0 and \"target\" to be 20. Use a loop to check \"index\" to see if it is even. If it is increment another variable \"count\" by 1. At the end of the loop increment \"index\" by 1. Repeat this process until \"index\" is equal to 20 at which point, write the count variable. I.E. do not run the loop if \"index\" is equal to 20."
             targetOutput.session.setValue("10");
             break;
         case "9":

@@ -87,6 +87,8 @@ public class startMainVisitor extends startBaseVisitor<Object>{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //clear breakpointArr
+        breakPointArr.clear();
         //call the main function of callDjango.java
         callDjango.pauseCode(line, sessionToken, id);
         //call the main function of fileChecker.java
@@ -310,6 +312,16 @@ public class startMainVisitor extends startBaseVisitor<Object>{
     public Object visitTerm(startParser.TermContext ctx) {
         //check if the term is an INT
         if(ctx.INT() != null){
+            //make a long out of the number
+            long longVal = Long.parseLong(ctx.INT().getText());
+            if (longVal > 2147483647 || longVal < -2147483648){
+                printLine("Error: Integer value too large!\nLine " + ctx.start.getLine() + "\n");
+                printLine("You've found a limitation of many programming languages (including START!)\n");
+                printLine("The maximum value for an integer is 2147483647 in a 32-bit system\n");
+                printLine("Want to learn more? Check out https://en.wikipedia.org/wiki/2,147,483,647\n");
+                callDjango.endCode(sessionToken, id);
+                System.exit(0);
+            }
             //convert Object to int
             int val = Integer.parseInt(ctx.INT().getText());
             return val;

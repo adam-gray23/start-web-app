@@ -101,6 +101,8 @@ test('uploadCode', () => {
     document.body.innerHTML = `
     <div id="editor">Hello World</div>
     <div id="result"></div>
+    <div id="getCode"></div>
+    <div id="cancel"></div>
     `;
 
 
@@ -143,6 +145,7 @@ test('stepFunc', () => {
     document.body.innerHTML = `
     <div id="editor">Hello World</div>
     <div id="result"></div>
+    <div id="step"></div>
     `;
 
     global.XMLHttpRequest = jest.fn(() => xhrMock);
@@ -307,10 +310,12 @@ test('showSession', () => {
     `;
 
     global.closeModal = jest.fn();
+    global.message = jest.fn();
 
     showSession(0);
 
     expect(closeModal).toHaveBeenCalled();
+    expect(message).toHaveBeenCalled();
     
 });
 

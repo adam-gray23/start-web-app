@@ -69,6 +69,10 @@ footer {
     padding-right: 0.5rem;
 }
 
+.ide-btn.disabled {
+    opacity: 0.5;
+}
+
 .tw-toggle {
     display: inline-block;
     padding: 2px 3px;

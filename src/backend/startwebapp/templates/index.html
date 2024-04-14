@@ -43,11 +43,18 @@
                                         </div>
                                         <div class="col-9 text-right">
                                             {% csrf_token %}
-                                            <button class="ide-btn btn-primary" id="step">Continue</button>
+                                            <button class="ide-btn btn-primary disabled" id="step">Continue</button>
                                             {% csrf_token %}
-                                            <button class="ide-btn btn-danger" id="cancel">Cancel</button>
+                                            <button class="ide-btn btn-danger disabled" id="cancel">Cancel</button>
                                         </div>
                                     </div>
+                                    {% if problem_id is not None and problem_id|add:"0" < 10 %}
+                                        <div class="row my-1">
+                                            <div class="col-12 text-right">
+                                                <button class="ide-btn" id="next">Next Problem</button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                     <div class="row my-1">
                                         <div class="col-12">
                                             Debug Mode:
@@ -201,6 +208,14 @@
                     save.addEventListener('click', saveSession)
                     load.addEventListener('click', loadSession)
                 })();
+            </script>
+        {% endif %}
+        {% if problem_id is not None and problem_id|add:"0" < 10 %}
+            <script>
+                next.addEventListener('click', function() {
+                    nextProblem = parseInt("{{ problem_id }}") + 1
+                    window.location.href = '/code/' + nextProblem + '/'
+                })
             </script>
         {% endif %}
     </body>

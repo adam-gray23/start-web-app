@@ -24,6 +24,16 @@ editor.session.on('change', function(delta) {
             if (editor.session.getLine(i).trim() != ""){
                 editor.session.setBreakpoint(i);
             }
+            if (editor.session.getLine(i).trim() == ""){
+                editor.session.clearBreakpoint(i);
+            }
+        }
+    }
+    if (debugMode == 2){
+        for(let i = 0; i < editor.session.getLength(); i++){
+            if (editor.session.getLine(i).trim() == "") {
+                editor.session.clearBreakpoint(i);
+            }
         }
     }
 });
@@ -88,9 +98,11 @@ function changeDebugMode() {
     let running = sessionStorage.getItem("running");
     if (running == "true"){
         message("warn", "Code is currently running. Please wait for it to finish.");
+        // Reset the radio input to the previous value
+        const prevLabel = document.querySelector('label[for="toggle' + (debugMode + 1) + '"]');
+        prevLabel.click();
         return;
     }
-
     // Check which radio input is selected
     if (this.checked) {
         // Get the corresponding label's text
@@ -144,6 +156,13 @@ function uploadCode() {
         message("warn", "No code to run. Please write some code first.");
         return;
     }
+    if (ideText.length > 1000000) {
+        message("error", "Code is too long. Please shorten your code.");
+        return;
+    }
+
+    document.getElementById("getCode").classList.add("disabled");
+    document.getElementById("cancel").classList.remove("disabled");
 
     var formData = new FormData();
     formData.append("text_content", ideText);
@@ -167,7 +186,7 @@ function uploadCode() {
             sessionStorage.setItem("process", response.process);
             sessionStorage.setItem("running", "true");
         } else {
-            console.error("Error sending text content to the server");
+            message("error", "Error uploading code to server. Please try again later.");
         }
     };
 
@@ -214,6 +233,7 @@ function stepFunc() {
     };
 
     clearHighlightedLines();
+    document.getElementById("step").classList.add("disabled");
 
     // Send the FormData with the text content to the server
     xhr.send(formData);
@@ -248,6 +268,10 @@ function cancelFunc() {
             sessionStorage.setItem("running", "false");
             sessionStorage.setItem("paused", "true");
             clearHighlightedLines();
+            result.session.setValue("");
+            document.getElementById("step").classList.add("disabled");
+            document.getElementById("cancel").classList.add("disabled");
+            document.getElementById("getCode").classList.remove("disabled");
         } else {
             console.error("Error sending text content to the server");
         }
@@ -272,10 +296,24 @@ async function saveSession () {
 }
 
 function saveFunc(num, mode) {
+    title = document.getElementById("saveTitle");
+
+    if(title.value == ""){
+        title.style.border = "1px solid red";
+        return;
+    }
+    if(editor.session.getValue().length > 1000000){
+        closeModal();
+        message("error", "Session is too long. Please shorten your session.");
+        return;
+    }
+
     var formData = new FormData();
     formData.append("num", num);
-    formData.append("title", document.getElementById("saveTitle").value);
+    formData.append("title", title.value);
     formData.append("text_content", editor.session.getValue());
+
+
     if(mode == 1){
         formData.append("mode", "save");
     }
@@ -347,6 +385,7 @@ function showSession(num){
     editor.session.setValue("");
     editor.session.setValue(session.innerHTML.substring(43));
     closeModal();
+    message("success", "Session loaded successfully.");
 }
 
 function clearHighlightedLines() {
